@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:java_ijen_mobile/screen/home_screen_pembeli.dart';
 import 'package:java_ijen_mobile/screen/login_screen.dart';
 
 void main() {
@@ -12,8 +13,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      routes: {LoginScreen.routeName: (context) => LoginScreen()},
-      home: LoginScreen(),
+      routes: {
+        LoginScreen.routeName: (context) => LoginScreen(),
+        HomePembeli.routeName : (context) => HomePembeli(),
+      },
+      initialRoute: HomePembeli.routeName,
     );
   }
 }
