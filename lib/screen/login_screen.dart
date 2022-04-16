@@ -1,127 +1,190 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:java_ijen_mobile/const.dart';
 
-class LoginScreen extends StatelessWidget {
+import '../screen/home_screen.dart';
+import '../screen/register_screen.dart';
+import '../validator.dart';
+import '../auth.dart';
+
+class LoginScreen extends StatefulWidget {
   static const routeName = "/login";
 
-  final globalKey = GlobalKey<FormState>();
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
 
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+class _LoginScreenState extends State<LoginScreen> {
+  final _formKey = GlobalKey<FormState>();
 
-  LoginScreen({Key? key}) : super(key: key);
+  final _emailTextController = TextEditingController();
+  final _passwordTextController = TextEditingController();
+
+  final _focusEmail = FocusNode();
+  final _focusPassword = FocusNode();
+
+  bool _isProcessing = false;
+
+  Future<FirebaseApp> _initializeFirebase() async {
+    FirebaseApp firebaseApp = await Firebase.initializeApp();
+
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => HomeScreen(
+            user: user,
+          ),
+        ),
+      );
+    }
+    return firebaseApp;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Stack(
-      children: [
-        Container(
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("assets/auth_bg.png"), fit: BoxFit.cover)),
-        ),
-        SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.all(defaultPadding),
-            child: Form(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 64),
-                  Text(
-                    "JAVA IJEN",
-                    style: TextStyle(
-                        fontSize: 48,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    "COFFEE",
-                    style: TextStyle(
-                        fontSize: 40,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 64),
-                  TextFormField(
-                      controller: emailController,
-                      decoration: formStyle.copyWith(hintText: "Email")),
-                  SizedBox(height: 24),
-                  TextFormField(
-                      controller: passwordController,
-                      decoration: formStyle.copyWith(
-                          hintText: "Password",
-                          suffixIcon: Icon(Icons.remove_red_eye),
-                          prefixIcon: Icon(Icons.lock))),
-                  SizedBox(height: 12),
-                  Row(
-                    children: [
-                      Spacer(),
-                      GestureDetector(
-                        onTap: () {
-                          print("ini lupa password");
-                        },
-                        child: Text(
-                          "Lupa password ?",
-                          style: TextStyle(color: Colors.white, fontSize: 18),
-                        ),
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: 40,
-                  ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.red)),
-                      onPressed: () {
-                        print("ini Masuk");
-                        print(emailController.text +
-                            " and " +
-                            passwordController.text);
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Text(
-                          "Masuk",
-                          style: TextStyle(fontSize: 20),
-                        ),
+    return GestureDetector(
+      onTap: () {
+        _focusEmail.unfocus();
+        _focusPassword.unfocus();
+      },
+      child: Scaffold(
+        body: FutureBuilder(
+          future: _initializeFirebase(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return Padding(
+                padding: const EdgeInsets.only(left: 24.0, right: 24.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 24.0),
+                      child: Text(
+                        'Login',
+                        style: Theme.of(context).textTheme.headline1,
                       ),
                     ),
-                  ),
-                  SizedBox(height: 24),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Belum punya akun?",
-                        style: TextStyle(color: Colors.white, fontSize: 18),
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        children: <Widget>[
+                          TextFormField(
+                            controller: _emailTextController,
+                            focusNode: _focusEmail,
+                            validator: (value) => Validator.validateEmail(
+                              email: value.toString(),
+                            ),
+                            decoration: InputDecoration(
+                              hintText: "Email",
+                              errorBorder: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(6.0),
+                                borderSide: const BorderSide(
+                                  color: Colors.red,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 8.0),
+                          TextFormField(
+                            controller: _passwordTextController,
+                            focusNode: _focusPassword,
+                            obscureText: true,
+                            validator: (value) => Validator.validatePassword(
+                              password: value.toString(),
+                            ),
+                            decoration: InputDecoration(
+                              hintText: "Password",
+                              errorBorder: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(6.0),
+                                borderSide: const BorderSide(
+                                  color: Colors.red,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 24.0),
+                          _isProcessing
+                              ? const CircularProgressIndicator()
+                              : Row(
+                            mainAxisAlignment:
+                            MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: ElevatedButton(
+                                  onPressed: () async {
+                                    _focusEmail.unfocus();
+                                    _focusPassword.unfocus();
+
+                                    if (_formKey.currentState!
+                                        .validate()) {
+                                      setState(() {
+                                        _isProcessing = true;
+                                      });
+
+                                      User? user = await FireAuth
+                                          .signInUsingEmailPassword(
+                                        email: _emailTextController.text,
+                                        password:
+                                        _passwordTextController.text,
+                                      );
+
+                                      setState(() {
+                                        _isProcessing = false;
+                                      });
+
+                                      if (user != null) {
+                                        Navigator.of(context)
+                                            .pushReplacement(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                HomeScreen(user: user),
+                                          ),
+                                        );
+                                      }
+                                    }
+                                  },
+                                  child: const Text(
+                                    'Sign In',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 24.0),
+                              Expanded(
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                        RegisterScreen(),
+                                      ),
+                                    );
+                                  },
+                                  child: const Text(
+                                    'Register',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
                       ),
-                      SizedBox(width: 8),
-                      GestureDetector(
-                        onTap: () {
-                          print("ini daftar");
-                        },
-                        child: Text(
-                          "DAFTAR",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      )
-                    ],
-                  )
-                ],
-              ),
-            ),
-          ),
-        )
-      ],
-    ));
+                    )
+                  ],
+                ),
+              );
+            }
+
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          },
+        ),
+      ),
+    );
+
   }
 }
