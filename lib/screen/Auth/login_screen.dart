@@ -2,13 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:java_ijen_mobile/const.dart';
+import 'package:java_ijen_mobile/screen/Auth/register_screen.dart';
 import 'package:java_ijen_mobile/screen/MainScreen/dashboard.dart';
-import 'package:java_ijen_mobile/screen/register_screen.dart';
 import 'package:provider/provider.dart';
 
-import '../utils/auth.dart';
-import '../utils/validator.dart';
-import '../referensi/home_screen.dart';
+import '../../utils/auth.dart';
+import '../../utils/validator.dart';
 
 class LoginScreen extends StatefulWidget {
   static const routeName = "/login";
@@ -125,44 +124,55 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         Align(
                           alignment: Alignment.center,
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all(Colors.red)),
-                            onPressed: () async {
-                              if (globalKey.currentState!.validate()) {
-                                setState(() {
-                                  _isProcessing = true;
-                                });
+                          child: (_isProcessing)
+                              ? CircularProgressIndicator()
+                              : ElevatedButton(
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              Colors.red)),
+                                  onPressed: () async {
+                                    if (globalKey.currentState!.validate()) {
+                                      setState(() {
+                                        _isProcessing = true;
+                                      });
 
-                                User? user =
-                                    await FireAuth.signInUsingEmailPassword(
-                                  email: emailController.text,
-                                  password: passwordController.text,
-                                );
+                                      User? user = await FireAuth
+                                          .signInUsingEmailPassword(
+                                        email: emailController.text,
+                                        password: passwordController.text,
+                                      ).catchError((e){
+                                        showDialog(context: context, builder: (context){
+                                          return AlertDialog(title: Text("Login Failed"),content: Text(e),actions: [
+                                            ElevatedButton(onPressed: () {
+                                              Navigator.pop(context);
+                                            }, child: Text("Okey"))
+                                          ],);
+                                        })
+                                      });
 
-                                setState(() {
-                                  _isProcessing = false;
-                                });
+                                      setState(() {
+                                        _isProcessing = false;
+                                      });
 
-                                if (user != null) {
-                                  Navigator.of(context).pushReplacement(
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          MainScreen(user: user),
+                                      if (user != null) {
+                                        Navigator.of(context).pushReplacement(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                MainScreen(user: user),
+                                          ),
+                                        );
+                                      }
+                                    }
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(12.0),
+                                    child: Text(
+                                      "Masuk",
+                                      style: TextStyle(fontSize: 20),
                                     ),
-                                  );
-                                }
-                              }
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: Text(
-                                "Masuk",
-                                style: TextStyle(fontSize: 20),
-                              ),
-                            ),
-                          ),
+                                  ),
+                                ),
                         ),
                         SizedBox(height: 24),
                         Row(

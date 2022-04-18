@@ -17,7 +17,7 @@ class FireAuth {
         password: password,
       );
       user = userCredential.user;
-      
+
       // await user!.updatePhoneNumber(phoneNumber);
       await user!.updateDisplayName(name);
       await user.reload();
@@ -49,9 +49,12 @@ class FireAuth {
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         print('No user found for that email.');
+        throw 'No user found for that email.';
       } else if (e.code == 'wrong-password') {
         print('Wrong password provided.');
+        throw 'Wrong password provided.';
       }
+      // throw e.code;
     }
 
     return user;

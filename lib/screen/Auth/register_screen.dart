@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:java_ijen_mobile/referensi/home_screen.dart';
 import 'package:java_ijen_mobile/screen/MainScreen/dashboard.dart';
 import 'package:java_ijen_mobile/referensi/login_page.dart';
-
-import '../const.dart';
-import '../utils/auth.dart';
-import '../utils/validator.dart';
+import '../../const.dart';
+import '../../utils/auth.dart';
+import '../../utils/validator.dart';
 import 'login_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
