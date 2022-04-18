@@ -1,22 +1,27 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
 class FireAuth {
+  static FirebaseAuth _auth = FirebaseAuth.instance;
+
   static Future<User?> registerUsingEmailPassword({
     required String name,
     required String email,
     required String password,
+    required String phoneNumber,
   }) async {
-    FirebaseAuth auth = FirebaseAuth.instance;
     User? user;
     try {
-      UserCredential userCredential = await auth.createUserWithEmailAndPassword(
+      UserCredential userCredential =
+          await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
       user = userCredential.user;
+      
+      // await user!.updatePhoneNumber(phoneNumber);
       await user!.updateDisplayName(name);
       await user.reload();
-      user = auth.currentUser;
+      user = _auth.currentUser;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');
@@ -33,11 +38,10 @@ class FireAuth {
     required String email,
     required String password,
   }) async {
-    FirebaseAuth auth = FirebaseAuth.instance;
     User? user;
 
     try {
-      UserCredential userCredential = await auth.signInWithEmailAndPassword(
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -54,11 +58,13 @@ class FireAuth {
   }
 
   static Future<User?> refreshUser(User user) async {
-    FirebaseAuth auth = FirebaseAuth.instance;
-
     await user.reload();
-    User? refreshedUser = auth.currentUser;
+    User? refreshedUser = _auth.currentUser;
 
     return refreshedUser;
+  }
+
+  static Future<void> logOut() async {
+    await _auth.signOut();
   }
 }

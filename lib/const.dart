@@ -17,3 +17,4 @@ List<BoxShadow> shadow = [
 const double defaultPadding = 16;
 
 Color darkGrey = Color(0xff282C2F);
+Color darkChoco = Color(0xff6A462F);

@@ -1,8 +1,13 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:java_ijen_mobile/screen/home_screen_pembeli.dart';
+import 'package:java_ijen_mobile/screen/MainScreen/dashboard.dart';
+import 'package:java_ijen_mobile/referensi/login_page.dart';
 import 'package:java_ijen_mobile/screen/login_screen.dart';
+import 'package:java_ijen_mobile/screen/register_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -14,11 +19,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       routes: {
+        // LoginPage.routeName: (context) => LoginPage(),
         LoginScreen.routeName: (context) => LoginScreen(),
-        HomePembeli.routeName : (context) => HomePembeli(),
+        // DashBoard.routeName: (context) => DashBoard(),
+        RegisterScreen.routeName: (context) => RegisterScreen()
       },
-      initialRoute: HomePembeli.routeName,
-
+      initialRoute: LoginScreen.routeName,
     );
   }
 }
