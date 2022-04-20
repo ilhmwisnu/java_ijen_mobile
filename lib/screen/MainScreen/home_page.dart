@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import 'package:java_ijen_mobile/screen/Lahan/lahan_screen.dart';
 import 'package:java_ijen_mobile/screen/Petani/petani_screen.dart';
 import '../../const.dart';
 import '../../utils/auth.dart';
@@ -7,6 +9,7 @@ import '../Auth/login_screen.dart';
 
 class HomeOwner extends StatefulWidget {
   User? user;
+
   HomeOwner({Key? key, this.user}) : super(key: key);
 
   @override
@@ -92,11 +95,16 @@ class _HomeOwnerState extends State<HomeOwner> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Container(
-                    color: Colors.grey,
-                    width: (screenSize.width - (defaultPadding * 3)) / 2,
-                    height: (screenSize.width - (defaultPadding * 3)) / 2,
-                    child: Center(child: Text("Comming Soon")),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, LahanScreen.routeName);
+                    },
+                    child: Container(
+                      color: Colors.amber,
+                      width: (screenSize.width - (defaultPadding * 3)) / 2,
+                      height: (screenSize.width - (defaultPadding * 3)) / 2,
+                      child: Center(child: Text("Data Lahan")),
+                    ),
                   ),
                   GestureDetector(
                     onTap: () {
