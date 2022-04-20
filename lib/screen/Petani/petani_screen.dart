@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:java_ijen_mobile/const.dart';
+import 'package:java_ijen_mobile/screen/Petani/addPetani_screen.dart';
 
 class PetaniScreen extends StatefulWidget {
   static const routeName = "/petani";
@@ -19,7 +20,9 @@ class _PetaniScreenState extends State<PetaniScreen> {
         title: Text("Data Petani"),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushNamed(context, AddPetaniScreen.routeName);
+        },
         child: Icon(Icons.add),
         backgroundColor: green,
       ),
