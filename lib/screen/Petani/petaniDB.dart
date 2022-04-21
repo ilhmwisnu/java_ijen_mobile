@@ -1,6 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 
-class petaniDB {
+class PetaniDB {
   final _listPetani = [];
   late int lastID;
   FirebaseDatabase db = FirebaseDatabase.instance;
@@ -28,7 +28,11 @@ class petaniDB {
     return _listPetani;
   }
 
-  void addPetani(List value) {
-    throw "add Lahan";
+  Future<void> addPetani(String nama, String alamat) async {
+    DatabaseReference ref = db.ref('petani');
+    await ref.child("petani").push().set({
+                  "nama": nama,
+                  "alamat": alamat
+                });
   }
 }

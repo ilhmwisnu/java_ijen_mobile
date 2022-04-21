@@ -26,7 +26,7 @@ class _PetaniScreenState extends State<PetaniScreen> {
     setState(() {
       _isLoading = true;
     });
-    _listPetani = await petaniDB().getAll();
+    _listPetani = await PetaniDB().getAll();
     setState(() {
       _isLoading = false;
     });
@@ -34,6 +34,8 @@ class _PetaniScreenState extends State<PetaniScreen> {
 
   @override
   Widget build(BuildContext context) {
+ 
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: darkGrey,

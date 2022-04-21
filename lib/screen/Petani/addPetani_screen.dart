@@ -1,5 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:java_ijen_mobile/screen/Petani/petaniDB.dart';
 
 class AddPetaniScreen extends StatefulWidget {
   static const routeName = "/addPetani";
@@ -15,9 +16,7 @@ class _AddPetaniScreenState extends State<AddPetaniScreen> {
 
   @override
   Widget build(BuildContext context) {
-    FirebaseDatabase db = FirebaseDatabase.instance;
-    DatabaseReference ref = FirebaseDatabase.instance.ref();
-
+    PetaniDB db = PetaniDB();
     return Scaffold(
       appBar: AppBar(title: Text("Tambah Petani")),
       body: ListView(children: [
@@ -31,15 +30,9 @@ class _AddPetaniScreenState extends State<AddPetaniScreen> {
         ),
         ElevatedButton(
             onPressed: () async {
-              print("kirim");
-              try {
-                await ref.child("petani").push().set({
-                  "nama": namaController.text,
-                  "alamat": alamatController.text
-                });
-              } catch (e) {
-                print(e);
-              }
+              await db
+                  .addPetani(namaController.text, alamatController.text)
+                  .then((value) => Navigator.pop(context));
             },
             child: Text("Tambah"))
       ]),
