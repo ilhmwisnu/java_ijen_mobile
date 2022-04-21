@@ -9,8 +9,8 @@ class PetaniDB {
     DatabaseReference ref = db.ref('petani');
 
     final dataLahan = await ref.get();
-    for (final idLahan in dataLahan.children) {
-      final currID = idLahan.key.toString();
+    for (final lahan in dataLahan.children) {
+      final currID = lahan.key.toString();
       final detailLahan = await ref.child(currID).get();
       var data = {};
       data["id"] = currID;
@@ -29,10 +29,7 @@ class PetaniDB {
   }
 
   Future<void> addPetani(String nama, String alamat) async {
-    DatabaseReference ref = db.ref('petani');
-    await ref.child("petani").push().set({
-                  "nama": nama,
-                  "alamat": alamat
-                });
+    DatabaseReference ref = db.ref();
+    await ref.child("petani").push().set({"nama": nama, "alamat": alamat});
   }
 }

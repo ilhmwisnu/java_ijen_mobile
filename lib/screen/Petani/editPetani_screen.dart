@@ -1,26 +1,29 @@
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:java_ijen_mobile/const.dart';
-import 'package:java_ijen_mobile/screen/Petani/petaniDB.dart';
 
-class AddPetaniScreen extends StatefulWidget {
-  static const routeName = "/addPetani";
-  const AddPetaniScreen({Key? key}) : super(key: key);
+import '../../const.dart';
+import 'petaniDB.dart';
+
+class EditPetani extends StatefulWidget {
+  static const routeName = "/edit";
+  const EditPetani({Key? key}) : super(key: key);
 
   @override
-  State<AddPetaniScreen> createState() => _AddPetaniScreenState();
+  State<EditPetani> createState() => _EditPetaniState();
 }
 
-class _AddPetaniScreenState extends State<AddPetaniScreen> {
+class _EditPetaniState extends State<EditPetani> {
   TextEditingController namaController = TextEditingController();
   TextEditingController alamatController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    namaController.text = "Namaaa";
+    alamatController.text = "Alamtttt";
+
     PetaniDB db = PetaniDB();
     return Scaffold(
       appBar: AppBar(
-        title: Text("Tambah Petani"),
+        title: Text("Edit Petani"),
         backgroundColor: darkGrey,
       ),
       body: Padding(
@@ -49,9 +52,9 @@ class _AddPetaniScreenState extends State<AddPetaniScreen> {
           SizedBox(height: defaultPadding),
           ElevatedButton(
               onPressed: () async {
-                await db
-                    .addPetani(namaController.text, alamatController.text)
-                    .then((value) => Navigator.pop(context));
+                // await db
+                //     .addPetani(namaController.text, alamatController.text)
+                //     .then((value) => Navigator.pop(context));
               },
               style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(darkChoco)),

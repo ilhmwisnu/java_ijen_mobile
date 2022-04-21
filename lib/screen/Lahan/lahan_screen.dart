@@ -48,7 +48,7 @@ class _LahanScreenState extends State<LahanScreen> {
           backgroundColor: green,
         ),
         body: (_isLoading)
-            ? const CircularProgressIndicator()
+            ? Center(child: const CircularProgressIndicator())
             : ListView.builder(
                 padding: const EdgeInsets.all(8),
                 itemCount: _listLahan.length,
