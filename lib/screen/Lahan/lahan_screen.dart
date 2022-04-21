@@ -1,8 +1,8 @@
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:java_ijen_mobile/const.dart';
+import 'package:java_ijen_mobile/screen/Lahan/lahanDB.dart';
 
+import 'addLahan_screen.dart';
 
 class LahanScreen extends StatefulWidget {
   static const routeName = "/lahan";
@@ -14,9 +14,8 @@ class LahanScreen extends StatefulWidget {
 }
 
 class _LahanScreenState extends State<LahanScreen> {
-  late DatabaseReference ref;
-  final _listLahan = [];
   bool _isLoading = false;
+  late List _listLahan;
 
   @override
   void initState() {
@@ -24,40 +23,11 @@ class _LahanScreenState extends State<LahanScreen> {
     super.initState();
   }
 
-  Future<void> fetchData() async {
+  void fetchData() async {
     setState(() {
       _isLoading = true;
     });
-
-    FirebaseDatabase db = FirebaseDatabase.instance;
-    DatabaseReference ref = db.ref('lahan');
-
-    final dataLahan = await ref.get();
-    for (final idLahan in dataLahan.children) {
-      final currID = idLahan.key.toString();
-      final detailLahan = await ref.child(currID).get();
-      var data = {};
-      data["id"] = currID;
-      for (final col in detailLahan.children) {
-        if (col.key == "alamat") {
-          data["alamat"] = col.value;
-        }
-        if (col.key == "lat") {
-          data["lat"] = col.value;
-        }
-        if (col.key == "long") {
-          data["long"] = col.value;
-        }
-        if (col.key == "pemilik") {
-          DatabaseReference refPT = db.ref('petani');
-          final pemilik = await refPT.child(col.value.toString()).child("nama").get();
-          data["pemilik"] = pemilik.value;
-        }
-
-      }
-      _listLahan.insert(_listLahan.length, data);
-    }
-
+    _listLahan = await lahanDB().getAll();
     setState(() {
       _isLoading = false;
     });
@@ -71,7 +41,9 @@ class _LahanScreenState extends State<LahanScreen> {
           title: const Text("Data Lahan"),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushNamed(context, AddLahanScreen.routeName);
+          },
           child: const Icon(Icons.add),
           backgroundColor: green,
         ),
