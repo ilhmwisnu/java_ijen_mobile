@@ -38,4 +38,15 @@ class Validator {
 
     return null;
   }
+
+  static String? validateAlamat({required String alamat}) {
+    if (alamat == null) {
+      return null;
+    }
+    if (alamat.isEmpty) {
+      return 'Alamat tidak boleh kosong';
+    }
+
+    return null;
+  }
 }

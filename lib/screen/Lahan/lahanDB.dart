@@ -1,12 +1,11 @@
 import 'package:firebase_database/firebase_database.dart';
 
 class lahanDB {
-  final _listLahan = [];
-  late DatabaseReference ref;
-  late int lastID;
+  FirebaseDatabase db = FirebaseDatabase.instance;
 
   Future<List> getAll() async {
-    FirebaseDatabase db = FirebaseDatabase.instance;
+    final _listLahan = [];
+
     DatabaseReference ref = db.ref('lahan');
 
     final dataLahan = await ref.get();
@@ -34,11 +33,27 @@ class lahanDB {
       }
       _listLahan.insert(_listLahan.length, data);
     }
-    lastID = _listLahan.length;
     return _listLahan;
   }
 
-  void addLahan(List value) {
-    throw "add Lahan";
+  Future<List> getIDList() async {
+    final _listID = [];
+    DatabaseReference ref = db.ref('lahan');
+
+    final dataLahan = await ref.get();
+    for (final idLahan in dataLahan.children) {
+      _listID.insert(_listID.length, idLahan.key.toString());
+    }
+    return _listID;
+  }
+
+  void addLahan(String alamat, String pemilik, String lat, String long) async {
+    DatabaseReference ref = db.ref('lahan');
+    final list = await getIDList();
+    int last = list.length + 1;
+    String inputID = "LH" + last.toString();
+    await ref
+        .child(inputID)
+        .set({"alamat": alamat, "pemilik": pemilik, "lat": lat, "long": long});
   }
 }

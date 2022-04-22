@@ -2,7 +2,6 @@ import 'package:firebase_database/firebase_database.dart';
 
 class PetaniDB {
   final _listPetani = [];
-  late int lastID;
   FirebaseDatabase db = FirebaseDatabase.instance;
 
   Future<List> getAll() async {
@@ -24,12 +23,26 @@ class PetaniDB {
       }
       _listPetani.insert(_listPetani.length, data);
     }
-    lastID = _listPetani.length;
     return _listPetani;
   }
 
+  Future<List> getIDList() async {
+    final _listID = [];
+    DatabaseReference ref = db.ref('petani');
+
+    final dataLahan = await ref.get();
+    for (final idLahan in dataLahan.children) {
+      _listID.insert(_listID.length, idLahan.key.toString());
+    }
+    return _listID;
+  }
+
   Future<void> addPetani(String nama, String alamat) async {
-    DatabaseReference ref = db.ref();
-    await ref.child("petani").push().set({"nama": nama, "alamat": alamat});
+    DatabaseReference ref = db.ref("petani");
+    final list = await getIDList();
+
+    int last = list.length + 1;
+    String inputID = "PT" + last.toString();
+    await ref.child(inputID).set({"nama": nama, "alamat": alamat});
   }
 }
