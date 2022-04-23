@@ -62,13 +62,10 @@ class _PetaniScreenState extends State<PetaniScreen> {
                     trailing: IconButton(
                         icon: Icon(Icons.edit),
                         onPressed: () {
-                          print(_listPetani[index]["nama"]);
+                          // print(_listPetani[index]["nama"]);
                           Navigator.pushNamed(context, EditPetani.routeName,
-                              arguments: {
-                                "nama": _listPetani[index]["nama"],
-                                "id": _listPetani[index]["id"],
-                                "alamat": _listPetani[index]["nama"]
-                              });
+                                  arguments: _listPetani[index]["id"])
+                              .whenComplete(() => fetchData());
                         }),
                   ),
                 );

@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 import '../../const.dart';
@@ -12,15 +15,28 @@ class EditPetani extends StatefulWidget {
 }
 
 class _EditPetaniState extends State<EditPetani> {
+  bool _isInit = false;
   TextEditingController namaController = TextEditingController();
   TextEditingController alamatController = TextEditingController();
+  PetaniDB db = PetaniDB();
+
+  @override
+  void didChangeDependencies() async {
+    if (!_isInit) {
+      final id = ModalRoute.of(context)!.settings.arguments;
+      final data = await db.getDataById(id.toString());
+      // print(data["nama"]);
+      setState(() {
+        _isInit = true;
+        namaController.text = data["nama"]!;
+        alamatController.text = data["alamat"]!;
+      });
+    }
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
-    namaController.text = "Namaaa";
-    alamatController.text = "Alamtttt";
-
-    PetaniDB db = PetaniDB();
     return Scaffold(
       appBar: AppBar(
         title: Text("Edit Petani"),
@@ -51,10 +67,12 @@ class _EditPetaniState extends State<EditPetani> {
           ),
           SizedBox(height: defaultPadding),
           ElevatedButton(
-              onPressed: () async {
-                // await db
-                //     .addPetani(namaController.text, alamatController.text)
-                //     .then((value) => Navigator.pop(context));
+              onPressed: () {
+                db.updatePetani(
+                  namaController.text,
+                  alamatController.text,
+                  ModalRoute.of(context)!.settings.arguments.toString(),
+                ).then((value) => Navigator.pop(context));
               },
               style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(darkChoco)),

@@ -45,4 +45,26 @@ class PetaniDB {
     String inputID = "PT" + last.toString();
     await ref.child(inputID).set({"nama": nama, "alamat": alamat});
   }
+
+  Future<Map<String, String>> getDataById(String id) async {
+    DatabaseReference ref = db.ref('petani/$id');
+    final detailPetani = await ref.get();
+    // print(detailPetani.children);
+    Map<String, String> data = {};
+    for (var detail in detailPetani.children) {
+      // print(detail.value);
+      if (detail.key == "alamat") {
+        data["alamat"] = detail.value.toString();
+      }
+      if (detail.key == "nama") {
+        data["nama"] = detail.value.toString();
+      }
+    }
+    return data;
+  }
+
+  Future<void> updatePetani(String nama, String alamat, String id) async {
+    DatabaseReference ref = db.ref('petani/$id');
+    await ref.update({"nama": nama, "alamat": alamat});
+  }
 }
