@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:search_choices/search_choices.dart';
 import 'package:java_ijen_mobile/screen/Lahan/lahanDB.dart';
+import 'package:java_ijen_mobile/screen/Petani/petaniDB.dart';
 
 class AddLahanScreen extends StatefulWidget {
   static const routeName = "/addLahan";
@@ -15,7 +18,27 @@ class _AddLahanScreenState extends State<AddLahanScreen> {
   TextEditingController pemilikController = TextEditingController();
   TextEditingController latController = TextEditingController();
   TextEditingController longController = TextEditingController();
-  lahanDB db = lahanDB();
+  LahanDB dbLahan = LahanDB();
+  PetaniDB dbPetani = PetaniDB();
+  late List petani;
+  late Position currentPosition;
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    fetchData();
+    super.initState();
+  }
+
+  void fetchData() async {
+    setState(() {
+      _isLoading = true;
+    });
+    petani = await dbPetani.getName();
+    setState(() {
+      _isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +49,9 @@ class _AddLahanScreenState extends State<AddLahanScreen> {
           controller: alamatController,
           decoration: InputDecoration(hintText: "Alamat"),
         ),
-        TextField(
-          controller: pemilikController,
-          decoration: InputDecoration(hintText: "Pemilik"),
-        ),
+
+        // TODO ADD DROPDOWN ITEM SELECTOR
+
         TextField(
           controller: latController,
           decoration: InputDecoration(hintText: "Latitude"),
@@ -38,6 +60,11 @@ class _AddLahanScreenState extends State<AddLahanScreen> {
           controller: longController,
           decoration: InputDecoration(hintText: "Longitude"),
         ),
+        ElevatedButton(
+            onPressed: () {
+              getCurrentLocation();
+            },
+            child: Text("Get Lat Long")),
         ElevatedButton(
             onPressed: () {
               showDialog(
@@ -49,7 +76,7 @@ class _AddLahanScreenState extends State<AddLahanScreen> {
                       actions: [
                         ElevatedButton(
                             onPressed: () {
-                              db.addLahan(
+                              dbLahan.addLahan(
                                   alamatController.text,
                                   pemilikController.text,
                                   latController.text,
@@ -72,5 +99,18 @@ class _AddLahanScreenState extends State<AddLahanScreen> {
             child: Text("Tambah"))
       ]),
     );
+  }
+
+  getCurrentLocation() {
+    Geolocator.getCurrentPosition(
+            desiredAccuracy: LocationAccuracy.best,
+            forceAndroidLocationManager: true)
+        .then((Position position) {
+      print("Lat ${position.latitude} Long ${position.longitude}");
+      latController.text = position.latitude.toString();
+      longController.text = position.longitude.toString();
+    }).catchError((e) {
+      print(e);
+    });
   }
 }
