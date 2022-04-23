@@ -1,3 +1,5 @@
+import 'dart:developer';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:java_ijen_mobile/const.dart';
 import 'package:java_ijen_mobile/screen/Lahan/lahanDB.dart';
@@ -27,7 +29,7 @@ class _LahanScreenState extends State<LahanScreen> {
     setState(() {
       _isLoading = true;
     });
-    _listLahan = await lahanDB().getAll();
+    _listLahan = await LahanDB().getAll();
     setState(() {
       _isLoading = false;
     });
@@ -50,23 +52,42 @@ class _LahanScreenState extends State<LahanScreen> {
         body: (_isLoading)
             ? Center(child: const CircularProgressIndicator())
             : ListView.builder(
-                padding: const EdgeInsets.all(8),
-                itemCount: _listLahan.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Card(
-                    child: ListTile(
-                      title: Text("${_listLahan[index]["id"].toString()} - ${_listLahan[index]["alamat"].toString()}"),
+          padding: const EdgeInsets.all(8),
+          itemCount: _listLahan.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Card(
+              child: ListTile(
+                title: Text(
+                          "${_listLahan[index]["id"].toString()} - ${_listLahan[index]["alamat"].toString()}"),
                       subtitle: Text(
                           "Owner : ${_listLahan[index]["pemilik"].toString()}"),
                       //leading: Text(_listLahan[index]["id"].toString()),
-                      trailing: Wrap(spacing: 12, children: const [
-                        Icon(Icons.location_on),
-                        Icon(Icons.edit)
+                      trailing: Wrap(spacing: 12, children: [
+                        IconButton(
+                          icon: Icon(Icons.location_on),
+                          onPressed: () {
+                            gmapsLinks(_listLahan[index]["lat"].toString(),
+                                _listLahan[index]["long"].toString());
+                            print("ehe");
+                          },
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.edit),
+                          onPressed: () {},
+                        ),
                       ]),
                     ),
                   );
                 },
-              )
-    );
+              ));
+  }
+
+  gmapsLinks(String lat, String long) async {
+    Uri url = Uri.parse("https://maps.google.com/?q=$lat,$long");
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }

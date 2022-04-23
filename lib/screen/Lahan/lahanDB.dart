@@ -1,6 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 
-class lahanDB {
+class LahanDB {
   FirebaseDatabase db = FirebaseDatabase.instance;
 
   Future<List> getAll() async {
