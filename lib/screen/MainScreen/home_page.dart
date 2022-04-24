@@ -130,7 +130,22 @@ class _HomeOwnerState extends State<HomeOwner> {
             child: Container(
               padding: EdgeInsets.all(8),
               decoration: BoxDecoration(color: Colors.white, boxShadow: shadow),
-              child: TextField(),
+              child:
+                  Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+                Expanded(
+                    child: TextField(
+                  decoration: InputDecoration(
+                      hintText: "Cari",
+                      prefixIcon: Icon(Icons.search),
+                      border: InputBorder.none),
+                )),
+                IconButton(
+                    onPressed: () {},
+                    icon: Icon(
+                      Icons.qr_code_scanner,
+                      size: 32,
+                    ))
+              ]),
             ),
           )
         ],

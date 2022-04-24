@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:search_choices/search_choices.dart';
 import 'package:java_ijen_mobile/screen/Lahan/lahanDB.dart';
 import 'package:java_ijen_mobile/screen/Petani/petaniDB.dart';
 
@@ -34,7 +33,7 @@ class _AddLahanScreenState extends State<AddLahanScreen> {
     setState(() {
       _isLoading = true;
     });
-    petani = await dbPetani.getName();
+    // petani = await dbPetani.getName();
     setState(() {
       _isLoading = false;
     });
