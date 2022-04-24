@@ -47,7 +47,7 @@ class LahanDB {
     return _listID;
   }
 
-  void addLahan(String alamat, String pemilik, String lat, String long) async {
+  Future<void> addLahan(String alamat, String pemilik, String lat, String long) async {
     DatabaseReference ref = db.ref('lahan');
     final list = await getIDList();
     int last = list.length + 1;

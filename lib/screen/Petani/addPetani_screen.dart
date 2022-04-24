@@ -54,7 +54,7 @@ class _AddPetaniScreenState extends State<AddPetaniScreen> {
                     .then((value) => Navigator.pop(context));
               },
               style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(darkChoco)),
+                  backgroundColor: MaterialStateProperty.all(green)),
               child: Text("Tambah"))
         ]),
       ),

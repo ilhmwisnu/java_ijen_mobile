@@ -1,7 +1,11 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:java_ijen_mobile/const.dart';
 import 'package:java_ijen_mobile/screen/Lahan/lahanDB.dart';
 import 'package:java_ijen_mobile/screen/Petani/petaniDB.dart';
+import 'package:searchfield/searchfield.dart';
 
 class AddLahanScreen extends StatefulWidget {
   static const routeName = "/addLahan";
@@ -19,7 +23,7 @@ class _AddLahanScreenState extends State<AddLahanScreen> {
   TextEditingController longController = TextEditingController();
   LahanDB dbLahan = LahanDB();
   PetaniDB dbPetani = PetaniDB();
-  late List petani;
+  List _listPetani = [];
   late Position currentPosition;
   bool _isLoading = false;
 
@@ -33,7 +37,7 @@ class _AddLahanScreenState extends State<AddLahanScreen> {
     setState(() {
       _isLoading = true;
     });
-    // petani = await dbPetani.getName();
+    _listPetani = await dbPetani.getAll();
     setState(() {
       _isLoading = false;
     });
@@ -42,61 +46,93 @@ class _AddLahanScreenState extends State<AddLahanScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Tambah Lahan")),
-      body: ListView(children: [
-        TextField(
-          controller: alamatController,
-          decoration: InputDecoration(hintText: "Alamat"),
-        ),
-
-        // TODO ADD DROPDOWN ITEM SELECTOR
-
-        TextField(
-          controller: latController,
-          decoration: InputDecoration(hintText: "Latitude"),
-        ),
-        TextField(
-          controller: longController,
-          decoration: InputDecoration(hintText: "Longitude"),
-        ),
-        ElevatedButton(
-            onPressed: () {
-              getCurrentLocation();
-            },
-            child: Text("Get Lat Long")),
-        ElevatedButton(
-            onPressed: () {
-              showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      title: Text("Save Data"),
-                      content: Text("Yakin ingin menyimpan data?"),
-                      actions: [
-                        ElevatedButton(
-                            onPressed: () {
-                              dbLahan.addLahan(
-                                  alamatController.text,
-                                  pemilikController.text,
-                                  latController.text,
-                                  longController.text);
-                              Navigator.pop(context); // pop dialog
-                              Navigator.pop(context); // pop add screen
-                              print("iya bg");
-                            },
-                            child: Text("Iya")),
-                        ElevatedButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                              print("ga bg");
-                            },
-                            child: Text("Tidak")),
-                      ],
-                    );
-                  });
-            },
-            child: Text("Tambah"))
-      ]),
+      appBar: AppBar(
+        title: Text("Tambah Lahan"),
+        backgroundColor: darkGrey,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
+        child: ListView(children: [
+          SizedBox(height: 16),
+          TextField(
+            controller: alamatController,
+            decoration: InputDecoration(
+                hintText: "Alamat",
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15))),
+          ),
+          SizedBox(height: 16),
+          SearchField(
+            searchInputDecoration: InputDecoration(
+                hintText: "Pemilik",
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15))),
+            suggestions:
+                _listPetani.map((e) => SearchFieldListItem(e["nama"])).toList(),
+            controller: pemilikController,
+          ),
+          // TODO ADD DROPDOWN ITEM SELECTOR
+          SizedBox(height: 16),
+          TextField(
+            controller: latController,
+            decoration: InputDecoration(
+                hintText: "Latitude",
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15))),
+          ),
+          SizedBox(height: 16),
+          TextField(
+            controller: longController,
+            decoration: InputDecoration(
+                hintText: "Longitude",
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15))),
+          ),
+          SizedBox(height: 16),
+          ElevatedButton(
+              onPressed: () {
+                getCurrentLocation();
+              },
+              child: Text("Get Current Location")),
+          ElevatedButton(
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: Text("Save Data"),
+                        content: Text("Yakin ingin menyimpan data?"),
+                        actions: [
+                          ElevatedButton(
+                              onPressed: () {
+                                print(_listPetani.firstWhere((element) =>
+                                    element["nama"] == pemilikController.text));
+                                dbLahan
+                                    .addLahan(
+                                        alamatController.text,
+                                        _listPetani.firstWhere((element) =>
+                                            element["nama"] ==
+                                            pemilikController.text)["id"],
+                                        latController.text,
+                                        longController.text)
+                                    .then((value) => Navigator.pop(context));
+                                Navigator.pop(context); // pop add screen
+                                print("iya bg");
+                              },
+                              child: Text("Iya")),
+                          ElevatedButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                                print("ga bg");
+                              },
+                              child: Text("Tidak")),
+                        ],
+                      );
+                    });
+              },
+              child: Text("Tambah"))
+        ]),
+      ),
     );
   }
 

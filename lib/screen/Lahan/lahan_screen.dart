@@ -44,7 +44,8 @@ class _LahanScreenState extends State<LahanScreen> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.pushNamed(context, AddLahanScreen.routeName);
+            Navigator.pushNamed(context, AddLahanScreen.routeName)
+                .whenComplete(() => fetchData());
           },
           child: const Icon(Icons.add),
           backgroundColor: green,
@@ -52,12 +53,12 @@ class _LahanScreenState extends State<LahanScreen> {
         body: (_isLoading)
             ? Center(child: const CircularProgressIndicator())
             : ListView.builder(
-          padding: const EdgeInsets.all(8),
-          itemCount: _listLahan.length,
-          itemBuilder: (BuildContext context, int index) {
-            return Card(
-              child: ListTile(
-                title: Text(
+                padding: const EdgeInsets.all(8),
+                itemCount: _listLahan.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Card(
+                    child: ListTile(
+                      title: Text(
                           "${_listLahan[index]["id"].toString()} - ${_listLahan[index]["alamat"].toString()}"),
                       subtitle: Text(
                           "Owner : ${_listLahan[index]["pemilik"].toString()}"),

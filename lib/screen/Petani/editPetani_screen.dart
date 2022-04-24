@@ -68,15 +68,17 @@ class _EditPetaniState extends State<EditPetani> {
           SizedBox(height: defaultPadding),
           ElevatedButton(
               onPressed: () {
-                db.updatePetani(
-                  namaController.text,
-                  alamatController.text,
-                  ModalRoute.of(context)!.settings.arguments.toString(),
-                ).then((value) => Navigator.pop(context));
+                db
+                    .updatePetani(
+                      namaController.text,
+                      alamatController.text,
+                      ModalRoute.of(context)!.settings.arguments.toString(),
+                    )
+                    .then((value) => Navigator.pop(context));
               },
               style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(darkChoco)),
-              child: Text("Tambah"))
+                  backgroundColor: MaterialStateProperty.all(green)),
+              child: Text("Simpan"))
         ]),
       ),
     );
