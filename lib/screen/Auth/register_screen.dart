@@ -1,8 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:java_ijen_mobile/referensi/home_screen.dart';
-import 'package:java_ijen_mobile/screen/MainScreen/dashboard.dart';
-import 'package:java_ijen_mobile/referensi/login_page.dart';
+import '../MainScreen/dashboard.dart';
 import '../../const.dart';
 import '../../utils/auth.dart';
 import '../../utils/validator.dart';

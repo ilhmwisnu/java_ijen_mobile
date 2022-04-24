@@ -71,7 +71,6 @@ class _AddLahanScreenState extends State<AddLahanScreen> {
                 _listPetani.map((e) => SearchFieldListItem(e["nama"])).toList(),
             controller: pemilikController,
           ),
-          // TODO ADD DROPDOWN ITEM SELECTOR
           SizedBox(height: 16),
           TextField(
             controller: latController,
@@ -105,8 +104,6 @@ class _AddLahanScreenState extends State<AddLahanScreen> {
                         actions: [
                           ElevatedButton(
                               onPressed: () {
-                                print(_listPetani.firstWhere((element) =>
-                                    element["nama"] == pemilikController.text));
                                 dbLahan
                                     .addLahan(
                                         alamatController.text,
@@ -117,13 +114,12 @@ class _AddLahanScreenState extends State<AddLahanScreen> {
                                         longController.text)
                                     .then((value) => Navigator.pop(context));
                                 Navigator.pop(context); // pop add screen
-                                print("iya bg");
                               },
                               child: Text("Iya")),
                           ElevatedButton(
                               onPressed: () {
                                 Navigator.pop(context);
-                                print("ga bg");
+                                
                               },
                               child: Text("Tidak")),
                         ],
@@ -141,7 +137,6 @@ class _AddLahanScreenState extends State<AddLahanScreen> {
             desiredAccuracy: LocationAccuracy.best,
             forceAndroidLocationManager: true)
         .then((Position position) {
-      print("Lat ${position.latitude} Long ${position.longitude}");
       latController.text = position.latitude.toString();
       longController.text = position.longitude.toString();
     }).catchError((e) {
