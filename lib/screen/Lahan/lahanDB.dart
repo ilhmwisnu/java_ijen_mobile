@@ -1,40 +1,9 @@
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/material.dart';
+import 'package:java_ijen_mobile/screen/Lahan/lahan.dart';
 
 class LahanDB {
   FirebaseDatabase db = FirebaseDatabase.instance;
-
-  Future<List> getAll() async {
-    final _listLahan = [];
-
-    DatabaseReference ref = db.ref('lahan');
-
-    final dataLahan = await ref.get();
-    for (final idLahan in dataLahan.children) {
-      final currID = idLahan.key.toString();
-      final detailLahan = await ref.child(currID).get();
-      var data = {};
-      data["id"] = currID;
-      for (final col in detailLahan.children) {
-        if (col.key == "alamat") {
-          data["alamat"] = col.value;
-        }
-        if (col.key == "lat") {
-          data["lat"] = col.value;
-        }
-        if (col.key == "long") {
-          data["long"] = col.value;
-        }
-        if (col.key == "pemilik") {
-          DatabaseReference refPT = db.ref('petani');
-          final pemilik =
-              await refPT.child(col.value.toString()).child("nama").get();
-          data["pemilik"] = pemilik.value;
-        }
-      }
-      _listLahan.insert(_listLahan.length, data);
-    }
-    return _listLahan;
-  }
 
   Future<List> getIDList() async {
     final _listID = [];
@@ -55,5 +24,39 @@ class LahanDB {
     await ref
         .child(inputID)
         .set({"alamat": alamat, "pemilik": pemilik, "lat": lat, "long": long});
+  }
+
+  Future<List<Lahan>> getLahan() async {
+    final List<Lahan> lahan = [];
+    DatabaseReference ref = FirebaseDatabase.instance.ref('lahan');
+
+    final root = await ref.get();
+    for (final id in await root.children) {
+      List pos = [];
+      String alamat = "";
+      String pemilik = "";
+      String lid = id.key.toString();
+
+      final firstChild = await ref.child(lid).get();
+      for (final col in firstChild.children) {
+        if (col.key == "alamat") {
+          alamat = col.value.toString();
+        }
+        if (col.key == "lat") {
+          pos.insert(0, col.value);
+        }
+        if (col.key == "long") {
+          pos.insert(1, col.value);
+        }
+        if (col.key == "pemilik") {
+          pemilik = col.value.toString();
+        }
+      }
+      lahan.insert(
+          lahan.length,
+          Lahan(lid, alamat, pos[0].toString(), pos[1].toString(), pemilik,
+              pemilik));
+    }
+    return lahan;
   }
 }

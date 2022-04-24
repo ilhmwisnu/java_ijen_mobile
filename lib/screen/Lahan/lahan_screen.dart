@@ -5,6 +5,7 @@ import 'package:java_ijen_mobile/const.dart';
 import 'package:java_ijen_mobile/screen/Lahan/lahanDB.dart';
 
 import 'addLahan_screen.dart';
+import 'lahan.dart';
 
 class LahanScreen extends StatefulWidget {
   static const routeName = "/lahan";
@@ -17,7 +18,8 @@ class LahanScreen extends StatefulWidget {
 
 class _LahanScreenState extends State<LahanScreen> {
   bool _isLoading = false;
-  late List _listLahan;
+  late List<Lahan> _listLahan;
+  late int _totalData;
 
   @override
   void initState() {
@@ -29,7 +31,8 @@ class _LahanScreenState extends State<LahanScreen> {
     setState(() {
       _isLoading = true;
     });
-    _listLahan = await LahanDB().getAll();
+    _listLahan = await LahanDB().getLahan();
+    _totalData = _listLahan.length;
     setState(() {
       _isLoading = false;
     });
@@ -53,22 +56,21 @@ class _LahanScreenState extends State<LahanScreen> {
             ? Center(child: const CircularProgressIndicator())
             : ListView.builder(
           padding: const EdgeInsets.all(8),
-          itemCount: _listLahan.length,
-          itemBuilder: (BuildContext context, int index) {
-            return Card(
-              child: ListTile(
-                title: Text(
-                          "${_listLahan[index]["id"].toString()} - ${_listLahan[index]["alamat"].toString()}"),
-                      subtitle: Text(
-                          "Owner : ${_listLahan[index]["pemilik"].toString()}"),
+                itemCount: _totalData,
+                itemBuilder: (BuildContext context, int index) {
+                  return Card(
+                    child: ListTile(
+                      title: Text(
+                          "${_listLahan[index].id} - ${_listLahan[index].alamat}"),
+                      subtitle:
+                          Text("Owner : ${_listLahan[index].namapemilik}"),
                       //leading: Text(_listLahan[index]["id"].toString()),
                       trailing: Wrap(spacing: 12, children: [
                         IconButton(
                           icon: Icon(Icons.location_on),
                           onPressed: () {
-                            gmapsLinks(_listLahan[index]["lat"].toString(),
-                                _listLahan[index]["long"].toString());
-                            print("ehe");
+                            gmapsLinks(
+                                _listLahan[index].lat, _listLahan[index].long);
                           },
                         ),
                         IconButton(

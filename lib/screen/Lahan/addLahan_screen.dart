@@ -82,13 +82,11 @@ class _AddLahanScreenState extends State<AddLahanScreen> {
                                   longController.text);
                               Navigator.pop(context); // pop dialog
                               Navigator.pop(context); // pop add screen
-                              print("iya bg");
                             },
                             child: Text("Iya")),
                         ElevatedButton(
                             onPressed: () {
                               Navigator.pop(context);
-                              print("ga bg");
                             },
                             child: Text("Tidak")),
                       ],
@@ -105,7 +103,6 @@ class _AddLahanScreenState extends State<AddLahanScreen> {
             desiredAccuracy: LocationAccuracy.best,
             forceAndroidLocationManager: true)
         .then((Position position) {
-      print("Lat ${position.latitude} Long ${position.longitude}");
       latController.text = position.latitude.toString();
       longController.text = position.longitude.toString();
     }).catchError((e) {
