@@ -33,11 +33,13 @@ class _EditLahanState extends State<EditLahan> {
       final id = ModalRoute.of(context)!.settings.arguments;
       final data = await dbLahan.getDataById(id.toString());
       _listPetani = await dbPetani.getPetani();
-      // print(data["nama"]);
+      // print(data.namapemilik);
       setState(() {
         _isInit = true;
         pemilikController.text = data.namapemilik;
         alamatController.text = data.alamat;
+        latController.text = data.lat;
+        longController.text = data.long;
       });
     }
     super.didChangeDependencies();
@@ -119,8 +121,8 @@ class _EditLahanState extends State<EditLahan> {
                     .then((value) => Navigator.pop(context));
               },
               style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(darkChoco)),
-              child: Text("Tambah"))
+                  backgroundColor: MaterialStateProperty.all(green)),
+              child: Text("Simpan"))
         ]),
       ),
     );

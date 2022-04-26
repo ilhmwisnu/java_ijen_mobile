@@ -32,7 +32,7 @@ class LahanDB {
 
     final root = await ref.get();
     for (final id in await root.children) {
-      List pos = [];
+      List<String> pos = [];
       String alamat = "";
       String idpemilik = "";
       String namapemilik = "";
@@ -44,10 +44,10 @@ class LahanDB {
           alamat = col.value.toString();
         }
         if (col.key == "lat") {
-          pos.insert(0, col.value);
+          pos.insert(0, col.value.toString());
         }
         if (col.key == "long") {
-          pos.insert(1, col.value);
+          pos.insert(1, col.value.toString());
         }
         if (col.key == "pemilik") {
           idpemilik = col.value.toString();
@@ -59,7 +59,7 @@ class LahanDB {
       }
       lahan.insert(
           lahan.length,
-          Lahan(lid, alamat, pos[0].toString(), pos[1].toString(), idpemilik,
+          Lahan(lid, alamat, pos[0], pos[1], idpemilik,
               namapemilik));
     }
     return lahan;
@@ -78,10 +78,10 @@ class LahanDB {
         alamat = col.value.toString();
       }
       if (col.key == "lat") {
-        pos.insert(0, col.value);
+        pos.insert(0, col.value.toString());
       }
       if (col.key == "long") {
-        pos.insert(1, col.value);
+        pos.insert(1, col.value.toString());
       }
       if (col.key == "pemilik") {
         idpemilik = col.value.toString();
@@ -98,7 +98,7 @@ class LahanDB {
   Future<Lahan> getLahanDataById(String id) async {
     DatabaseReference ref = db.ref('lahan/$id');
     final detailPetani = await ref.get();
-    List pos = [];
+    List<String> pos = [];
     String alamat = "";
     String idpemilik = "";
     String namapemilik = "";
@@ -108,10 +108,10 @@ class LahanDB {
         alamat = col.value.toString();
       }
       if (col.key == "lat") {
-        pos.insert(0, col.value);
+        pos.insert(0, col.value.toString());
       }
       if (col.key == "long") {
-        pos.insert(1, col.value);
+        pos.insert(1, col.value.toString());
       }
       if (col.key == "pemilik") {
         idpemilik = col.value.toString();
