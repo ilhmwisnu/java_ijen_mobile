@@ -1,29 +1,31 @@
 import 'package:firebase_database/firebase_database.dart';
+import 'package:java_ijen_mobile/screen/Petani/petani.dart';
 
 class PetaniDB {
-  final _listPetani = [];
   FirebaseDatabase db = FirebaseDatabase.instance;
 
-  Future<List> getAll() async {
-    DatabaseReference ref = db.ref('petani');
+  Future<List<Petani>> getPetani() async {
+    final List<Petani> petani = [];
+    DatabaseReference ref = FirebaseDatabase.instance.ref('petani');
 
-    final dataLahan = await ref.get();
-    for (final lahan in dataLahan.children) {
-      final currID = lahan.key.toString();
-      final detailLahan = await ref.child(currID).get();
-      var data = {};
-      data["id"] = currID;
-      for (final col in detailLahan.children) {
+    final root = await ref.get();
+    for (final id in await root.children) {
+      String alamat = "";
+      String nama = "";
+      String lid = id.key.toString();
+
+      final firstChild = await ref.child(lid).get();
+      for (final col in firstChild.children) {
         if (col.key == "alamat") {
-          data["alamat"] = col.value;
+          alamat = col.value.toString();
         }
         if (col.key == "nama") {
-          data["nama"] = col.value;
+          nama = col.value.toString();
         }
       }
-      _listPetani.insert(_listPetani.length, data);
+      petani.insert(petani.length, Petani(lid, alamat, nama));
     }
-    return _listPetani;
+    return petani;
   }
 
   Future<List> getIDList() async {
@@ -46,21 +48,22 @@ class PetaniDB {
     await ref.child(inputID).set({"nama": nama, "alamat": alamat});
   }
 
-  Future<Map<String, String>> getDataById(String id) async {
+  Future<Petani> getPetaniDataById(String id) async {
     DatabaseReference ref = db.ref('petani/$id');
-    final detailPetani = await ref.get();
-    // print(detailPetani.children);
     Map<String, String> data = {};
-    for (var detail in detailPetani.children) {
-      // print(detail.value);
-      if (detail.key == "alamat") {
-        data["alamat"] = detail.value.toString();
+    String alamat = "";
+    String nama = "";
+
+    final firstChild = await ref.get();
+    for (final col in firstChild.children) {
+      if (col.key == "alamat") {
+        alamat = col.value.toString();
       }
-      if (detail.key == "nama") {
-        data["nama"] = detail.value.toString();
+      if (col.key == "nama") {
+        nama = col.value.toString();
       }
     }
-    return data;
+    return Petani(id, alamat, nama);
   }
 
   Future<void> updatePetani(String nama, String alamat, String id) async {

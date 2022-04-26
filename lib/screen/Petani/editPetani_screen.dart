@@ -7,7 +7,8 @@ import '../../const.dart';
 import 'petaniDB.dart';
 
 class EditPetani extends StatefulWidget {
-  static const routeName = "/edit";
+  static const routeName = "/editPetani";
+
   const EditPetani({Key? key}) : super(key: key);
 
   @override
@@ -24,12 +25,12 @@ class _EditPetaniState extends State<EditPetani> {
   void didChangeDependencies() async {
     if (!_isInit) {
       final id = ModalRoute.of(context)!.settings.arguments;
-      final data = await db.getDataById(id.toString());
+      final data = await db.getPetaniDataById(id.toString());
       // print(data["nama"]);
       setState(() {
         _isInit = true;
-        namaController.text = data["nama"]!;
-        alamatController.text = data["alamat"]!;
+        namaController.text = data.nama;
+        alamatController.text = data.alamat;
       });
     }
     super.didChangeDependencies();
@@ -60,8 +61,12 @@ class _EditPetaniState extends State<EditPetani> {
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15))),
             onSubmitted: (str) async {
-              await db
-                  .addPetani(namaController.text, alamatController.text)
+              db
+                  .updatePetani(
+                    namaController.text,
+                    alamatController.text,
+                    ModalRoute.of(context)!.settings.arguments.toString(),
+                  )
                   .then((value) => Navigator.pop(context));
             },
           ),

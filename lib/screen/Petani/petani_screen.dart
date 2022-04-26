@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:java_ijen_mobile/const.dart';
 import 'package:java_ijen_mobile/screen/Petani/addPetani_screen.dart';
 import 'package:java_ijen_mobile/screen/Petani/editPetani_screen.dart';
+import 'package:java_ijen_mobile/screen/Petani/petani.dart';
 import 'package:java_ijen_mobile/screen/Petani/petaniDB.dart';
 
 class PetaniScreen extends StatefulWidget {
@@ -15,7 +16,7 @@ class PetaniScreen extends StatefulWidget {
 
 class _PetaniScreenState extends State<PetaniScreen> {
   bool _isLoading = false;
-  late List _listPetani;
+  late List<Petani> _listPetani;
 
   @override
   void initState() {
@@ -27,7 +28,7 @@ class _PetaniScreenState extends State<PetaniScreen> {
     setState(() {
       _isLoading = true;
     });
-    _listPetani = await PetaniDB().getAll();
+    _listPetani = await PetaniDB().getPetani();
     setState(() {
       _isLoading = false;
     });
@@ -56,15 +57,15 @@ class _PetaniScreenState extends State<PetaniScreen> {
               itemBuilder: (BuildContext context, int index) {
                 return Card(
                   child: ListTile(
-                    title: Text(_listPetani[index]["nama"]),
-                    subtitle: Text(_listPetani[index]["alamat"]),
+                    title: Text(_listPetani[index].nama),
+                    subtitle: Text(_listPetani[index].alamat),
                     //leading: Text(_listLahan[index]["id"].toString()),
                     trailing: IconButton(
                         icon: Icon(Icons.edit),
                         onPressed: () {
                           // print(_listPetani[index]["nama"]);
                           Navigator.pushNamed(context, EditPetani.routeName,
-                                  arguments: _listPetani[index]["id"])
+                                  arguments: _listPetani[index].id)
                               .whenComplete(() => fetchData());
                         }),
                   ),
