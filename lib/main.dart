@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:java_ijen_mobile/screen/Lahan/editLahan_screen.dart';
 import 'package:java_ijen_mobile/screen/MainScreen/dashboard.dart';
 import 'package:java_ijen_mobile/referensi/login_page.dart';
 import 'package:java_ijen_mobile/screen/Petani/addPetani_screen.dart';
@@ -32,7 +33,8 @@ class MyApp extends StatelessWidget {
         LahanScreen.routeName: (context) => LahanScreen(),
         AddPetaniScreen.routeName: (context) => AddPetaniScreen(),
         AddLahanScreen.routeName: (context) => AddLahanScreen(),
-        EditPetani.routeName :(context) => EditPetani()
+        EditPetani.routeName: (context) => EditPetani(),
+        EditLahan.routeName: (context) => EditLahan()
       },
       initialRoute: LoginScreen.routeName,
     );

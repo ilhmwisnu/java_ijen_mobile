@@ -1,67 +1,75 @@
-import 'dart:math';
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:java_ijen_mobile/const.dart';
-import 'package:java_ijen_mobile/screen/Lahan/lahanDB.dart';
+import 'package:java_ijen_mobile/screen/Petani/petani.dart';
 import 'package:java_ijen_mobile/screen/Petani/petaniDB.dart';
 import 'package:searchfield/searchfield.dart';
 
-import '../Petani/petani.dart';
+import '../../const.dart';
+import 'lahanDB.dart';
 
-class AddLahanScreen extends StatefulWidget {
-  static const routeName = "/addLahan";
+class EditLahan extends StatefulWidget {
+  static const routeName = "/editLahan";
 
-  const AddLahanScreen({Key? key}) : super(key: key);
+  const EditLahan({Key? key}) : super(key: key);
 
   @override
-  State<AddLahanScreen> createState() => _AddLahanScreenState();
+  State<EditLahan> createState() => _EditLahanState();
 }
 
-class _AddLahanScreenState extends State<AddLahanScreen> {
-  TextEditingController alamatController = TextEditingController();
+class _EditLahanState extends State<EditLahan> {
+  bool _isInit = false;
   TextEditingController pemilikController = TextEditingController();
+  TextEditingController alamatController = TextEditingController();
   TextEditingController latController = TextEditingController();
   TextEditingController longController = TextEditingController();
+  List<Petani> _listPetani = [];
   LahanDB dbLahan = LahanDB();
   PetaniDB dbPetani = PetaniDB();
-  List<Petani> _listPetani = [];
-  late Position currentPosition;
-  bool _isLoading = false;
 
   @override
-  void initState() {
-    fetchData();
-    super.initState();
-  }
-
-  void fetchData() async {
-    setState(() {
-      _isLoading = true;
-    });
-    _listPetani = await dbPetani.getPetani();
-    setState(() {
-      _isLoading = false;
-    });
+  void didChangeDependencies() async {
+    if (!_isInit) {
+      final id = ModalRoute.of(context)!.settings.arguments;
+      final data = await dbLahan.getDataById(id.toString());
+      _listPetani = await dbPetani.getPetani();
+      // print(data["nama"]);
+      setState(() {
+        _isInit = true;
+        pemilikController.text = data.namapemilik;
+        alamatController.text = data.alamat;
+      });
+    }
+    super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Tambah Lahan"),
+        title: Text("Edit Lahan"),
         backgroundColor: darkGrey,
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
+        padding: const EdgeInsets.all(defaultPadding),
         child: ListView(children: [
-          SizedBox(height: 16),
+          SizedBox(height: defaultPadding),
           TextField(
             controller: alamatController,
             decoration: InputDecoration(
-                hintText: "Alamat",
+                label: Text("Alamat"),
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15))),
+            onSubmitted: (str) async {
+              await dbLahan
+                  .updateLahan(
+                      alamatController.text,
+                      pemilikController.text,
+                      ModalRoute.of(context)!.settings.arguments.toString(),
+                      latController.text,
+                      longController.text)
+                  .then((value) => Navigator.pop(context));
+            },
           ),
           SizedBox(height: 16),
           SearchField(
@@ -95,40 +103,23 @@ class _AddLahanScreenState extends State<AddLahanScreen> {
                 getCurrentLocation();
               },
               child: Text("Get Current Location")),
+          SizedBox(height: defaultPadding),
           ElevatedButton(
               onPressed: () {
-                // showDialog(
-                //     context: context,
-                //     builder: (context) {
-                //       return AlertDialog(
-                //         title: Text("Save Data"),
-                //         content: Text("Yakin ingin menyimpan data?"),
-                //         actions: [
-                //           ElevatedButton(
-                //               onPressed: () {
                 dbLahan
-                    .addLahan(
+                    .updateLahan(
                         alamatController.text,
                         _listPetani
                             .firstWhere((element) =>
                                 element.nama == pemilikController.text)
                             .id,
+                        ModalRoute.of(context)!.settings.arguments.toString(),
                         latController.text,
                         longController.text)
                     .then((value) => Navigator.pop(context));
-                //              Navigator.pop(context); // pop add screen
-                //           },
-                //           child: Text("Iya")),
-                //       ElevatedButton(
-                //           onPressed: () {
-                //             Navigator.pop(context);
-                //
-                //           },
-                //           child: Text("Tidak")),
-                //     ],
-                //   );
-                // });
               },
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(darkChoco)),
               child: Text("Tambah"))
         ]),
       ),

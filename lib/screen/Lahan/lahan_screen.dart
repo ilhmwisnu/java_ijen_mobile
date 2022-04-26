@@ -5,6 +5,7 @@ import 'package:java_ijen_mobile/const.dart';
 import 'package:java_ijen_mobile/screen/Lahan/lahanDB.dart';
 
 import 'addLahan_screen.dart';
+import 'editLahan_screen.dart';
 import 'lahan.dart';
 
 class LahanScreen extends StatefulWidget {
@@ -76,7 +77,11 @@ class _LahanScreenState extends State<LahanScreen> {
                         ),
                         IconButton(
                           icon: Icon(Icons.edit),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamed(context, EditLahan.routeName,
+                                    arguments: _listLahan[index].id)
+                                .whenComplete(() => fetchData());
+                          },
                         ),
                       ]),
                     ),
