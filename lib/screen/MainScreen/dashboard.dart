@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:java_ijen_mobile/const.dart';
 import 'package:java_ijen_mobile/screen/MainScreen/product_page.dart';
+import '../../utils/auth.dart';
 import 'home_page.dart';
 import 'profile_page.dart';
 
@@ -17,6 +18,8 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
+  late UserData _userData;
+  bool isLoading = false;
 
   List<BottomNavigationBarItem> _bottomNavBar() {
     return [
@@ -36,12 +39,33 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   @override
+  void initState() {
+    setState(() {
+      isLoading = true;
+    });
+    FireAuth.getUserData(widget.user!.uid).then(
+      (value) {
+        _userData = value;
+        setState(() {
+          isLoading = false;
+        });
+      },
+    );
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    
-    List<Widget> _pages = [
-      HomeOwner(user: widget.user),
-      ProductPage(),
-      ProfilePage()
+    List<Widget> _pages = (isLoading) ? [
+      CircularProgressIndicator(),
+      CircularProgressIndicator(),
+      CircularProgressIndicator(),
+    ] : [
+      HomeOwner(
+        userData: _userData,
+      ),
+      ProductPage(userData: _userData,),
+      ProfilePage(userData: _userData,)
     ];
 
     return Scaffold(

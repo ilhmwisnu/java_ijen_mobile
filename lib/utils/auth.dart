@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class FireAuth {
   static FirebaseAuth _auth = FirebaseAuth.instance;
@@ -17,11 +18,10 @@ class FireAuth {
         password: password,
       );
       user = userCredential.user;
-
-      // await user!.updatePhoneNumber(phoneNumber);
-      await user!.updateDisplayName(name);
-      await user.reload();
+      // await user!.updateDisplayName(name);
+      // await user!.reload();
       user = _auth.currentUser;
+      await _setUserData(user!.uid, name, user.email, phoneNumber);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');
@@ -70,4 +70,50 @@ class FireAuth {
   static Future<void> logOut() async {
     await _auth.signOut();
   }
+
+  static Future<void> _setUserData(id, name, email, phoneNumber) async {
+    FirebaseDatabase db = FirebaseDatabase.instance;
+    DatabaseReference ref = db.ref("user");
+    await ref.child(id).set({
+      'name': name,
+      'email': email,
+      'phoneNumber': phoneNumber,
+      'role': "pembeli"
+    });
+  }
+
+  static Future<UserData> getUserData(id) async {
+    FirebaseDatabase db = FirebaseDatabase.instance;
+    DatabaseReference ref = db.ref("user/$id");
+    String name = "";
+    String email = '';
+    String phoneNumber = "";
+    String role = "";
+
+    try {
+    final res = await ref.get();
+    for (var item in res.children) {
+      if (item.key == "name") {
+        name = item.value.toString();
+      }
+      if (item.key == "email") {
+        email = item.value.toString();
+      }
+      if (item.key == "phoneNumber") {
+        phoneNumber = item.value.toString();
+      }
+      if (item.key == "role") {
+        role = item.value.toString();
+      }
+    }
+    } catch (e) {
+      print(e);
+    }
+    return UserData(name, email, role, phoneNumber);
+  }
+}
+
+class UserData {
+  String name, email, role, phoneNumber;
+  UserData(this.name, this.email, this.role, this.phoneNumber);
 }

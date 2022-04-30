@@ -8,9 +8,9 @@ import '../../utils/auth.dart';
 import '../Auth/login_screen.dart';
 
 class HomeOwner extends StatefulWidget {
-  User? user;
+  UserData userData;
 
-  HomeOwner({Key? key, this.user}) : super(key: key);
+  HomeOwner({Key? key, required this.userData}) : super(key: key);
 
   @override
   State<HomeOwner> createState() => _HomeOwnerState();
@@ -56,71 +56,11 @@ class _HomeOwnerState extends State<HomeOwner> {
                     ),
                   )),
               SizedBox(height: 56),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                    color: Colors.grey,
-                    width: (screenSize.width - (defaultPadding * 3)) / 2,
-                    height: (screenSize.width - (defaultPadding * 3)) / 2,
-                    child: Center(child: Text("Comming Soon")),
-                  ),
-                  Container(
-                    color: Colors.grey,
-                    width: (screenSize.width - (defaultPadding * 3)) / 2,
-                    height: (screenSize.width - (defaultPadding * 3)) / 2,
-                    child: Center(child: Text("Comming Soon")),
-                  )
-                ],
-              ),
+              (widget.userData.role == "admin")
+                  ? AdminView(screenSize, context)
+                  : PembeliView(screenSize),
               SizedBox(height: defaultPadding),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                    color: Colors.grey,
-                    width: (screenSize.width - (defaultPadding * 3)) / 2,
-                    height: (screenSize.width - (defaultPadding * 3)) / 2,
-                    child: Center(child: Text("Comming Soon")),
-                  ),
-                  Container(
-                    color: Colors.grey,
-                    width: (screenSize.width - (defaultPadding * 3)) / 2,
-                    height: (screenSize.width - (defaultPadding * 3)) / 2,
-                    child: Center(child: Text("Comming Soon")),
-                  )
-                ],
-              ),
-              SizedBox(height: defaultPadding),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, LahanScreen.routeName);
-                    },
-                    child: Container(
-                      color: Colors.amber,
-                      width: (screenSize.width - (defaultPadding * 3)) / 2,
-                      height: (screenSize.width - (defaultPadding * 3)) / 2,
-                      child: Center(child: Text("Data Lahan")),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, PetaniScreen.routeName);
-                    },
-                    child: Container(
-                      color: Colors.amber,
-                      width: (screenSize.width - (defaultPadding * 3)) / 2,
-                      height: (screenSize.width - (defaultPadding * 3)) / 2,
-                      child: Center(child: Text("Data Petani")),
-                    ),
-                  )
-                ],
-              ),
-              SizedBox(height: defaultPadding),
-              Text(widget.user!.uid)
+              Text("Role : " + widget.userData.role)
               // Text("data")
             ],
           ),
@@ -150,6 +90,108 @@ class _HomeOwnerState extends State<HomeOwner> {
           )
         ],
       )),
+    );
+  }
+
+  // Tampilan buat Admin
+  Widget AdminView(Size screenSize, BuildContext context) {
+    return Container(
+      child: Column(children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Container(
+              color: Colors.grey,
+              width: (screenSize.width - (defaultPadding * 3)) / 2,
+              height: (screenSize.width - (defaultPadding * 3)) / 2,
+              child: Center(child: Text("Comming Soon")),
+            ),
+            Container(
+              color: Colors.grey,
+              width: (screenSize.width - (defaultPadding * 3)) / 2,
+              height: (screenSize.width - (defaultPadding * 3)) / 2,
+              child: Center(child: Text("Comming Soon")),
+            )
+          ],
+        ),
+        SizedBox(height: defaultPadding),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Container(
+              color: Colors.grey,
+              width: (screenSize.width - (defaultPadding * 3)) / 2,
+              height: (screenSize.width - (defaultPadding * 3)) / 2,
+              child: Center(child: Text("Comming Soon")),
+            ),
+            Container(
+              color: Colors.grey,
+              width: (screenSize.width - (defaultPadding * 3)) / 2,
+              height: (screenSize.width - (defaultPadding * 3)) / 2,
+              child: Center(child: Text("Comming Soon")),
+            )
+          ],
+        ),
+        SizedBox(height: defaultPadding),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, LahanScreen.routeName);
+              },
+              child: Container(
+                color: Colors.amber,
+                width: (screenSize.width - (defaultPadding * 3)) / 2,
+                height: (screenSize.width - (defaultPadding * 3)) / 2,
+                child: Center(child: Text("Data Lahan")),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, PetaniScreen.routeName);
+              },
+              child: Container(
+                color: Colors.amber,
+                width: (screenSize.width - (defaultPadding * 3)) / 2,
+                height: (screenSize.width - (defaultPadding * 3)) / 2,
+                child: Center(child: Text("Data Petani")),
+              ),
+            )
+          ],
+        ),
+      ]),
+    );
+  }
+
+  //Tampilan buat Pembeli
+  Widget PembeliView(Size screenSize) {
+    return Container(
+      child: Column(children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Container(
+              color: Colors.grey,
+              width: (screenSize.width - (defaultPadding * 4)) / 3,
+              height: (screenSize.width - (defaultPadding * 4)) / 3,
+              child: Center(child: Text("Comming Soon")),
+            ),
+            Container(
+              color: Colors.grey,
+              width: (screenSize.width - (defaultPadding * 4)) / 3,
+              height: (screenSize.width - (defaultPadding * 4)) / 3,
+              child: Center(child: Text("Comming Soon")),
+            ),
+            Container(
+              color: Colors.grey,
+              width: (screenSize.width - (defaultPadding * 4)) / 3,
+              height: (screenSize.width - (defaultPadding * 4)) / 3,
+              child: Center(child: Text("Comming Soon")),
+            ),
+          ],
+        )
+      ]),
     );
   }
 }
