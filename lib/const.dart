@@ -9,9 +9,9 @@ InputDecoration formStyle = InputDecoration(
 
 List<BoxShadow> shadow = [
   BoxShadow(
-    color: Colors.black.withOpacity(0.3),
-    blurRadius: 20,
-  ),
+      color: Colors.black.withOpacity(0.3),
+      blurRadius: 30,
+      offset: Offset(0, 6)),
 ];
 
 const double defaultPadding = 16;
