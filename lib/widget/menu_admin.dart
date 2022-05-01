@@ -18,6 +18,7 @@ class MenuBtn extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
+        padding: EdgeInsets.all(12),
         width: (screenSize.width - (defaultPadding * 3)) / 2,
         height: (screenSize.width - (defaultPadding * 3)) / 2,
         child: Center(

@@ -61,7 +61,7 @@ class _HomeOwnerState extends State<HomeOwner> {
                   ? AdminView(screenSize, context)
                   : PembeliView(screenSize),
               SizedBox(height: defaultPadding),
-              Text("Role : " + widget.userData.role)
+              // Text("Role : " + widget.userData.role)
               // Text("data")
             ],
           ),
