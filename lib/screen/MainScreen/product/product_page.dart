@@ -3,6 +3,7 @@ import 'package:java_ijen_mobile/screen/MainScreen/product/produk.dart';
 import 'package:java_ijen_mobile/screen/MainScreen/product/produkDB.dart';
 import '../../../utils/auth.dart';
 import '../../../const.dart';
+import 'addProduk_screen.dart';
 
 class ProductPage extends StatefulWidget {
   UserData userData;
@@ -30,7 +31,6 @@ class _ProductPageState extends State<ProductPage> {
     });
     _listProduk = await ProdukDB().getProduk();
     _totalData = _listProduk.length;
-    print(_listProduk[0].img);
     setState(() {
       _isLoading = false;
     });
@@ -38,16 +38,24 @@ class _ProductPageState extends State<ProductPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Kalo mau akses role bisa pake widget.userData.role disini
-
     final screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
+        floatingActionButton: (widget.userData.role == "admin")
+            ? FloatingActionButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, AddProdukScreen.routeName)
+                      .whenComplete(() => fetchData());
+                },
+                child: Icon(Icons.add),
+                backgroundColor: green,
+              )
+            : null,
         body: SafeArea(
-      child: (widget.userData.role == "admin")
-          ? AdminView(screenSize, context)
-          : PembeliView(screenSize),
-    ));
+          child: (widget.userData.role == "admin")
+              ? AdminView(screenSize, context)
+              : PembeliView(screenSize),
+        ));
   }
 
   Widget PembeliView(Size screenSize) {

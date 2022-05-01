@@ -4,12 +4,20 @@ import 'package:java_ijen_mobile/screen/MainScreen/product/produk.dart';
 class ProdukDB {
   FirebaseDatabase db = FirebaseDatabase.instance;
 
-  Future<void> addLahan(
-      String alamat, String pemilik, String lat, String long) async {
+  Future<void> addProduk(String nama, String jumlah, String petani,
+      String lahan, String proses, String harga) async {
     DatabaseReference ref = db.ref('produk');
     await ref
         //.child()
-        .set({"alamat": alamat, "pemilik": pemilik, "lat": lat, "long": long});
+        .push()
+        .set({
+      "nama": nama,
+      "jumlah": jumlah,
+      "petani": petani,
+      "lahan": lahan,
+      "proses": proses,
+      "harga": harga
+    });
   }
 
   Future<List<Produk>> getProduk() async {

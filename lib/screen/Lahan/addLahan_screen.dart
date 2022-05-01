@@ -52,18 +52,20 @@ class _AddLahanScreenState extends State<AddLahanScreen> {
         title: Text("Tambah Lahan"),
         backgroundColor: darkGrey,
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
-        child: ListView(children: [
-          SizedBox(height: 16),
-          TextField(
-            controller: alamatController,
-            decoration: InputDecoration(
-                hintText: "Alamat",
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15))),
-          ),
-          SizedBox(height: 16),
+      body: (_isLoading)
+          ? const Center(child: CircularProgressIndicator())
+          : Padding(
+              padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
+              child: ListView(children: [
+                SizedBox(height: 16),
+                TextField(
+                  controller: alamatController,
+                  decoration: InputDecoration(
+                      hintText: "Alamat",
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15))),
+                ),
+                SizedBox(height: 16),
           SearchField(
             searchInputDecoration: InputDecoration(
                 hintText: "Pemilik",
