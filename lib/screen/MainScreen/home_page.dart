@@ -5,6 +5,7 @@ import 'package:java_ijen_mobile/screen/Lahan/lahan_screen.dart';
 import 'package:java_ijen_mobile/screen/Petani/petani_screen.dart';
 import '../../const.dart';
 import '../../utils/auth.dart';
+import '../../widget/menu_admin.dart';
 import '../Auth/login_screen.dart';
 
 class HomeOwner extends StatefulWidget {
@@ -100,63 +101,59 @@ class _HomeOwnerState extends State<HomeOwner> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Container(
-              color: Colors.grey,
-              width: (screenSize.width - (defaultPadding * 3)) / 2,
-              height: (screenSize.width - (defaultPadding * 3)) / 2,
-              child: Center(child: Text("Comming Soon")),
+            MenuBtn(
+              title: "Permintaan Sampel Produk",
+              imgPath: "assets/permintaan_sampel.png",
+              onTap: () {
+                // Navigator.pushNamed(context, LahanScreen.routeName);
+              },
             ),
-            Container(
-              color: Colors.grey,
-              width: (screenSize.width - (defaultPadding * 3)) / 2,
-              height: (screenSize.width - (defaultPadding * 3)) / 2,
-              child: Center(child: Text("Comming Soon")),
-            )
+            MenuBtn(
+              title: "Transaksi Berlangsung",
+              imgPath: "assets/transaksi_berlangsung.png",
+              onTap: () {
+                // Navigator.pushNamed(context, LahanScreen.routeName);
+              },
+            ),
           ],
         ),
         SizedBox(height: defaultPadding),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Container(
-              color: Colors.grey,
-              width: (screenSize.width - (defaultPadding * 3)) / 2,
-              height: (screenSize.width - (defaultPadding * 3)) / 2,
-              child: Center(child: Text("Comming Soon")),
+            MenuBtn(
+              title: "Riwayat Pemesanan",
+              imgPath: "assets/riwayat_pemesanan.png",
+              onTap: () {
+                // Navigator.pushNamed(context, LahanScreen.routeName);
+              },
             ),
-            Container(
-              color: Colors.grey,
-              width: (screenSize.width - (defaultPadding * 3)) / 2,
-              height: (screenSize.width - (defaultPadding * 3)) / 2,
-              child: Center(child: Text("Comming Soon")),
-            )
+            MenuBtn(
+              title: "Rekap Penjualan",
+              imgPath: "assets/rekap_penjualan.png",
+              onTap: () {
+                // Navigator.pushNamed(context, LahanScreen.routeName);
+              },
+            ),
           ],
         ),
         SizedBox(height: defaultPadding),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            GestureDetector(
+            MenuBtn(
+              title: "Data Lahan",
+              imgPath: "assets/data_lahan.png",
               onTap: () {
                 Navigator.pushNamed(context, LahanScreen.routeName);
               },
-              child: Container(
-                color: Colors.amber,
-                width: (screenSize.width - (defaultPadding * 3)) / 2,
-                height: (screenSize.width - (defaultPadding * 3)) / 2,
-                child: Center(child: Text("Data Lahan")),
-              ),
             ),
-            GestureDetector(
+            MenuBtn(
+              title: "Data Petani",
+              imgPath: "assets/data_petani.png",
               onTap: () {
                 Navigator.pushNamed(context, PetaniScreen.routeName);
               },
-              child: Container(
-                color: Colors.amber,
-                width: (screenSize.width - (defaultPadding * 3)) / 2,
-                height: (screenSize.width - (defaultPadding * 3)) / 2,
-                child: Center(child: Text("Data Petani")),
-              ),
             )
           ],
         ),
@@ -171,23 +168,26 @@ class _HomeOwnerState extends State<HomeOwner> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Container(
-              color: Colors.grey,
-              width: (screenSize.width - (defaultPadding * 4)) / 3,
-              height: (screenSize.width - (defaultPadding * 4)) / 3,
-              child: Center(child: Text("Comming Soon")),
+            MenuPemb(
+              title: "Permintaan Sampel Produk",
+              imgPath: "assets/permintaan_sampel.png",
+              onTap: () {
+                // Navigator.pushNamed(context, LahanScreen.routeName);
+              },
             ),
-            Container(
-              color: Colors.grey,
-              width: (screenSize.width - (defaultPadding * 4)) / 3,
-              height: (screenSize.width - (defaultPadding * 4)) / 3,
-              child: Center(child: Text("Comming Soon")),
+            MenuPemb(
+              title: "Transaksi Berlangsung",
+              imgPath: "assets/transaksi_berlangsung.png",
+              onTap: () {
+                // Navigator.pushNamed(context, LahanScreen.routeName);
+              },
             ),
-            Container(
-              color: Colors.grey,
-              width: (screenSize.width - (defaultPadding * 4)) / 3,
-              height: (screenSize.width - (defaultPadding * 4)) / 3,
-              child: Center(child: Text("Comming Soon")),
+            MenuPemb(
+              title: "Riwayat Pemesanan",
+              imgPath: "assets/riwayat_pemesanan.png",
+              onTap: () {
+                // Navigator.pushNamed(context, LahanScreen.routeName);
+              },
             ),
           ],
         )

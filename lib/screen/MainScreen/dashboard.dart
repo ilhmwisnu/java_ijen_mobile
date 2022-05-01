@@ -56,20 +56,27 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> _pages = (isLoading) ? [
-      CircularProgressIndicator(),
-      CircularProgressIndicator(),
-      CircularProgressIndicator(),
-    ] : [
-      HomeOwner(
-        userData: _userData,
-      ),
-      ProductPage(userData: _userData,),
-      ProfilePage(userData: _userData,)
-    ];
+    List<Widget> _pages = (isLoading)
+        ? [
+            Center(child: CircularProgressIndicator()),
+            Center(child: CircularProgressIndicator()),
+            Center(child: CircularProgressIndicator()),
+          ]
+        : [
+            HomeOwner(
+              userData: _userData,
+            ),
+            ProductPage(
+              userData: _userData,
+            ),
+            ProfilePage(
+              userData: _userData,
+            )
+          ];
 
     return Scaffold(
         bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: Colors.white,
           iconSize: 32,
           items: _bottomNavBar(),
           currentIndex: _selectedIndex,
@@ -80,6 +87,7 @@ class _MainScreenState extends State<MainScreen> {
             });
           },
         ),
+        backgroundColor: Colors.white,
         body: _pages[_selectedIndex]);
   }
 }
