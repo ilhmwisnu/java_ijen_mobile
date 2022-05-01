@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:java_ijen_mobile/const.dart';
-import 'package:java_ijen_mobile/screen/MainScreen/product_page.dart';
+import 'package:java_ijen_mobile/screen/MainScreen/product/product_page.dart';
 import '../../utils/auth.dart';
 import 'home_page.dart';
 import 'profile_page.dart';
