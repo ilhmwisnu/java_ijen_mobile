@@ -76,6 +76,10 @@ class _ProfilePageState extends State<ProfilePage> {
                           height: 150,
                           width: 150,
                           decoration: BoxDecoration(
+                            image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: NetworkImage(
+                                    "https://www.interskill.id/empty-photo.png")),
                             color: Color.fromARGB(255, 210, 210, 210),
                             borderRadius: BorderRadius.circular(9999),
                           ),
