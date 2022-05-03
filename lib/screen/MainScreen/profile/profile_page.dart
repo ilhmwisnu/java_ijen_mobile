@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:java_ijen_mobile/screen/Auth/login_screen.dart';
 import 'package:java_ijen_mobile/utils/auth.dart';
 
 import '../../../const.dart';
@@ -157,7 +158,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ],
                                 ),
                                 onPressed: () {
-                                  FireAuth.logOut();
+                                  FireAuth.logOut().then((value) =>
+                                      Navigator.pushNamedAndRemoveUntil(
+                                          context,
+                                          LoginScreen.routeName,
+                                          (route) => false));
                                 },
                               )
                       ],
