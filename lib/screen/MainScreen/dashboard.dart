@@ -4,7 +4,7 @@ import 'package:java_ijen_mobile/const.dart';
 import 'package:java_ijen_mobile/screen/MainScreen/product/product_page.dart';
 import '../../utils/auth.dart';
 import 'home_page.dart';
-import 'profile_page.dart';
+import 'profile/profile_page.dart';
 
 class MainScreen extends StatefulWidget {
   static const routeName = "/MainScreen";
@@ -38,19 +38,20 @@ class _MainScreenState extends State<MainScreen> {
     ];
   }
 
-  @override
-  void initState() {
+  Future<void> getUserData() async {
     setState(() {
       isLoading = true;
     });
-    FireAuth.getUserData(widget.user!.uid).then(
-      (value) {
-        _userData = value;
-        setState(() {
-          isLoading = false;
-        });
-      },
-    );
+    final result = await FireAuth.getUserData(widget.user!.uid);
+    _userData = result;
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    getUserData();
     super.initState();
   }
 
@@ -70,7 +71,14 @@ class _MainScreenState extends State<MainScreen> {
               userData: _userData,
             ),
             ProfilePage(
-              userData: _userData,
+              user: widget.user,
+              reload: () {
+                getUserData();
+                setState(() {
+                  
+                });
+              },
+              userData: _userData
             )
           ];
 

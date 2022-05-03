@@ -9,13 +9,13 @@ InputDecoration formStyle = InputDecoration(
 
 List<BoxShadow> shadow = [
   BoxShadow(
-      color: Colors.black.withOpacity(0.3),
+      color: Colors.black.withOpacity(0.2),
       blurRadius: 30,
-      offset: Offset(0, 6)),
+      offset: Offset(0, 3)),
 ];
 
 const double defaultPadding = 16;
 
-Color darkGrey = Color(0xff282C2F);
-Color darkChoco = Color(0xff6A462F);
-Color green = Color(0xff7CB342);
+const Color darkGrey = Color(0xff282C2F);
+const Color darkChoco = Color(0xff6A462F);
+const Color green = Color(0xff7CB342);

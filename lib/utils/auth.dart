@@ -91,25 +91,31 @@ class FireAuth {
     String role = "";
 
     try {
-    final res = await ref.get();
-    for (var item in res.children) {
-      if (item.key == "name") {
-        name = item.value.toString();
+      final res = await ref.get();
+      for (var item in res.children) {
+        if (item.key == "name") {
+          name = item.value.toString();
+        }
+        if (item.key == "email") {
+          email = item.value.toString();
+        }
+        if (item.key == "phoneNumber") {
+          phoneNumber = item.value.toString();
+        }
+        if (item.key == "role") {
+          role = item.value.toString();
+        }
       }
-      if (item.key == "email") {
-        email = item.value.toString();
-      }
-      if (item.key == "phoneNumber") {
-        phoneNumber = item.value.toString();
-      }
-      if (item.key == "role") {
-        role = item.value.toString();
-      }
-    }
     } catch (e) {
       print(e);
     }
     return UserData(name, email, role, phoneNumber);
+  }
+
+  static Future<void> updateUserData(id, data) async {
+    FirebaseDatabase db = FirebaseDatabase.instance;
+    DatabaseReference ref = db.ref("user/$id");
+    ref.update(data);
   }
 }
 
