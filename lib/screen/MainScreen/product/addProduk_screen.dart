@@ -178,21 +178,40 @@ class _AddProdukScreenState extends State<AddProdukScreen> {
                     )),
                 ElevatedButton(
                     onPressed: () async {
-                      final id = await db.addProduk(
-                          namaController.text,
-                          jumlahController.text,
-                          _listPetani
-                              .firstWhere((element) =>
-                                  element.nama == petaniController.text)
-                              .id,
-                          _listLahan
-                              .firstWhere((element) =>
-                                  "${element.alamat} - ${element.namapemilik}" ==
-                                  lahanController.text)
-                              .id,
-                          prosesController.text,
-                          hargaController.text);
-                      await db.addProductFile(id, filePath);
+                      try {
+                        final id = await db.addProduk(
+                            namaController.text,
+                            jumlahController.text,
+                            _listPetani
+                                .firstWhere((element) =>
+                                    element.nama == petaniController.text)
+                                .id,
+                            _listLahan
+                                .firstWhere((element) =>
+                                    "${element.alamat} - ${element.namapemilik}" ==
+                                    lahanController.text)
+                                .id,
+                            prosesController.text,
+                            hargaController.text);
+                        await db.addProductImg(id, filePath);
+                        Navigator.pop(context);
+                      } catch (e) {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: Text("Terjadi Kesalahan"),
+                                content: Text(e.toString()),
+                                actions: [
+                                  ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text("Oke"))
+                                ],
+                              );
+                            });
+                      }
                     },
                     style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(green)),

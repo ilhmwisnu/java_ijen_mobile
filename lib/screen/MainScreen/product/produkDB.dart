@@ -126,10 +126,19 @@ class ProdukDB {
     });
   }
 
-  Future<void> addProductFile(id, path) async {
+  Future<void> addProductImg(id, path) async {
+    FirebaseStorage _storage = FirebaseStorage.instance;
+    final fileName = "$id.jpg";
+    // print("$path");
+    final ref = _storage.ref("produk/$fileName");
+    await ref.putFile(File(path)).then((p0) => print("Done"));
+  }
+
+  Future<String> getProductImg(id) async {
     FirebaseStorage _storage = FirebaseStorage.instance;
     final fileName = "$id.jpg";
     final ref = _storage.ref("produk/$fileName");
-    await ref.putFile(File(path));
+    final res = await ref.getDownloadURL();
+    return res;
   }
 }

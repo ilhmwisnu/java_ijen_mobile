@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:java_ijen_mobile/screen/MainScreen/product/produk.dart';
 import 'package:java_ijen_mobile/screen/MainScreen/product/produkDB.dart';
@@ -18,6 +20,7 @@ class _ProductPageState extends State<ProductPage> {
   bool _isLoading = false;
   late List<Produk> _listProduk;
   late int _totalData;
+  List<String> _prodImg = [];
 
   @override
   void initState() {
@@ -31,6 +34,11 @@ class _ProductPageState extends State<ProductPage> {
     });
     _listProduk = await ProdukDB().getProduk();
     _totalData = _listProduk.length;
+    for (var i = 0; i < _totalData; i++) {
+      final imgUrl = await ProdukDB().getProductImg(_listProduk[i].id);
+      _prodImg.add(imgUrl);
+    }
+
     setState(() {
       _isLoading = false;
     });
@@ -75,7 +83,7 @@ class _ProductPageState extends State<ProductPage> {
                           Container(
                               height: 150.0,
                               child: Ink.image(
-                                image: NetworkImage(_listProduk[index].img),
+                                image: NetworkImage(_prodImg[index]),
                                 fit: BoxFit.cover,
                               )),
                           ListTile(
@@ -106,7 +114,7 @@ class _ProductPageState extends State<ProductPage> {
                           Container(
                               height: 150.0,
                               child: Ink.image(
-                                image: NetworkImage(_listProduk[index].img),
+                                image: NetworkImage(_prodImg[index]),
                                 fit: BoxFit.cover,
                               )),
                           ListTile(
