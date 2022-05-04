@@ -1,16 +1,17 @@
+import 'dart:io';
+
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:java_ijen_mobile/screen/MainScreen/product/produk.dart';
 
 class ProdukDB {
   FirebaseDatabase db = FirebaseDatabase.instance;
 
-  Future<void> addProduk(String nama, String jumlah, String petani,
+  Future<String> addProduk(String nama, String jumlah, String petani,
       String lahan, String proses, String harga) async {
     DatabaseReference ref = db.ref('produk');
-    await ref
-        //.child()
-        .push()
-        .set({
+    DatabaseReference newChild = await ref.push();
+    await newChild.set({
       "nama": nama,
       "jumlah": jumlah,
       "petani": petani,
@@ -18,6 +19,7 @@ class ProdukDB {
       "proses": proses,
       "harga": harga
     });
+    return newChild.key.toString();
   }
 
   Future<List<Produk>> getProduk() async {
@@ -122,5 +124,12 @@ class ProdukDB {
       "proses": proses,
       "harga": harga
     });
+  }
+
+  Future<void> addProductFile(id, path) async {
+    FirebaseStorage _storage = FirebaseStorage.instance;
+    final fileName = "$id.jpg";
+    final ref = _storage.ref("produk/$fileName");
+    await ref.putFile(File(path));
   }
 }

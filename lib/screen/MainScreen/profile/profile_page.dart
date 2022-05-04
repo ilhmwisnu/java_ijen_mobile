@@ -133,11 +133,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                             widget.user!.uid, {
                                           "name": namaController.text,
                                           "phoneNumber": phoneNumController.text
+                                        }).then((value) {
+                                          setState(() {
+                                            isEditing = false;
+                                          });
+                                          widget.reload();
                                         });
-                                        setState(() {
-                                          isEditing = false;
-                                        });
-                                        widget.reload();
                                       },
                                       child: Text("Simpan"))
                                 ],
