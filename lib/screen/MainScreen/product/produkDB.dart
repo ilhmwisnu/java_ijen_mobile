@@ -129,7 +129,7 @@ class ProdukDB {
   Future<void> addProductImg(id, path) async {
     FirebaseStorage _storage = FirebaseStorage.instance;
     final fileName = "$id.jpg";
-    // print("$path");
+    print("$path");
     final ref = _storage.ref("produk/$fileName");
     await ref.putFile(File(path)).then((p0) => print("Done"));
   }

@@ -6,6 +6,7 @@ import 'package:java_ijen_mobile/screen/MainScreen/product/produkDB.dart';
 import '../../../utils/auth.dart';
 import '../../../const.dart';
 import 'addProduk_screen.dart';
+import 'editProduk_screen.dart';
 
 class ProductPage extends StatefulWidget {
   UserData userData;
@@ -107,7 +108,7 @@ class _ProductPageState extends State<ProductPage> {
               itemCount: _totalData,
               padding: EdgeInsets.all(defaultPadding),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                childAspectRatio: 3 / 3.9,
+                childAspectRatio: 1 / 1.5,
                 crossAxisSpacing: defaultPadding,
                 mainAxisSpacing: defaultPadding,
                 crossAxisCount: 2,
@@ -151,7 +152,15 @@ class _ProductPageState extends State<ProductPage> {
                                       ? IconButton(
                                           color: Colors.grey.shade500,
                                           padding: EdgeInsets.zero,
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            print("hello");
+                                            Navigator.pushNamed(context,
+                                                    EditProduk.routeName,
+                                                    arguments:
+                                                        _listProduk[index].id)
+                                                .whenComplete(
+                                                    () => fetchData());
+                                          },
                                           constraints: BoxConstraints(),
                                           icon: Icon(Icons.edit))
                                       : Container()

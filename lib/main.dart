@@ -4,6 +4,7 @@ import 'package:java_ijen_mobile/screen/Lahan/editLahan_screen.dart';
 import 'package:java_ijen_mobile/screen/MainScreen/dashboard.dart';
 import 'package:java_ijen_mobile/referensi/login_page.dart';
 import 'package:java_ijen_mobile/screen/MainScreen/product/addProduk_screen.dart';
+import 'package:java_ijen_mobile/screen/MainScreen/product/editProduk_screen.dart';
 import 'package:java_ijen_mobile/screen/Petani/addPetani_screen.dart';
 import 'package:java_ijen_mobile/screen/Petani/editPetani_screen.dart';
 import 'package:java_ijen_mobile/screen/Petani/petani_screen.dart';
@@ -36,7 +37,8 @@ class MyApp extends StatelessWidget {
         AddLahanScreen.routeName: (context) => AddLahanScreen(),
         AddProdukScreen.routeName: (context) => AddProdukScreen(),
         EditPetani.routeName: (context) => EditPetani(),
-        EditLahan.routeName: (context) => EditLahan()
+        EditLahan.routeName: (context) => EditLahan(),
+        EditProduk.routeName: (context) => EditProduk()
       },
       initialRoute: LoginScreen.routeName,
     );
