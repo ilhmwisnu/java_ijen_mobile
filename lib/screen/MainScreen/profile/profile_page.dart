@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:java_ijen_mobile/screen/Auth/login_screen.dart';
 import 'package:java_ijen_mobile/utils/auth.dart';
 
@@ -9,11 +11,11 @@ class ProfilePage extends StatefulWidget {
   User? user;
   UserData userData;
   void Function() reload;
-  ProfilePage(
-      {Key? key,
-      required this.userData,
-      required this.user,
-      required this.reload})
+
+  ProfilePage({Key? key,
+    required this.userData,
+    required this.user,
+    required this.reload})
       : super(key: key);
 
   @override
@@ -22,6 +24,8 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   bool isEditing = false;
+  final ImagePicker _picker = ImagePicker();
+  String filePath = "";
 
   @override
   Widget build(BuildContext context) {
@@ -73,18 +77,87 @@ class _ProfilePageState extends State<ProfilePage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         SizedBox(height: 24),
-                        Container(
-                          height: 150,
-                          width: 150,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: NetworkImage(
-                                    "https://www.interskill.id/empty-photo.png")),
-                            color: Color.fromARGB(255, 210, 210, 210),
-                            borderRadius: BorderRadius.circular(9999),
-                          ),
-                        ),
+                        (isEditing)
+                            ? GestureDetector(
+                                onTap: () async {
+                                  try {
+                                    final XFile? pickedFile = await _picker
+                                        .pickImage(source: ImageSource.gallery);
+                                    setState(() {
+                                      filePath = pickedFile!.path;
+                                    });
+                                  } catch (e) {
+                                    setState(() {
+                                      filePath = "";
+                                    });
+                                  }
+                                },
+                                child: Stack(
+                                  children: [
+                                    Container(
+                                      width: 150,
+                                      height: 150,
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(9999),
+                                        image: (filePath == null ||
+                                                filePath == "")
+                                            ? (widget.userData.img == null ||
+                                                    widget.userData.img == "")
+                                                ? DecorationImage(
+                                                    fit: BoxFit.cover,
+                                                    image: NetworkImage(
+                                                        "https://www.interskill.id/empty-photo.png"))
+                                                : DecorationImage(
+                                                    fit: BoxFit.cover,
+                                                    image: NetworkImage(
+                                                        widget.userData.img))
+                                            : DecorationImage(
+                                                fit: BoxFit.cover,
+                                                image:
+                                                    FileImage(File(filePath))),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      top: 0,
+                                      bottom: 0,
+                                      right: 0,
+                                      left: 0,
+                                      child: Center(
+                                          child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            Icons.add_a_photo,
+                                            color: Colors.white,
+                                          ),
+                                          SizedBox(height: 8),
+                                          Text(
+                                            "Change photo",
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          )
+                                        ],
+                                      )),
+                                    )
+                                  ],
+                                ))
+                            : Container(
+                                height: 150,
+                                width: 150,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      fit: BoxFit.cover,
+                                      image: (widget.userData.img == null ||
+                                              widget.userData.img == "")
+                                          ? NetworkImage(
+                                              "https://www.interskill.id/empty-photo.png")
+                                          : NetworkImage(widget.userData.img)),
+                                  color: Color.fromARGB(255, 210, 210, 210),
+                                  borderRadius: BorderRadius.circular(9999),
+                                ),
+                              ),
                         SizedBox(height: 24),
                         (isEditing)
                             ? SizedBox()
@@ -116,19 +189,21 @@ class _ProfilePageState extends State<ProfilePage> {
                         SizedBox(height: defaultPadding),
                         (isEditing)
                             ? Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  ElevatedButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          isEditing = false;
-                                        });
-                                        widget.reload();
-                                      },
-                                      child: Text("Batal")),
-                                  SizedBox(width: 12),
-                                  ElevatedButton(
-                                      onPressed: () {
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ElevatedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    isEditing = false;
+                                  });
+                                  widget.reload();
+                                },
+                                child: Text("Batal")),
+                            SizedBox(width: 12),
+                            ElevatedButton(
+                                onPressed: () {
+                                  FireAuth.addUserImg(
+                                            widget.user!.uid, filePath);
                                         FireAuth.updateUserData(
                                             widget.user!.uid, {
                                           "name": namaController.text,
@@ -140,32 +215,32 @@ class _ProfilePageState extends State<ProfilePage> {
                                           widget.reload();
                                         });
                                       },
-                                      child: Text("Simpan"))
-                                ],
-                              )
+                                child: Text("Simpan"))
+                          ],
+                        )
                             : ElevatedButton(
-                                style: ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStateProperty.all(Colors.red)),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Icon(
-                                      Icons.logout,
-                                      color: Colors.white,
-                                    ),
-                                    SizedBox(width: 8),
-                                    Text("Log Out")
-                                  ],
-                                ),
-                                onPressed: () {
-                                  FireAuth.logOut().then((value) =>
-                                      Navigator.pushNamedAndRemoveUntil(
-                                          context,
-                                          LoginScreen.routeName,
-                                          (route) => false));
-                                },
-                              )
+                          style: ButtonStyle(
+                              backgroundColor:
+                              MaterialStateProperty.all(Colors.red)),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.logout,
+                                color: Colors.white,
+                              ),
+                              SizedBox(width: 8),
+                              Text("Log Out")
+                            ],
+                          ),
+                          onPressed: () {
+                            FireAuth.logOut().then((value) =>
+                                Navigator.pushNamedAndRemoveUntil(
+                                    context,
+                                    LoginScreen.routeName,
+                                        (route) => false));
+                          },
+                        )
                       ],
                     ),
                   ))
@@ -181,11 +256,11 @@ class DisTextField extends StatefulWidget {
   String label;
   TextEditingController controller;
   bool enable;
-  DisTextField(
-      {Key? key,
-      required this.label,
-      required this.controller,
-      required this.enable})
+
+  DisTextField({Key? key,
+    required this.label,
+    required this.controller,
+    required this.enable})
       : super(key: key);
 
   @override

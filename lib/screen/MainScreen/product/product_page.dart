@@ -65,42 +65,11 @@ class _ProductPageState extends State<ProductPage> {
               )
             : null,
         body: SafeArea(
-          child: AdminView(screenSize, context),
+          child: View(screenSize, context),
         ));
   }
 
-  // Widget PembeliView(Size screenSize) {
-  //   return Container(
-  //       child: (_isLoading)
-  //           ? Center(child: const CircularProgressIndicator())
-  //           : ListView.builder(
-  //               padding: const EdgeInsets.all(8),
-  //               itemCount: _totalData,
-  //               itemBuilder: (BuildContext context, int index) {
-  //                 return GestureDetector(
-  //                     onTap: () {
-  //                       print("card");
-  //                     },
-  //                     child: Card(
-  //                       child: Column(children: [
-  //                         Container(
-  //                             height: 150.0,
-  //                             child: Ink.image(
-  //                               image: NetworkImage(_prodImg[index]),
-  //                               fit: BoxFit.cover,
-  //                             )),
-  //                         ListTile(
-  //                           title: Text(_listProduk[index].nama),
-  //                           subtitle: Text(
-  //                               "Rp${_listProduk[index].harga}/kg - Stok ${_listProduk[index].jumlah} kg"),
-  //                         )
-  //                       ]),
-  //                     ));
-  //               },
-  //             ));
-  // }
-
-  Widget AdminView(Size screenSize, BuildContext context) {
+  Widget View(Size screenSize, BuildContext context) {
     return Container(
       child: (_isLoading)
           ? Center(child: const CircularProgressIndicator())

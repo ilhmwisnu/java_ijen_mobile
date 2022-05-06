@@ -44,6 +44,7 @@ class _MainScreenState extends State<MainScreen> {
     });
     final result = await FireAuth.getUserData(widget.user!.uid);
     _userData = result;
+    print(_userData.img);
     setState(() {
       isLoading = false;
     });

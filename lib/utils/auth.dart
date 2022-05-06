@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class FireAuth {
   static FirebaseAuth _auth = FirebaseAuth.instance;
@@ -13,7 +15,7 @@ class FireAuth {
     User? user;
     try {
       UserCredential userCredential =
-          await _auth.createUserWithEmailAndPassword(
+      await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -89,6 +91,7 @@ class FireAuth {
     String email = '';
     String phoneNumber = "";
     String role = "";
+    String resImg = "";
 
     try {
       final res = await ref.get();
@@ -106,10 +109,19 @@ class FireAuth {
           role = item.value.toString();
         }
       }
+
+      try {
+        FirebaseStorage _storage = FirebaseStorage.instance;
+        final fileName = "$id.jpg";
+        final refImg = _storage.ref("user/$fileName");
+        resImg = await refImg.getDownloadURL();
+      } catch (err) {
+        print("Image error : $err");
+      }
     } catch (e) {
-      print(e);
+      print("User detail data error : $e");
     }
-    return UserData(name, email, role, phoneNumber);
+    return UserData(name, email, role, phoneNumber, resImg);
   }
 
   static Future<void> updateUserData(id, data) async {
@@ -117,9 +129,17 @@ class FireAuth {
     DatabaseReference ref = db.ref("user/$id");
     ref.update(data);
   }
+
+  static Future<void> addUserImg(id, path) async {
+    FirebaseStorage _storage = FirebaseStorage.instance;
+    final fileName = "$id.jpg";
+    final ref = _storage.ref("user/$fileName");
+    await ref.putFile(File(path)).then((p0) => print("Done"));
+  }
 }
 
 class UserData {
-  String name, email, role, phoneNumber;
-  UserData(this.name, this.email, this.role, this.phoneNumber);
+  String name, email, role, phoneNumber, img;
+
+  UserData(this.name, this.email, this.role, this.phoneNumber, this.img);
 }
