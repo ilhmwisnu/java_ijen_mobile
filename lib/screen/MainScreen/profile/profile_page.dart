@@ -12,10 +12,11 @@ class ProfilePage extends StatefulWidget {
   UserData userData;
   void Function() reload;
 
-  ProfilePage({Key? key,
-    required this.userData,
-    required this.user,
-    required this.reload})
+  ProfilePage(
+      {Key? key,
+      required this.userData,
+      required this.user,
+      required this.reload})
       : super(key: key);
 
   @override
@@ -189,20 +190,20 @@ class _ProfilePageState extends State<ProfilePage> {
                         SizedBox(height: defaultPadding),
                         (isEditing)
                             ? Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ElevatedButton(
-                                onPressed: () {
-                                  setState(() {
-                                    isEditing = false;
-                                  });
-                                  widget.reload();
-                                },
-                                child: Text("Batal")),
-                            SizedBox(width: 12),
-                            ElevatedButton(
-                                onPressed: () {
-                                  FireAuth.addUserImg(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  ElevatedButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          isEditing = false;
+                                        });
+                                        widget.reload();
+                                      },
+                                      child: Text("Batal")),
+                                  SizedBox(width: 12),
+                                  ElevatedButton(
+                                      onPressed: () {
+                                        FireAuth.addUserImg(
                                             widget.user!.uid, filePath);
                                         FireAuth.updateUserData(
                                             widget.user!.uid, {
@@ -215,32 +216,62 @@ class _ProfilePageState extends State<ProfilePage> {
                                           widget.reload();
                                         });
                                       },
-                                child: Text("Simpan"))
-                          ],
-                        )
+                                      child: Text("Simpan"))
+                                ],
+                              )
                             : ElevatedButton(
-                          style: ButtonStyle(
-                              backgroundColor:
-                              MaterialStateProperty.all(Colors.red)),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(
-                                Icons.logout,
-                                color: Colors.white,
-                              ),
-                              SizedBox(width: 8),
-                              Text("Log Out")
-                            ],
-                          ),
-                          onPressed: () {
-                            FireAuth.logOut().then((value) =>
-                                Navigator.pushNamedAndRemoveUntil(
-                                    context,
-                                    LoginScreen.routeName,
-                                        (route) => false));
-                          },
-                        )
+                                style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all(Colors.red)),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(
+                                      Icons.logout,
+                                      color: Colors.white,
+                                    ),
+                                    SizedBox(width: 8),
+                                    Text("Log Out")
+                                  ],
+                                ),
+                                onPressed: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          title: Text(
+                                              "Yakin ingin logout dari aplikasi ?"),
+                                          actions: [
+                                            ElevatedButton(
+                                                style: ButtonStyle(
+                                                    backgroundColor:
+                                                        MaterialStateProperty
+                                                            .all(Colors.grey)),
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text("Batal")),
+                                            ElevatedButton(
+                                                style: ButtonStyle(
+                                                    backgroundColor:
+                                                        MaterialStateProperty
+                                                            .all(Colors.red)),
+                                                onPressed: () {
+                                                  FireAuth.logOut().then(
+                                                      (value) => Navigator
+                                                          .pushNamedAndRemoveUntil(
+                                                              context,
+                                                              LoginScreen
+                                                                  .routeName,
+                                                              (route) =>
+                                                                  false));
+                                                },
+                                                child: Text("Logout"))
+                                          ],
+                                        );
+                                      });
+                                },
+                              )
                       ],
                     ),
                   ))
@@ -257,10 +288,11 @@ class DisTextField extends StatefulWidget {
   TextEditingController controller;
   bool enable;
 
-  DisTextField({Key? key,
-    required this.label,
-    required this.controller,
-    required this.enable})
+  DisTextField(
+      {Key? key,
+      required this.label,
+      required this.controller,
+      required this.enable})
       : super(key: key);
 
   @override

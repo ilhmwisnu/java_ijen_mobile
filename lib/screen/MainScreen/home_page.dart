@@ -45,9 +45,39 @@ class _HomeOwnerState extends State<HomeOwner> {
                         ),
                         IconButton(
                             onPressed: () {
-                              FireAuth.logOut().then((value) =>
-                                  Navigator.pushNamedAndRemoveUntil(context,
-                                      LoginScreen.routeName, (route) => false));
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: Text(
+                                          "Yakin ingin logout dari aplikasi ?"),
+                                      actions: [
+                                        ElevatedButton(
+                                            style: ButtonStyle(
+                                                backgroundColor:
+                                                    MaterialStateProperty.all(
+                                                        Colors.grey)),
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: Text("Batal")),
+                                        ElevatedButton(
+                                            style: ButtonStyle(
+                                                backgroundColor:
+                                                    MaterialStateProperty.all(
+                                                        Colors.red)),
+                                            onPressed: () {
+                                              FireAuth.logOut().then((value) =>
+                                                  Navigator
+                                                      .pushNamedAndRemoveUntil(
+                                                          context,
+                                                          LoginScreen.routeName,
+                                                          (route) => false));
+                                            },
+                                            child: Text("Logout"))
+                                      ],
+                                    );
+                                  });
                             },
                             icon: Icon(
                               Icons.logout,
