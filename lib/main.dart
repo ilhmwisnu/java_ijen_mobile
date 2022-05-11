@@ -27,9 +27,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       routes: {
-        // LoginPage.routeName: (context) => LoginPage(),
         LoginScreen.routeName: (context) => LoginScreen(),
-        // DashBoard.routeName: (context) => DashBoard(),
         RegisterScreen.routeName: (context) => RegisterScreen(),
         PetaniScreen.routeName: (context) => PetaniScreen(),
         LahanScreen.routeName: (context) => LahanScreen(),

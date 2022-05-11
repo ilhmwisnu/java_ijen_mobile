@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:java_ijen_mobile/const.dart';

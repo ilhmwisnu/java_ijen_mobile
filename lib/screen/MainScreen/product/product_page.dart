@@ -70,6 +70,7 @@ class _ProductPageState extends State<ProductPage> {
   }
 
   Widget View(Size screenSize, BuildContext context) {
+    final screnWidth = MediaQuery.of(context).size.width;
     return Container(
       child: (_isLoading)
           ? Center(child: const CircularProgressIndicator())
@@ -77,7 +78,7 @@ class _ProductPageState extends State<ProductPage> {
               itemCount: _totalData,
               padding: EdgeInsets.all(defaultPadding),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                childAspectRatio: 1 / 1.5,
+                childAspectRatio: screnWidth / 540,
                 crossAxisSpacing: defaultPadding,
                 mainAxisSpacing: defaultPadding,
                 crossAxisCount: 2,
@@ -91,6 +92,9 @@ class _ProductPageState extends State<ProductPage> {
                       Container(
                         height: 150,
                         decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(4),
+                                topRight: Radius.circular(4)),
                             image: DecorationImage(
                                 fit: BoxFit.cover,
                                 image: NetworkImage(_prodImg[index]))),

@@ -179,6 +179,16 @@ class _AddProdukScreenState extends State<AddProdukScreen> {
                 ElevatedButton(
                     onPressed: () async {
                       try {
+                        if ((namaController.text == '') |
+                            (jumlahController.text == '') |
+                            (petaniController.text == '') |
+                            (lahanController.text == '') |
+                            (prosesController.text == '') |
+                            (hargaController.text == '') |
+                            (filePath == '')) {
+                          throw "Data tidak boleh kosong";
+                        }
+
                         final id = await db.addProduk(
                             namaController.text,
                             jumlahController.text,
@@ -204,6 +214,10 @@ class _AddProdukScreenState extends State<AddProdukScreen> {
                                 content: Text(e.toString()),
                                 actions: [
                                   ElevatedButton(
+                                      style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all(
+                                                  darkChoco)),
                                       onPressed: () {
                                         Navigator.pop(context);
                                       },

@@ -136,6 +136,8 @@ class FireAuth {
     final ref = _storage.ref("user/$fileName");
     await ref.putFile(File(path)).then((p0) => print("Done"));
   }
+
+
 }
 
 class UserData {

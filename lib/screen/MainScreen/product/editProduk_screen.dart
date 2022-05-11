@@ -199,6 +199,16 @@ class _EditProdukState extends State<EditProduk> {
           ElevatedButton(
               onPressed: () async {
                 try {
+                  if ((namaController.text == '') |
+                      (jumlahController.text == '') |
+                      (petaniController.text == '') |
+                      (lahanController.text == '') |
+                      (prosesController.text == '') |
+                      (hargaController.text == '') |
+                      (filePath == '')) {
+                    throw "Data tidak boleh kosong";
+                  }
+
                   await dbProduk.updateProduk(
                       id,
                       namaController.text,
