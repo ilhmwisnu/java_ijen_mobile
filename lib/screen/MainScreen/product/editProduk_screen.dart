@@ -204,8 +204,7 @@ class _EditProdukState extends State<EditProduk> {
                       (petaniController.text == '') |
                       (lahanController.text == '') |
                       (prosesController.text == '') |
-                      (hargaController.text == '') |
-                      (filePath == '')) {
+                      (hargaController.text == '')) {
                     throw "Data tidak boleh kosong";
                   }
 

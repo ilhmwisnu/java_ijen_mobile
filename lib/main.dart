@@ -4,6 +4,7 @@ import 'package:java_ijen_mobile/screen/Lahan/editLahan_screen.dart';
 import 'package:java_ijen_mobile/screen/MainScreen/dashboard.dart';
 import 'package:java_ijen_mobile/referensi/login_page.dart';
 import 'package:java_ijen_mobile/screen/MainScreen/product/addProduk_screen.dart';
+import 'package:java_ijen_mobile/screen/MainScreen/product/detailProduk.dart';
 import 'package:java_ijen_mobile/screen/MainScreen/product/editProduk_screen.dart';
 import 'package:java_ijen_mobile/screen/Petani/addPetani_screen.dart';
 import 'package:java_ijen_mobile/screen/Petani/editPetani_screen.dart';
@@ -29,14 +30,15 @@ class MyApp extends StatelessWidget {
       routes: {
         LoginScreen.routeName: (context) => LoginScreen(),
         RegisterScreen.routeName: (context) => RegisterScreen(),
-        PetaniScreen.routeName: (context) => PetaniScreen(),
-        LahanScreen.routeName: (context) => LahanScreen(),
-        AddPetaniScreen.routeName: (context) => AddPetaniScreen(),
-        AddLahanScreen.routeName: (context) => AddLahanScreen(),
-        AddProdukScreen.routeName: (context) => AddProdukScreen(),
-        EditPetani.routeName: (context) => EditPetani(),
-        EditLahan.routeName: (context) => EditLahan(),
-        EditProduk.routeName: (context) => EditProduk()
+        PetaniScreen.routeName: (context) => const PetaniScreen(),
+        LahanScreen.routeName: (context) => const LahanScreen(),
+        AddPetaniScreen.routeName: (context) => const AddPetaniScreen(),
+        AddLahanScreen.routeName: (context) => const AddLahanScreen(),
+        AddProdukScreen.routeName: (context) => const AddProdukScreen(),
+        EditPetani.routeName: (context) => const EditPetani(),
+        EditLahan.routeName: (context) => const EditLahan(),
+        EditProduk.routeName: (context) => const EditProduk(),
+        DetailProduct.routeName: (context) => const DetailProduct()
       },
       initialRoute: LoginScreen.routeName,
     );
