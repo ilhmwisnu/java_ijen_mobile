@@ -19,7 +19,7 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
-  bool _isLoading = false;
+  bool _isLoading = true;
   late List<Produk> _listProduk;
   late int _totalData;
   List<String> _prodImg = [];
@@ -31,19 +31,17 @@ class _ProductPageState extends State<ProductPage> {
   }
 
   void fetchData() async {
-    setState(() {
-      _isLoading = true;
-    });
     _listProduk = await ProdukDB().getProduk();
     _totalData = _listProduk.length;
     for (var i = 0; i < _totalData; i++) {
       final imgUrl = await ProdukDB().getProductImg(_listProduk[i].id);
       _prodImg.add(imgUrl);
     }
-
-    setState(() {
-      _isLoading = false;
-    });
+    if (mounted) {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   @override
