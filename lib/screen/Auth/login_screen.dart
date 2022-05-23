@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:java_ijen_mobile/const.dart';
 import 'package:java_ijen_mobile/screen/Auth/register_screen.dart';
 import 'package:java_ijen_mobile/screen/MainScreen/dashboard.dart';
-import 'package:provider/provider.dart';
-
 import '../../utils/auth.dart';
 import '../../utils/validator.dart';
 
@@ -142,6 +140,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                         email: emailController.text,
                                         password: passwordController.text,
                                       ).catchError((e){
+                                        setState(() {
+                                          _isProcessing = false
+                                        });
+
                                         showDialog(context: context, builder: (context){
                                           return AlertDialog(title: Text("Login Failed"),content: Text(e),actions: [
                                             ElevatedButton(onPressed: () {
@@ -151,9 +153,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         })
                                       });
 
-                                      setState(() {
-                                        _isProcessing = false;
-                                      });
+                                      
 
                                       if (user != null) {
                                         Navigator.of(context).pushReplacement(

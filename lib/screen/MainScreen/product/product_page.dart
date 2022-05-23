@@ -1,12 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:java_ijen_mobile/screen/MainScreen/product/detailProduk.dart';
+import 'package:java_ijen_mobile/screen/MainScreen/product/detailProduct.dart';
 import 'package:java_ijen_mobile/screen/MainScreen/product/produk.dart';
 import 'package:java_ijen_mobile/screen/MainScreen/product/produkDB.dart';
 import '../../../utils/auth.dart';
 import '../../../const.dart';
-import 'addProduk_screen.dart';
+import 'addProduct_screen.dart';
 import 'editProduk_screen.dart';
 
 class ProductPage extends StatefulWidget {
@@ -49,6 +49,7 @@ class _ProductPageState extends State<ProductPage> {
     final screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
           title: Text("PRODUK"),
           backgroundColor: darkGrey,
@@ -77,7 +78,7 @@ class _ProductPageState extends State<ProductPage> {
               itemCount: _totalData,
               padding: EdgeInsets.all(defaultPadding),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                childAspectRatio: screnWidth / 540,
+                childAspectRatio: screnWidth / 520,
                 crossAxisSpacing: defaultPadding,
                 mainAxisSpacing: defaultPadding,
                 crossAxisCount: 2,
@@ -93,7 +94,11 @@ class _ProductPageState extends State<ProductPage> {
                               context, DetailProduct.routeName,
                               arguments: _listProduk[index].id);
                     },
-                    child: Card(
+                    child: Container(
+                      decoration: BoxDecoration(
+                          boxShadow: shadow,
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8)),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -101,8 +106,8 @@ class _ProductPageState extends State<ProductPage> {
                             height: 150,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(4),
-                                    topRight: Radius.circular(4)),
+                                    topLeft: Radius.circular(8),
+                                    topRight: Radius.circular(8)),
                                 image: DecorationImage(
                                     fit: BoxFit.cover,
                                     image: NetworkImage(_prodImg[index]))),
@@ -120,33 +125,10 @@ class _ProductPageState extends State<ProductPage> {
                                       style: TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w600)),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        "Stok : ${_listProduk[index].jumlah}",
-                                        style: TextStyle(
-                                            color: Colors.grey.shade600),
-                                      ),
-                                      (widget.userData.role == "admin")
-                                          ? IconButton(
-                                              color: Colors.grey.shade500,
-                                              padding: EdgeInsets.zero,
-                                              onPressed: () {
-                                                print("hello");
-                                                Navigator.pushNamed(context,
-                                                        EditProduk.routeName,
-                                                        arguments:
-                                                            _listProduk[index]
-                                                                .id)
-                                                    .whenComplete(
-                                                        () => fetchData());
-                                              },
-                                              constraints: BoxConstraints(),
-                                              icon: Icon(Icons.edit))
-                                          : Container()
-                                    ],
+                                  Text(
+                                    "Stok : ${_listProduk[index].jumlah}",
+                                    style:
+                                        TextStyle(color: Colors.grey.shade600),
                                   )
                                 ],
                               ))

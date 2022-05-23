@@ -5,6 +5,7 @@ import 'package:java_ijen_mobile/screen/MainScreen/product/produk.dart';
 import 'package:java_ijen_mobile/screen/MainScreen/product/produkDB.dart';
 import 'package:java_ijen_mobile/screen/Petani/petani.dart';
 import 'package:java_ijen_mobile/screen/Petani/petaniDB.dart';
+import 'package:java_ijen_mobile/screen/SampelProduk/reqSample_screen.dart';
 
 import '../../Lahan/lahan.dart';
 
@@ -43,6 +44,7 @@ class _DetailProductState extends State<DetailProduct> {
 
   @override
   Widget build(BuildContext context) {
+    final id = ModalRoute.of(context)!.settings.arguments.toString();
     final screenSize = MediaQuery.of(context).size;
     return Scaffold(
       floatingActionButton: (_isLoading)
@@ -58,7 +60,11 @@ class _DetailProductState extends State<DetailProduct> {
                               elevation: MaterialStateProperty.all(0),
                               backgroundColor:
                                   MaterialStateProperty.all(Colors.grey)),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamed(
+                                context, AddSampleRequestScreen.routeName,
+                                arguments: id);
+                          },
                           child: Text("Minta Sampel"))),
                   SizedBox(width: 8),
                   Expanded(
@@ -98,7 +104,7 @@ class _DetailProductState extends State<DetailProduct> {
                             fontSize: 24, fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        "Rp " + _produkData.harga,
+                        "Rp " + _produkData.harga + "/kg",
                         style: TextStyle(fontSize: 20, color: darkChoco),
                       ),
                       SizedBox(height: 8),

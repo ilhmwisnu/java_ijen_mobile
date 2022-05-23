@@ -100,7 +100,10 @@ class _HomeOwnerState extends State<HomeOwner> {
                 top: 80, right: defaultPadding, left: defaultPadding),
             child: Container(
               padding: EdgeInsets.all(8),
-              decoration: BoxDecoration(color: Colors.white, boxShadow: shadow),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: shadow,
+                  borderRadius: BorderRadius.circular(15)),
               child:
                   Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
                 Expanded(
