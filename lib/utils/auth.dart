@@ -15,7 +15,7 @@ class FireAuth {
     User? user;
     try {
       UserCredential userCredential =
-      await _auth.createUserWithEmailAndPassword(
+          await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -115,8 +115,9 @@ class FireAuth {
         final fileName = "$id.jpg";
         final refImg = _storage.ref("user/$fileName");
         resImg = await refImg.getDownloadURL();
-      } catch (err) {
-        print("Image error : $err");
+      } on FirebaseException catch (e) {
+        resImg = '';
+        // print(e.message! + "INIIIIIIIIIIIIIIIIIIIIIIIIIII");
       }
     } catch (e) {
       print("User detail data error : $e");
@@ -136,8 +137,6 @@ class FireAuth {
     final ref = _storage.ref("user/$fileName");
     await ref.putFile(File(path)).then((p0) => print("Done"));
   }
-
-
 }
 
 class UserData {

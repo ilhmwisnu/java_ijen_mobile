@@ -63,7 +63,11 @@ class _DetailProductState extends State<DetailProduct> {
                           onPressed: () {
                             Navigator.pushNamed(
                                 context, AddSampleRequestScreen.routeName,
-                                arguments: id);
+                                arguments: {
+                                  "id" : id,
+                                  "imgUrl" : _imgUrl,
+                                  "namaProduk" : _produkData.nama,
+                                });
                           },
                           child: Text("Minta Sampel"))),
                   SizedBox(width: 8),
