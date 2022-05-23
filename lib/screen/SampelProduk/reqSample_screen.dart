@@ -20,6 +20,8 @@ class _AddSampleRequestScreenState extends State<AddSampleRequestScreen> {
   int _hargaOngkir = 0;
   List _provinceList = [];
   List _cityList = [];
+  String ekspedisiValue = "";
+  String city_id = "";
 
   @override
   void initState() {
@@ -29,7 +31,6 @@ class _AddSampleRequestScreenState extends State<AddSampleRequestScreen> {
       });
     });
     // TODO: implement initState
-
     super.initState();
   }
 
@@ -157,17 +158,60 @@ class _AddSampleRequestScreenState extends State<AddSampleRequestScreen> {
                                   borderRadius: BorderRadius.circular(8))),
                         ),
                         SizedBox(height: 12),
-                        SearchField(
-                          textInputAction: TextInputAction.done,
-                          suggestions: [SearchFieldListItem("Jember")],
-                          // controller: ,
-                          onSubmit: (value) {},
-                          searchInputDecoration: InputDecoration(
-                              label: Text("Pilih kurir"),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8))),
+                        Text(
+                          "Ekspedisi :",
+                          style: TextStyle(color: Colors.grey.shade500),
                         ),
-                        SizedBox(height: 8),
+                        DropdownButton(
+                          borderRadius: BorderRadius.circular(12),
+                          isExpanded: true,
+                          hint: Text("Pilih Ekspedisi"),
+                          value: (ekspedisiValue == "") ? null : ekspedisiValue,
+                          items: ["JNE", "POS", "Tiki"]
+                              .map((data) => DropdownMenuItem(
+                                    child: Text(data),
+                                    value: data.toString().toLowerCase(),
+                                  ))
+                              .toList(),
+                          onChanged: (e) {
+                            setState(() {
+                              ekspedisiValue = e.toString();
+                            });
+                          },
+                        ),
+                        SizedBox(height: 12),
+                        Text(
+                          "Layanan :",
+                          style: TextStyle(color: Colors.grey.shade500),
+                        ),
+                        DropdownButton(
+                          borderRadius: BorderRadius.circular(12),
+                          isExpanded: true,
+                          hint: Text("Pilih Layanan"),
+                          value: (ekspedisiValue == "") ? null : ekspedisiValue,
+                          items: ["JNE", "POS", "Tiki"]
+                              .map((data) => DropdownMenuItem(
+                                    child: Text(data),
+                                    value: data.toString().toLowerCase(),
+                                  ))
+                              .toList(),
+                          onChanged: (e) {
+                            setState(() {
+                              ekspedisiValue = e.toString();
+                            });
+                          },
+                        ),
+                        // SearchField(
+                        //   textInputAction: TextInputAction.done,
+                        //   suggestions: [SearchFieldListItem("Jember")],
+                        //   // controller: ,
+                        //   onSubmit: (value) {},
+                        //   searchInputDecoration: InputDecoration(
+                        //       label: Text("Pilih Ekspedisi"),
+                        //       border: OutlineInputBorder(
+                        //           borderRadius: BorderRadius.circular(8))),
+                        // ),
+                        SizedBox(height: 4),
                         Divider(),
                         SizedBox(height: 4),
                         Row(
