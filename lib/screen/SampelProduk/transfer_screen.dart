@@ -81,6 +81,14 @@ class _TransferScreenState extends State<TransferScreen> {
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
                 ),
                 SizedBox(height: 12),
+                Text(data["id"]),
+                Text(data["namaProduk"]),
+                Text(data["provinsi"]),
+                Text(data["kota"]),
+                Text(data["alamat"]),
+                Text(data["ekspedisi"].namaLayanan.toString()),
+                Text(data["totalOngkir"].toString()),
+                Text(data["totalHarga"].toString()),
                 //   GestureDetector(
                 // onTap: () async {
                 //   try {
