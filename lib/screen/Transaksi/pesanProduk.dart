@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:java_ijen_mobile/const.dart';
-import 'package:java_ijen_mobile/utils/ekspedisi.dart';
 import 'package:searchfield/searchfield.dart';
 
+import '../../const.dart';
 import '../../utils/cost.dart';
+import '../../utils/ekspedisi.dart';
 import 'transfer_screen.dart';
 
-class AddSampleRequestScreen extends StatefulWidget {
-  static const routeName = 'sample_req';
-  const AddSampleRequestScreen({Key? key}) : super(key: key);
+class PesanProduk extends StatefulWidget {
+  static const routeName = "pesanProduk";
+  const PesanProduk({Key? key}) : super(key: key);
 
   @override
-  State<AddSampleRequestScreen> createState() => _AddSampleRequestScreenState();
+  State<PesanProduk> createState() => _PesanProdukState();
 }
 
-class _AddSampleRequestScreenState extends State<AddSampleRequestScreen> {
+class _PesanProdukState extends State<PesanProduk> {
   String _prodId = "";
   String _imgUrl = "";
   String _prodName = "";
+  int _jumlahProduk = 1;
+  int _hargaProduk = 0;
   bool _isLoading = true;
   bool _isInit = false;
   int _hargaOngkir = 0;
@@ -51,6 +53,7 @@ class _AddSampleRequestScreenState extends State<AddSampleRequestScreen> {
         _prodId = data["id"];
         _imgUrl = data["imgUrl"];
         _prodName = data["namaProduk"];
+        _hargaProduk = int.parse(data["harga"]);
         _isLoading = false;
         _isInit = true;
       });
@@ -74,7 +77,7 @@ class _AddSampleRequestScreenState extends State<AddSampleRequestScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("Permintaan Sampel"),
+        title: Text("Pesan Produk"),
         backgroundColor: darkGrey,
       ),
       body: (_isLoading)
@@ -115,13 +118,59 @@ class _AddSampleRequestScreenState extends State<AddSampleRequestScreen> {
                                       fontSize: 27,
                                       fontWeight: FontWeight.w700),
                                 ),
-                                Text("Gratis", style: TextStyle(fontSize: 16)),
+                                Text(
+                                  "Rp " + _hargaProduk.toString(),
+                                  style: TextStyle(fontSize: 16),
+                                ),
                               ],
                             )
                           ],
                         ),
                         SizedBox(height: 8),
                         Divider(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Jumlah :",
+                              style: TextStyle(color: Colors.grey.shade500),
+                            ),
+                            Row(
+                              children: [
+                                OutlinedButton(
+                                    onPressed: () {
+                                      if (_jumlahProduk != 1) {
+                                        setState(() {
+                                          _jumlahProduk -= 1;
+                                        });
+                                      }
+                                    },
+                                    child: Text(
+                                      "-",
+                                      style: TextStyle(
+                                          color: Colors.grey.shade600),
+                                    )),
+                                SizedBox(width: 12),
+                                Text(
+                                  _jumlahProduk.toString(),
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                                SizedBox(width: 12),
+                                OutlinedButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        _jumlahProduk += 1;
+                                      });
+                                    },
+                                    child: Text(
+                                      "+",
+                                      style: TextStyle(
+                                          color: Colors.grey.shade600),
+                                    )),
+                              ],
+                            )
+                          ],
+                        ),
                         SizedBox(height: 8),
                         SearchField(
                           textInputAction: TextInputAction.done,
@@ -333,7 +382,7 @@ class _AddSampleRequestScreenState extends State<AddSampleRequestScreen> {
                               children: [
                                 Text("Total Ongkos Kirim :"),
                                 Text(
-                                  "Rp ${_hargaOngkir}",
+                                  "Rp ${_hargaOngkir + _hargaProduk * _jumlahProduk}",
                                   style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 16),
@@ -359,8 +408,8 @@ class _AddSampleRequestScreenState extends State<AddSampleRequestScreen> {
                                           "kota": cityName,
                                           "alamat": _alamatController.text,
                                           "ekspedisi": selectedCourier,
-                                          "totalHarga": 0,
-                                          "jumlah": 1
+                                          "totalHarga": _hargaProduk,
+                                          "jumlah": _jumlahProduk
                                         });
                                   } else {
                                     final snackBar = SnackBar(
@@ -379,7 +428,7 @@ class _AddSampleRequestScreenState extends State<AddSampleRequestScreen> {
                                   backgroundColor:
                                       MaterialStateProperty.all(green),
                                   elevation: MaterialStateProperty.all(0),
-                                ))
+                                )),
                           ],
                         )
                       ]),

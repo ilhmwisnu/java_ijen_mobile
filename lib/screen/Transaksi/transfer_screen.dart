@@ -38,6 +38,12 @@ class _TransferScreenState extends State<TransferScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
+                  "Alamat tujuan",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                ),
+                Text("${data['alamat']}, ${data['provinsi']}, ${data['kota']}"),
+                SizedBox(height: defaultPadding),
+                Text(
                   "Detail Transaksi",
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
                 ),
@@ -48,7 +54,7 @@ class _TransferScreenState extends State<TransferScreen> {
                         " " +
                         data["jumlah"].toString() +
                         "x"),
-                    Text(data["totalHarga"].toString()),
+                    Text((data["totalHarga"] * data["jumlah"]).toString()),
                   ],
                 ),
                 Row(
@@ -56,6 +62,21 @@ class _TransferScreenState extends State<TransferScreen> {
                   children: [
                     Text("Ongkos kirim"),
                     Text(data["ekspedisi"].harga.toString()),
+                  ],
+                ),
+                SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Total bayar ",
+                      style: TextStyle(fontWeight: FontWeight.w500),
+                    ),
+                    Text(
+                        (data["totalHarga"] * data["jumlah"] +
+                                data["ekspedisi"].harga)
+                            .toString(),
+                        style: TextStyle(fontWeight: FontWeight.w500)),
                   ],
                 ),
                 SizedBox(height: defaultPadding),

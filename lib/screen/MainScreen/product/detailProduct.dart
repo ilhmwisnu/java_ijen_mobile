@@ -5,6 +5,7 @@ import 'package:java_ijen_mobile/screen/MainScreen/product/produk.dart';
 import 'package:java_ijen_mobile/screen/MainScreen/product/produkDB.dart';
 import 'package:java_ijen_mobile/screen/Petani/petani.dart';
 import 'package:java_ijen_mobile/screen/Petani/petaniDB.dart';
+import 'package:java_ijen_mobile/screen/Transaksi/pesanProduk.dart';
 import '../../Lahan/lahan.dart';
 import '../../Transaksi/reqSample_screen.dart';
 
@@ -63,9 +64,9 @@ class _DetailProductState extends State<DetailProduct> {
                             Navigator.pushNamed(
                                 context, AddSampleRequestScreen.routeName,
                                 arguments: {
-                                  "id" : id,
-                                  "imgUrl" : _imgUrl,
-                                  "namaProduk" : _produkData.nama,
+                                  "id": id,
+                                  "imgUrl": _imgUrl,
+                                  "namaProduk": _produkData.nama,
                                 });
                           },
                           child: Text("Minta Sampel"))),
@@ -76,7 +77,15 @@ class _DetailProductState extends State<DetailProduct> {
                               elevation: MaterialStateProperty.all(0),
                               backgroundColor:
                                   MaterialStateProperty.all(green)),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamed(context, PesanProduk.routeName,
+                                arguments: {
+                                  "id": id,
+                                  "imgUrl": _imgUrl,
+                                  "namaProduk": _produkData.nama,
+                                  'harga': _produkData.harga
+                                });
+                          },
                           child: Text("Pesan"))),
                 ],
               )),

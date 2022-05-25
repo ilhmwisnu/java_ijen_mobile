@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
@@ -24,13 +26,21 @@ class Transaksi {
     await newChild.set({
       'namaRekening': namaRekening,
       'nomorRekening': nomorRekening,
-      'pathBuktiTf': pathBuktiTf,
       'idProduk': idProduk,
       'provinsi': provinsi,
       'kota': kota,
       'alamat': alamat,
       'layananEkspedisi': ekspedisi.namaLayanan,
-      'biayaOngkir': ekspedisi.harga
+      'biayaOngkir': ekspedisi.harga,
+      'waktuPemesanan': DateTime.now().toString(),
+      'isDone': false.toString()
     });
+
+    final id = newChild.key.toString();
+
+    final fileName = "$id.jpg";
+    print("$pathBuktiTf");
+    final storageRef = _storage.ref("sampleTF/$fileName");
+    await storageRef.putFile(File(pathBuktiTf)).then((p0) => print("Done"));
   }
 }

@@ -10,6 +10,7 @@ import 'package:java_ijen_mobile/screen/Petani/petani_screen.dart';
 import 'package:java_ijen_mobile/screen/Lahan/lahan_screen.dart';
 import 'package:java_ijen_mobile/screen/Lahan/addLahan_screen.dart';
 import 'package:java_ijen_mobile/screen/Transaksi/notifikasiPesanan.dart';
+import 'package:java_ijen_mobile/screen/Transaksi/pesanProduk.dart';
 import 'screen/Auth/login_screen.dart';
 import 'screen/Auth/register_screen.dart';
 import 'screen/Transaksi/reqSample_screen.dart';
@@ -43,7 +44,9 @@ class MyApp extends StatelessWidget {
         AddSampleRequestScreen.routeName: (context) =>
             const AddSampleRequestScreen(),
         TransferScreen.routeName: (context) => TransferScreen(),
-        KonfirmasiPesanan.routeName: (context) => KonfirmasiPesanan()
+        KonfirmasiPesanan.routeName: (context) => KonfirmasiPesanan(),
+        PesanProduk.routeName :(context) => PesanProduk()
+
       },
       initialRoute: LoginScreen.routeName,
     );
