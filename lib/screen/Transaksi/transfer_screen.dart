@@ -208,15 +208,28 @@ class _TransferScreenState extends State<TransferScreen> {
                               if (_namaRekController.text != "" &&
                                   _nomorRekController.text != "" &&
                                   filePath != "") {
-                                Transaksi.AddSampleRequest(
-                                    nomorRekening: _namaRekController.text,
-                                    namaRekening: _nomorRekController.text,
-                                    pathBuktiTf: filePath,
-                                    idProduk: data["id"],
-                                    provinsi: data['provinsi'],
-                                    kota: data['kota'],
-                                    alamat: data['alamat'],
-                                    ekspedisi: data['ekspedisi']);
+                                if (data["jumlah"] == 0) {
+                                  Transaksi.AddSampleRequest(
+                                      nomorRekening: _nomorRekController.text,
+                                      namaRekening: _namaRekController.text,
+                                      pathBuktiTf: filePath,
+                                      idProduk: data["id"],
+                                      provinsi: data['provinsi'],
+                                      kota: data['kota'],
+                                      alamat: data['alamat'],
+                                      ekspedisi: data['ekspedisi']);
+                                } else {
+                                  Transaksi.AddProdukOrder(
+                                      namaRekening: _namaRekController.text,
+                                      nomorRekening: _nomorRekController.text,
+                                      pathBuktiTf: filePath,
+                                      idProduk: data["id"],
+                                      provinsi: data['provinsi'],
+                                      kota: data['kota'],
+                                      alamat: data['alamat'],
+                                      ekspedisi: data['ekspedisi'],
+                                      jumlah: data['jumlah']);
+                                }
                                 Navigator.pushReplacementNamed(
                                     context, KonfirmasiPesanan.routeName);
                               } else {

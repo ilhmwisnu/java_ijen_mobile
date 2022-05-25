@@ -133,7 +133,7 @@ class _PesanProdukState extends State<PesanProduk> {
                           children: [
                             Text(
                               "Jumlah :",
-                              style: TextStyle(color: Colors.grey.shade500),
+                              style: TextStyle(color: Colors.grey.shade700),
                             ),
                             Row(
                               children: [
@@ -217,6 +217,7 @@ class _PesanProdukState extends State<PesanProduk> {
                         ),
                         SizedBox(height: 12),
                         TextField(
+                          textInputAction: TextInputAction.done,
                           focusNode: _alamatNode,
                           minLines: 1,
                           maxLines: 3,
@@ -229,7 +230,7 @@ class _PesanProdukState extends State<PesanProduk> {
                         SizedBox(height: 12),
                         Text(
                           "Ekspedisi :",
-                          style: TextStyle(color: Colors.grey.shade500),
+                          style: TextStyle(color: Colors.grey.shade700),
                         ),
                         SizedBox(height: 4),
                         GestureDetector(

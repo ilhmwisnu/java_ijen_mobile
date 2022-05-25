@@ -360,7 +360,7 @@ class _AddSampleRequestScreenState extends State<AddSampleRequestScreen> {
                                           "alamat": _alamatController.text,
                                           "ekspedisi": selectedCourier,
                                           "totalHarga": 0,
-                                          "jumlah": 1
+                                          "jumlah": 0
                                         });
                                   } else {
                                     final snackBar = SnackBar(
