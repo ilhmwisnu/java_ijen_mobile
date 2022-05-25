@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:java_ijen_mobile/const.dart';
-import 'package:java_ijen_mobile/screen/SampelProduk/transfer_screen.dart';
 import 'package:java_ijen_mobile/utils/ekspedisi.dart';
 import 'package:searchfield/searchfield.dart';
 
 import '../../utils/cost.dart';
+import 'transfer_screen.dart';
 
 class AddSampleRequestScreen extends StatefulWidget {
   static const routeName = 'sample_req';
@@ -23,7 +23,7 @@ class _AddSampleRequestScreenState extends State<AddSampleRequestScreen> {
   int _hargaOngkir = 0;
   List _provinceList = [];
   List _cityList = [];
-  var selectedProvince = "";
+  var selectedProvince = null;
   var city_id = null;
   var selectedCourier = null;
   bool isGetCostData = false;
@@ -339,29 +339,34 @@ class _AddSampleRequestScreenState extends State<AddSampleRequestScreen> {
                             ),
                             ElevatedButton(
                                 onPressed: () async {
-                                  final cityName = _cityList.firstWhere(
-                                          (city) => city["city_id"] == city_id)[
-                                      "city_name"];
-                                  // print(_prodId);
-                                  // print(_prodName);
-                                  // print(selectedProvince);
-                                  // print(_cityList.firstWhere((city) =>
-                                  //     city["city_id"] == city_id)["city_name"]);
-                                  // print(_alamatController.text);
-                                  // print(selectedCourier);
-                                  // print(_hargaOngkir);
-                                  Navigator.pushNamed(
-                                      context, TransferScreen.routeName,
-                                      arguments: {
-                                        "id": _prodId,
-                                        "namaProduk": _prodName,
-                                        "provinsi": selectedProvince,
-                                        "kota": cityName,
-                                        "alamat": _alamatController.text,
-                                        "ekspedisi": selectedCourier,
-                                        "totalOngkir": _hargaOngkir,
-                                        "totalHarga" : 0
-                                      });
+                                  if (selectedProvince != null &&
+                                      city_id != null &&
+                                      selectedCourier != null &&
+                                      _alamatController.text != "") {
+                                    final cityName = _cityList.firstWhere(
+                                        (city) =>
+                                            city["city_id"] ==
+                                            city_id)["city_name"];
+                                    Navigator.pushNamed(
+                                        context, TransferScreen.routeName,
+                                        arguments: {
+                                          "id": _prodId,
+                                          "namaProduk": _prodName,
+                                          "provinsi": selectedProvince,
+                                          "kota": cityName,
+                                          "alamat": _alamatController.text,
+                                          "ekspedisi": selectedCourier,
+                                          "totalHarga": 0,
+                                          "jumlah": 1
+                                        });
+                                  } else {
+                                    final snackBar = SnackBar(
+                                      content: const Text(
+                                          'Data tidak boleh kosong!'),
+                                    );
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(snackBar);
+                                  }
                                 },
                                 child: Text(
                                   "Bayar",

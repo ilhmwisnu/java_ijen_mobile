@@ -5,9 +5,8 @@ import 'package:java_ijen_mobile/screen/MainScreen/product/produk.dart';
 import 'package:java_ijen_mobile/screen/MainScreen/product/produkDB.dart';
 import 'package:java_ijen_mobile/screen/Petani/petani.dart';
 import 'package:java_ijen_mobile/screen/Petani/petaniDB.dart';
-import 'package:java_ijen_mobile/screen/SampelProduk/reqSample_screen.dart';
-
 import '../../Lahan/lahan.dart';
+import '../../Transaksi/reqSample_screen.dart';
 
 class DetailProduct extends StatefulWidget {
   static const routeName = "/detailProduct";

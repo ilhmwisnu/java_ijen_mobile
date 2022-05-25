@@ -116,7 +116,6 @@ class FireAuth {
         final refImg = _storage.ref("user/$fileName");
         resImg = await refImg.getDownloadURL();
       } on FirebaseException catch (e) {
-        resImg = '';
         // print(e.message! + "INIIIIIIIIIIIIIIIIIIIIIIIIIII");
       }
     } catch (e) {

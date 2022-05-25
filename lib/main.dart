@@ -9,10 +9,11 @@ import 'package:java_ijen_mobile/screen/Petani/editPetani_screen.dart';
 import 'package:java_ijen_mobile/screen/Petani/petani_screen.dart';
 import 'package:java_ijen_mobile/screen/Lahan/lahan_screen.dart';
 import 'package:java_ijen_mobile/screen/Lahan/addLahan_screen.dart';
-import 'package:java_ijen_mobile/screen/SampelProduk/reqSample_screen.dart';
-import 'package:java_ijen_mobile/screen/SampelProduk/transfer_screen.dart';
+import 'package:java_ijen_mobile/screen/Transaksi/notifikasiPesanan.dart';
 import 'screen/Auth/login_screen.dart';
 import 'screen/Auth/register_screen.dart';
+import 'screen/Transaksi/reqSample_screen.dart';
+import 'screen/Transaksi/transfer_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,8 +40,10 @@ class MyApp extends StatelessWidget {
         EditLahan.routeName: (context) => const EditLahan(),
         EditProduk.routeName: (context) => const EditProduk(),
         DetailProduct.routeName: (context) => const DetailProduct(),
-        AddSampleRequestScreen.routeName : (context) => const AddSampleRequestScreen(),
-        TransferScreen.routeName : (context) => TransferScreen()
+        AddSampleRequestScreen.routeName: (context) =>
+            const AddSampleRequestScreen(),
+        TransferScreen.routeName: (context) => TransferScreen(),
+        KonfirmasiPesanan.routeName: (context) => KonfirmasiPesanan()
       },
       initialRoute: LoginScreen.routeName,
     );
