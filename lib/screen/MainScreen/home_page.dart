@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:java_ijen_mobile/screen/Lahan/lahan_screen.dart';
 import 'package:java_ijen_mobile/screen/Petani/petani_screen.dart';
+import 'package:java_ijen_mobile/screen/Transaksi/sample_screen.dart';
 import '../../const.dart';
 import '../../utils/auth.dart';
 import '../../widget/menu_admin.dart';
@@ -138,7 +139,7 @@ class _HomeOwnerState extends State<HomeOwner> {
               title: "Permintaan Sampel Produk",
               imgPath: "assets/permintaan_sampel.png",
               onTap: () {
-                // Navigator.pushNamed(context, LahanScreen.routeName);
+                Navigator.pushNamed(context, SampleScreen.routeName);
               },
             ),
             MenuBtn(

@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:ui';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:java_ijen_mobile/const.dart';
@@ -16,9 +17,20 @@ class TransferScreen extends StatefulWidget {
 
 class _TransferScreenState extends State<TransferScreen> {
   String filePath = "";
+  String uid = "";
   ImagePicker _picker = ImagePicker();
   TextEditingController _namaRekController = TextEditingController();
   TextEditingController _nomorRekController = TextEditingController();
+
+  @override
+  void initState() {
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user != null) {
+        uid = user.uid;
+      }
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -208,28 +220,16 @@ class _TransferScreenState extends State<TransferScreen> {
                               if (_namaRekController.text != "" &&
                                   _nomorRekController.text != "" &&
                                   filePath != "") {
-                                if (data["jumlah"] == 0) {
-                                  Transaksi.AddSampleRequest(
-                                      nomorRekening: _nomorRekController.text,
-                                      namaRekening: _namaRekController.text,
-                                      pathBuktiTf: filePath,
-                                      idProduk: data["id"],
-                                      provinsi: data['provinsi'],
-                                      kota: data['kota'],
-                                      alamat: data['alamat'],
-                                      ekspedisi: data['ekspedisi']);
-                                } else {
-                                  Transaksi.AddProdukOrder(
-                                      namaRekening: _namaRekController.text,
-                                      nomorRekening: _nomorRekController.text,
-                                      pathBuktiTf: filePath,
-                                      idProduk: data["id"],
-                                      provinsi: data['provinsi'],
-                                      kota: data['kota'],
-                                      alamat: data['alamat'],
-                                      ekspedisi: data['ekspedisi'],
-                                      jumlah: data['jumlah']);
-                                }
+                                TransaksiDB().AddSampleRequest(
+                                    nomorRekening: _namaRekController.text,
+                                    namaRekening: _nomorRekController.text,
+                                    pathBuktiTf: filePath,
+                                    idProduk: data["id"],
+                                    provinsi: data['provinsi'],
+                                    kota: data['kota'],
+                                    alamat: data['alamat'],
+                                    ekspedisi: data['ekspedisi'],
+                                    uid: uid);
                                 Navigator.pushReplacementNamed(
                                     context, KonfirmasiPesanan.routeName);
                               } else {
