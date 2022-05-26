@@ -1,15 +1,10 @@
+import 'package:java_ijen_mobile/screen/MainScreen/product/produk.dart';
+
 class Transaksi {
-  String user,
-      namaRek,
-      noRek,
-      produk,
-      prov,
-      kota,
-      alamat,
-      ekspedisi,
-      ongkir,
-      waktuPesan,
-      status;
+  String user, namaRek, noRek, prov, kota, alamat, ekspedisi, status, imgUrl;
+  late int ongkir, jumlah;
+  late DateTime waktuPesan;
+  Produk produk;
 
   Transaksi(
       this.user,
@@ -20,7 +15,13 @@ class Transaksi {
       this.kota,
       this.alamat,
       this.ekspedisi,
-      this.ongkir,
-      this.waktuPesan,
-      this.status);
+      String ongkir,
+      String waktuPesan,
+      this.status,
+      this.imgUrl,
+      String jumlah) {
+    this.ongkir = int.parse(ongkir);
+    this.jumlah = int.parse(jumlah);
+    this.waktuPesan = DateTime.parse(waktuPesan);
+  }
 }

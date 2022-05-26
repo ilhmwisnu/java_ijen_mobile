@@ -139,7 +139,8 @@ class _HomeOwnerState extends State<HomeOwner> {
               title: "Permintaan Sampel Produk",
               imgPath: "assets/permintaan_sampel.png",
               onTap: () {
-                Navigator.pushNamed(context, SampleScreen.routeName);
+                Navigator.pushNamed(context, SampleScreen.routeName,
+                    arguments: widget.userData);
               },
             ),
             MenuBtn(
@@ -206,7 +207,8 @@ class _HomeOwnerState extends State<HomeOwner> {
               title: "Permintaan Sampel Produk",
               imgPath: "assets/permintaan_sampel.png",
               onTap: () {
-                // Navigator.pushNamed(context, LahanScreen.routeName);
+                Navigator.pushNamed(context, SampleScreen.routeName,
+                    arguments: widget.userData);
               },
             ),
             MenuPemb(

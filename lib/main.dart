@@ -10,7 +10,7 @@ import 'package:java_ijen_mobile/screen/Petani/petani_screen.dart';
 import 'package:java_ijen_mobile/screen/Lahan/lahan_screen.dart';
 import 'package:java_ijen_mobile/screen/Lahan/addLahan_screen.dart';
 import 'package:java_ijen_mobile/screen/Transaksi/notifikasiPesanan.dart';
-import 'package:java_ijen_mobile/screen/Transaksi/pesanProduk.dart';
+import 'package:java_ijen_mobile/screen/Transaksi/pesanProduk_screen.dart';
 import 'package:java_ijen_mobile/screen/Transaksi/sample_screen.dart';
 import 'screen/Auth/login_screen.dart';
 import 'screen/Auth/register_screen.dart';
