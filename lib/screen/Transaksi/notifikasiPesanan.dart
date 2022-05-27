@@ -32,18 +32,18 @@ class KonfirmasiPesanan extends StatelessWidget {
           SizedBox(
             height: defaultPadding,
           ),
-          Row(
-            children: [
-              Expanded(
-                child: ElevatedButton(
-                    style: ButtonStyle(
-                        elevation: MaterialStateProperty.all(0),
-                        backgroundColor: MaterialStateProperty.all(green)),
-                    onPressed: () {},
-                    child: Text("Lihat data transaksi")),
-              )
-            ],
-          ),
+          // Row(
+          //   children: [
+          //     Expanded(
+          //       child: ElevatedButton(
+          //           style: ButtonStyle(
+          //               elevation: MaterialStateProperty.all(0),
+          //               backgroundColor: MaterialStateProperty.all(green)),
+          //           onPressed: () {},
+          //           child: Text("Lihat data transaksi")),
+          //     )
+          //   ],
+          // ),
           Row(
             children: [
               Expanded(

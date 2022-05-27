@@ -10,7 +10,7 @@ import 'package:java_ijen_mobile/screen/Transaksi/transaksi.dart';
 import '../../utils/cost.dart';
 
 class TransaksiDB {
-  Future<List<Transaksi>> getTrans(String uid, String role) async {
+  Future<List<Transaksi>> getOnProgressSample(String uid, String role) async {
     final List<Transaksi> trans = [];
     DatabaseReference ref = FirebaseDatabase.instance.ref('permintaan_sampel');
 
