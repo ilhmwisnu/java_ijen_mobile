@@ -209,14 +209,15 @@ class _HomeOwnerState extends State<HomeOwner> {
               imgPath: "assets/permintaan_sampel.png",
               onTap: () {
                 Navigator.pushNamed(context, SampleScreen.routeName,
-                    arguments: widget.userData);
+                    arguments: [widget.userData, "sampel"]);
               },
             ),
             MenuPemb(
               title: "Transaksi Berlangsung",
               imgPath: "assets/transaksi_berlangsung.png",
               onTap: () {
-                // Navigator.pushNamed(context, LahanScreen.routeName);
+                Navigator.pushNamed(context, SampleScreen.routeName,
+                    arguments: [widget.userData, "pemesanan"]);
               },
             ),
             MenuPemb(

@@ -1,12 +1,22 @@
 import 'package:java_ijen_mobile/screen/MainScreen/product/produk.dart';
 
 class Transaksi {
-  String user, namaRek, noRek, prov, kota, alamat, ekspedisi, status, imgUrl;
+  String transId,
+      user,
+      namaRek,
+      noRek,
+      prov,
+      kota,
+      alamat,
+      ekspedisi,
+      status,
+      imgUrl;
   late int ongkir, jumlah;
   late DateTime waktuPesan;
   Produk produk;
 
   Transaksi(
+      this.transId,
       this.user,
       this.namaRek,
       this.noRek,

@@ -7,8 +7,13 @@ class TransCard extends StatelessWidget {
   late Transaksi transaksi;
   Function()? onClickUbah;
   Function()? onClickSelesai;
+  String role;
 
-  TransCard({Key? key, required this.transaksi, required this.onClickUbah})
+  TransCard(
+      {Key? key,
+      required this.transaksi,
+      required this.onClickUbah,
+      required this.role})
       : super(key: key);
 
   @override
@@ -93,48 +98,71 @@ class TransCard extends StatelessWidget {
           ),
           SizedBox(height: 4),
           Divider(),
-          DateTime.now().difference(transaksi.waktuPesan).inHours < 2
-              ? Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        child: Text(
-                            "Anda hanya dapat mengubah pesanan kurang dari 2 jam setelah pemesanan "),
-                      ),
-                    ),
-                    ElevatedButton(
-                        style: ButtonStyle(
-                            elevation: MaterialStateProperty.all(0),
-                            backgroundColor: MaterialStateProperty.all(
-                                Colors.grey.shade500)),
-                        onPressed: onClickUbah,
-                        child: Text("Ubah"))
-                  ],
-                )
-              : transaksi.status == "Dalam Proses"
-                  ? Row(
-                      children: [
-                        // Expanded(
-                        //   child: Container(
-                        //     child: Text(
-                        //         "Anda hanya dapat mengubah pesanan kurang dari 2 jam setelah pemesanan "),
-                        //   ),
-                        // ),
-                        ElevatedButton(
-                            style: ButtonStyle(
-                                elevation: MaterialStateProperty.all(0),
-                                backgroundColor: MaterialStateProperty.all(
-                                    Colors.green.shade500)),
-                            onPressed: onClickSelesai,
-                            child: Text(
-                              "Pesanan Diterima",
-                              style: TextStyle(color: Colors.black),
-                            ))
-                      ],
-                    )
-                  : Row()
+          role == "pembeli" ? Pembeli() : Admin()
         ],
       ),
+    );
+  }
+
+  Widget Pembeli() {
+    return DateTime.now().difference(transaksi.waktuPesan).inHours < 2
+        ? Row(
+            children: [
+              Expanded(
+                child: Container(
+                  child: Text(
+                      "Anda hanya dapat mengubah pesanan kurang dari 2 jam setelah pemesanan "),
+                ),
+              ),
+              ElevatedButton(
+                  style: ButtonStyle(
+                      elevation: MaterialStateProperty.all(0),
+                      backgroundColor:
+                          MaterialStateProperty.all(Colors.grey.shade500)),
+                  onPressed: onClickUbah,
+                  child: Text("Ubah"))
+            ],
+          )
+        : transaksi.status == "Dalam Proses"
+            ? Row(
+                children: [
+                  // Expanded(
+                  //   child: Container(
+                  //     child: Text(
+                  //         "Anda hanya dapat mengubah pesanan kurang dari 2 jam setelah pemesanan "),
+                  //   ),
+                  // ),
+                  ElevatedButton(
+                      style: ButtonStyle(
+                          elevation: MaterialStateProperty.all(0),
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.green.shade500)),
+                      onPressed: onClickSelesai,
+                      child: Text(
+                        "Pesanan Diterima",
+                        style: TextStyle(color: Colors.black),
+                      ))
+                ],
+              )
+            : Row();
+  }
+
+  Widget Admin() {
+    return Row(
+      children: [
+        Expanded(
+          child: Container(
+            child: Text("Ubah status transaksi"),
+          ),
+        ),
+        ElevatedButton(
+            style: ButtonStyle(
+                elevation: MaterialStateProperty.all(0),
+                backgroundColor:
+                    MaterialStateProperty.all(Colors.grey.shade500)),
+            onPressed: onClickUbah,
+            child: Text("Ubah"))
+      ],
     );
   }
 }

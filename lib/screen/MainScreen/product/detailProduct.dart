@@ -130,14 +130,14 @@ class _DetailProductState extends State<DetailProduct> {
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w600),
                       ),
-                      Text("Rembangan"),
+                      Text(_lahanData.alamat),
                       SizedBox(height: 16),
                       Text(
                         "Pemilik lahan",
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w600),
                       ),
-                      Text("Bapak Tejo")
+                      Text(_petaniData.nama)
                     ],
                   ),
                 )

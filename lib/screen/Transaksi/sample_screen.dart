@@ -67,7 +67,11 @@ class _SampleScreenState extends State<SampleScreen> {
               itemCount: _listTransaksi.length,
               itemBuilder: (BuildContext context, int index) {
                 return TransCard(
-                    transaksi: _listTransaksi[index], onClickUbah: () {});
+                    transaksi: _listTransaksi[index],
+                    onClickUbah: () {
+                      print("ye");
+                    },
+                    role: user.role);
               },
             ),
     );

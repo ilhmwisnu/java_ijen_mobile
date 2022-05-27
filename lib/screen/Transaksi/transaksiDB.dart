@@ -22,6 +22,7 @@ class TransaksiDB {
 
     final root = await ref.get();
     for (final id in await root.children) {
+      String transId = id.key.toString();
       String user = "";
       String namaRek = "";
       String noRek = "";
@@ -35,7 +36,7 @@ class TransaksiDB {
       String status = "";
       String imgUrl = "";
       String jumlah = "0";
-      final firstChild = await ref.child(id.key.toString()).get();
+      final firstChild = await ref.child(transId).get();
 
       for (final col in firstChild.children) {
         if (col.key == "namaRekening") {
@@ -81,12 +82,93 @@ class TransaksiDB {
         if (status != "Selesai") {
           trans.insert(
               trans.length,
-              Transaksi(user, namaRek, noRek, produk, prov, kota, alamat,
-                  ekspedisi, ongkir, waktuPesan, status, imgUrl, jumlah));
+              Transaksi(
+                  transId,
+                  user,
+                  namaRek,
+                  noRek,
+                  produk,
+                  prov,
+                  kota,
+                  alamat,
+                  ekspedisi,
+                  ongkir,
+                  waktuPesan,
+                  status,
+                  imgUrl,
+                  jumlah));
         }
       }
     }
     return trans;
+  }
+
+  Future<Transaksi> getTransById(String transId, String page) async {
+    late DatabaseReference ref;
+    if (page == "sampel") {
+      ref = FirebaseDatabase.instance.ref('permintaan_sampel/$transId');
+    } else if (page == "pemesanan") {
+      ref = FirebaseDatabase.instance.ref('pemesanan_produk/$transId');
+    }
+
+    String user = "";
+    String namaRek = "";
+    String noRek = "";
+    late Produk produk;
+    String prov = "";
+    String kota = "";
+    String alamat = "";
+    String ekspedisi = "";
+    String ongkir = "";
+    String waktuPesan = "";
+    String status = "";
+    String imgUrl = "";
+    String jumlah = "0";
+
+    final child = await ref.get();
+    for (final col in child.children) {
+      if (col.key == "namaRekening") {
+        namaRek = col.value.toString();
+      }
+      if (col.key == "nomorRekening") {
+        noRek = col.value.toString();
+      }
+      if (col.key == "idProduk") {
+        final _prod = ProdukDB();
+        produk = await _prod.getDataById(col.value.toString());
+        imgUrl = await _prod.getProductImg(col.value.toString());
+      }
+      if (col.key == "provinsi") {
+        prov = col.value.toString();
+      }
+      if (col.key == "kota") {
+        kota = col.value.toString();
+      }
+      if (col.key == "alamat") {
+        alamat = col.value.toString();
+      }
+      if (col.key == "biayaOngkir") {
+        ongkir = col.value.toString();
+      }
+      if (col.key == "layananEkspedisi") {
+        ekspedisi = col.value.toString();
+      }
+      if (col.key == "waktuPemesanan") {
+        waktuPesan = col.value.toString();
+      }
+      if (col.key == "status") {
+        status = col.value.toString();
+      }
+      if (col.key == "jumlah") {
+        jumlah = col.value.toString();
+      }
+      if (col.key == "user") {
+        user = col.value.toString();
+      }
+    }
+    Transaksi transItem = Transaksi(transId, user, namaRek, noRek, produk, prov,
+        kota, alamat, ekspedisi, ongkir, waktuPesan, status, imgUrl, jumlah);
+    return transItem;
   }
 
   Future<void> AddSampleRequest(
@@ -113,7 +195,7 @@ class TransaksiDB {
       'layananEkspedisi': ekspedisi.namaLayanan,
       'biayaOngkir': ekspedisi.harga,
       'waktuPemesanan': DateTime.now().toString(),
-      'status': 'Menunggu konfirmasi',
+      'status': 'Menunggu Konfirmasi',
       'user': userId
     });
 
@@ -153,11 +235,31 @@ class TransaksiDB {
       "user": userId
     });
 
+    DatabaseReference ref2 =
+        FirebaseDatabase.instance.ref('produk/-N2jv6-7tNGg6Rbs7R9Q');
+    final dbJumlah = await ref2.child('/jumlah').get();
+    ref2.update({'jumlah': int.parse(dbJumlah.value.toString()) - jumlah});
+
     final orderId = newChild.key.toString();
 
     final fileName = "$orderId.jpg";
     print("$pathBuktiTf");
     final storageRef = FirebaseStorage.instance.ref("pesanTF/$fileName");
     await storageRef.putFile(File(pathBuktiTf)).then((p0) => print("Done"));
+  }
+
+  Future<String> getBuktiImg(id, page) async {
+    FirebaseStorage _storage = FirebaseStorage.instance;
+    // ref;
+    final fileName = "$id.jpg";
+    //if (page=="sampel"){
+    final ref = _storage.ref("sampleTF/$fileName");
+    print(ref.runtimeType);
+    //} else if (page=="pemesanan"){
+
+    //}
+
+    final res = await ref.getDownloadURL();
+    return res;
   }
 }
