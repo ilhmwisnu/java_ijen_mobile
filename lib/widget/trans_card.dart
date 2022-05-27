@@ -6,12 +6,15 @@ import 'package:intl/intl.dart';
 class TransCard extends StatelessWidget {
   late Transaksi transaksi;
   Function()? onClickUbah;
+  Function()? onClickSelesai;
+
   TransCard({Key? key, required this.transaksi, required this.onClickUbah})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     DateFormat formatter = DateFormat('dd-MM-yyyy');
+    NumberFormat nominal = NumberFormat("#,##0", "en_US");
     return Container(
       margin: EdgeInsets.only(bottom: defaultPadding),
       padding: EdgeInsets.all(defaultPadding),
@@ -40,7 +43,9 @@ class TransCard extends StatelessWidget {
                 transaksi.status,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Colors.amber.shade600,
+                  color: transaksi.status == "Menunggu konfirmasi"
+                      ? Colors.amber.shade600
+                      : Colors.green.shade600,
                 ),
               )
             ],
@@ -68,7 +73,11 @@ class TransCard extends StatelessWidget {
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
                   ),
                   Text(
-                    "Gratis",
+                    transaksi.jumlah == 0
+                        ? "Gratis"
+                        : "Rp. " +
+                            nominal.format(int.parse(transaksi.produk.harga)) +
+                            "/kg",
                     style: TextStyle(fontSize: 16),
                   ),
                 ],
@@ -77,28 +86,53 @@ class TransCard extends StatelessWidget {
           ),
           SizedBox(height: 12),
           Text(
-            "Total : Rp " + transaksi.ongkir.toString(),
+            "Total : Rp " +
+                nominal.format(transaksi.ongkir +
+                    (int.parse(transaksi.produk.harga) * transaksi.jumlah)),
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
           ),
           SizedBox(height: 4),
           Divider(),
-          Row(
-            children: [
-              Expanded(
-                child: Container(
-                  child: Text(
-                      "Anda hanya dapat mengubah pesanan kurang dari 2 jam setelah pemesanan "),
-                ),
-              ),
-              ElevatedButton(
-                  style: ButtonStyle(
-                      elevation: MaterialStateProperty.all(0),
-                      backgroundColor:
-                          MaterialStateProperty.all(Colors.grey.shade500)),
-                  onPressed: onClickUbah,
-                  child: Text("Ubah"))
-            ],
-          )
+          DateTime.now().difference(transaksi.waktuPesan).inHours < 2
+              ? Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        child: Text(
+                            "Anda hanya dapat mengubah pesanan kurang dari 2 jam setelah pemesanan "),
+                      ),
+                    ),
+                    ElevatedButton(
+                        style: ButtonStyle(
+                            elevation: MaterialStateProperty.all(0),
+                            backgroundColor: MaterialStateProperty.all(
+                                Colors.grey.shade500)),
+                        onPressed: onClickUbah,
+                        child: Text("Ubah"))
+                  ],
+                )
+              : transaksi.status == "Dalam Proses"
+                  ? Row(
+                      children: [
+                        // Expanded(
+                        //   child: Container(
+                        //     child: Text(
+                        //         "Anda hanya dapat mengubah pesanan kurang dari 2 jam setelah pemesanan "),
+                        //   ),
+                        // ),
+                        ElevatedButton(
+                            style: ButtonStyle(
+                                elevation: MaterialStateProperty.all(0),
+                                backgroundColor: MaterialStateProperty.all(
+                                    Colors.green.shade500)),
+                            onPressed: onClickSelesai,
+                            child: Text(
+                              "Pesanan Diterima",
+                              style: TextStyle(color: Colors.black),
+                            ))
+                      ],
+                    )
+                  : Row()
         ],
       ),
     );

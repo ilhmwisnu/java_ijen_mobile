@@ -10,9 +10,15 @@ import 'package:java_ijen_mobile/screen/Transaksi/transaksi.dart';
 import '../../utils/cost.dart';
 
 class TransaksiDB {
-  Future<List<Transaksi>> getOnProgressSample(String uid, String role) async {
+  Future<List<Transaksi>> getOnProgressSample(
+      String uid, String role, String page) async {
     final List<Transaksi> trans = [];
-    DatabaseReference ref = FirebaseDatabase.instance.ref('permintaan_sampel');
+    late DatabaseReference ref;
+    if (page == "sampel") {
+      ref = FirebaseDatabase.instance.ref('permintaan_sampel');
+    } else if (page == "pemesanan") {
+      ref = FirebaseDatabase.instance.ref('pemesanan_produk');
+    }
 
     final root = await ref.get();
     for (final id in await root.children) {
@@ -72,10 +78,12 @@ class TransaksiDB {
         }
       }
       if (uid == user || role == 'admin') {
-        trans.insert(
-            trans.length,
-            Transaksi(user, namaRek, noRek, produk, prov, kota, alamat,
-                ekspedisi, ongkir, waktuPesan, status, imgUrl, jumlah));
+        if (status != "Selesai") {
+          trans.insert(
+              trans.length,
+              Transaksi(user, namaRek, noRek, produk, prov, kota, alamat,
+                  ekspedisi, ongkir, waktuPesan, status, imgUrl, jumlah));
+        }
       }
     }
     return trans;

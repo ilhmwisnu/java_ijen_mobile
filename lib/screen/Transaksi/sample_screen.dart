@@ -21,24 +21,30 @@ class SampleScreen extends StatefulWidget {
 class _SampleScreenState extends State<SampleScreen> {
   bool isInit = false;
   bool _isLoading = false;
+  late UserData user;
+  String page = "";
   String uid = "";
   List<Transaksi> _listTransaksi = [];
 
   @override
   void didChangeDependencies() {
     if (!isInit) {
-      final user = ModalRoute.of(context)!.settings.arguments as UserData;
+      final arg = ModalRoute.of(context)!.settings.arguments as List;
+      user = arg[0];
+      page = arg[1];
+      print("Showing " + page + ", User : " + user.name);
       final userId = FirebaseAuth.instance.currentUser!.uid;
-      fetchData(userId, user.role);
+      fetchData(userId, user.role, page);
     }
     super.didChangeDependencies();
   }
 
-  void fetchData(userId, role) async {
+  void fetchData(userId, role, page) async {
     setState(() {
       _isLoading = true;
     });
-    _listTransaksi = await TransaksiDB().getOnProgressSample(userId, role);
+    _listTransaksi =
+        await TransaksiDB().getOnProgressSample(userId, role, page);
     setState(() {
       _isLoading = false;
     });
@@ -50,7 +56,9 @@ class _SampleScreenState extends State<SampleScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: darkGrey,
-        title: Text("Permintaan Sample"),
+        title: page == "sampel"
+            ? Text("Permintaan Sample")
+            : Text("Transaksi Berlangsung"),
       ),
       body: (_isLoading)
           ? Center(child: const CircularProgressIndicator())
