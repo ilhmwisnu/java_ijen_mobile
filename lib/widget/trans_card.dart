@@ -43,7 +43,7 @@ class TransCard extends StatelessWidget {
                 transaksi.status,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: transaksi.status == "Menunggu konfirmasi"
+                  color: transaksi.status == "Menunggu Konfirmasi"
                       ? Colors.amber.shade600
                       : Colors.green.shade600,
                 ),
