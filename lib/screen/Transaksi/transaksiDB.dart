@@ -20,6 +20,7 @@ class TransaksiDB {
       ref = FirebaseDatabase.instance.ref('pemesanan_produk');
     }
 
+    //TODO : nyambil url bukti transfer taruh di class Transaksi
     final root = await ref.get();
     for (final id in await root.children) {
       String transId = id.key.toString();
