@@ -44,8 +44,13 @@ class _TransScreenState extends State<TransScreen> {
     setState(() {
       _isLoading = true;
     });
-    _listTransaksi =
-        await TransaksiDB().getOnProgressSample(userId, role, page);
+
+    if (page == "sampel") {
+      _listTransaksi =
+          await TransaksiDB().getOnProgressSample(userId, role, page);
+    } else {
+      // _listTransaksi = await TransaksiDB()   //TODO : belom ada funct ambil
+    }
     setState(() {
       _isLoading = false;
     });
@@ -74,7 +79,11 @@ class _TransScreenState extends State<TransScreen> {
                               arguments: [_listTransaksi[index], user, page])
                           .whenComplete(() => fetchData(uid, user.role, page));
                     },
-                    onClickSelesai: () {},
+                    onClickSelesai: () {
+                      TransaksiDB().updateTrans(_listTransaksi[index].transId,
+                          page, "admin", "-", "Selesai", "-", "-");
+                      fetchData(uid, user.role, page);
+                    },
                     role: user.role);
               },
             ),

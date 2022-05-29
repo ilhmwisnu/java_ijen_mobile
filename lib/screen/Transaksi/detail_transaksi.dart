@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:java_ijen_mobile/const.dart';
+import 'package:java_ijen_mobile/screen/Transaksi/detailBuktiTF_screen.dart';
 import 'package:java_ijen_mobile/screen/Transaksi/transaksi.dart';
 import 'package:java_ijen_mobile/screen/Transaksi/transaksiDB.dart';
 import 'package:java_ijen_mobile/utils/auth.dart';
@@ -67,60 +68,60 @@ class _DetailTransaksiState extends State<DetailTransaksi> {
               child: Padding(
                 padding: EdgeInsets.all(defaultPadding),
                 child: Container(
-            width: double.infinity,
-            padding: EdgeInsets.all(defaultPadding),
-            decoration: BoxDecoration(
-                boxShadow: shadow,
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(15)),
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        height: 70,
-                        width: 70,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(4),
-                            image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: NetworkImage(transaksi.imgUrl))),
-                      ),
-                      SizedBox(width: 8),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(transaksi.transId,
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.grey.shade500)),
-                          Text(
-                            transaksi.produk.nama,
-                            style: TextStyle(
-                                fontSize: 27,
-                                fontWeight: FontWeight.w700),
-                          ),
-                          Text(
-                              (transaksi.jumlah == 0)
+                  width: double.infinity,
+                  padding: EdgeInsets.all(defaultPadding),
+                  decoration: BoxDecoration(
+                      boxShadow: shadow,
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(15)),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              height: 70,
+                              width: 70,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(4),
+                                  image: DecorationImage(
+                                      fit: BoxFit.cover,
+                                      image: NetworkImage(transaksi.imgUrl))),
+                            ),
+                            SizedBox(width: 8),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(transaksi.transId,
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.grey.shade500)),
+                                Text(
+                                  transaksi.produk.nama,
+                                  style: TextStyle(
+                                      fontSize: 27,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                                Text(
+                                    (transaksi.jumlah == 0)
                                         ? "Gratis"
                                         : "Rp " +
                                             nominal.format(int.parse(
                                                 transaksi.produk.harga)) +
                                             "/kg",
                                     style: TextStyle(fontSize: 16)),
-                        ],
-                      )
-                    ],
-                  ),
-                  SizedBox(height: 8),
-                  Divider(),
-                  SizedBox(height: 8),
-                  Text("Info Pengiriman",
-                      style: TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.w500)),
+                              ],
+                            )
+                          ],
+                        ),
+                        SizedBox(height: 8),
+                        Divider(),
+                        SizedBox(height: 8),
+                        Text("Info Pengiriman",
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w500)),
                         SizedBox(height: 4),
                         Row(
                           children: [
@@ -131,7 +132,7 @@ class _DetailTransaksiState extends State<DetailTransaksi> {
                             Flexible(child: Text(transaksi.ekspedisi), flex: 3),
                           ],
                         ),
-                        userData.role == "admin"
+                        (userData.role == "admin")
                             ? Row(
                                 children: [
                                   Flexible(
@@ -150,31 +151,38 @@ class _DetailTransaksiState extends State<DetailTransaksi> {
                             : Column(
                                 children: [
                                   Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Flexible(
                                           child: Text("Alamat"),
                                           flex: 2,
                                           fit: FlexFit.tight),
                                       Flexible(
-                                          child: DateTime.now()
+                                          child: (DateTime.now()
                                                       .difference(
                                                           transaksi.waktuPesan)
                                                       .inHours <
-                                                  2 //TODO ganti < ke > untuk debug detail trans pembeli
-                                              ? TextField(
-                                                  minLines: 1,
-                                                  maxLines: 1,
-                                                  controller: _alamatController,
-                                                  decoration: InputDecoration(
-                                                      //label: Text("Alamat"),
-                                                      hintText:
-                                                          transaksi.alamat,
-                                                      border:
-                                                          OutlineInputBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          8))))
+                                                  2) //TODO ganti < ke > untuk debug detail trans pembeli
+                                              ? Column(
+                                                  children: [
+                                                    SizedBox(height: 8),
+                                                    TextField(
+                                                        minLines: 1,
+                                                        maxLines: 1,
+                                                        controller:
+                                                            _alamatController,
+                                                        decoration: InputDecoration(
+                                                            hintText: transaksi
+                                                                .alamat,
+                                                            border: OutlineInputBorder(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            8)))),
+                                                    SizedBox(height: 8),
+                                                  ],
+                                                )
                                               : Text(transaksi.alamat),
                                           flex: 3),
                                     ],
@@ -233,78 +241,78 @@ class _DetailTransaksiState extends State<DetailTransaksi> {
                                           : Text(transaksi.resi.toString()),
                                       flex: 3),
                                 ],
-                  ),
-                  SizedBox(height: 20),
-                  Text("Info Pesanan",
-                      style: TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.w500)),
-                  SizedBox(height: 4),
-                  Row(
-                    children: [
-                      Flexible(
-                          child: Text("Ongkir"),
-                          flex: 2,
-                          fit: FlexFit.tight),
-                      Flexible(
-                          child: Text(
+                              ),
+                        SizedBox(height: 20),
+                        Text("Info Pesanan",
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w500)),
+                        SizedBox(height: 4),
+                        Row(
+                          children: [
+                            Flexible(
+                                child: Text("Ongkir"),
+                                flex: 2,
+                                fit: FlexFit.tight),
+                            Flexible(
+                                child: Text(
                                     "Rp " + nominal.format(transaksi.ongkir)),
                                 flex: 3),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Flexible(
-                          child: Text("Jumlah (kg)"),
-                          flex: 2,
-                          fit: FlexFit.tight),
-                      Flexible(
-                          child:
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Flexible(
+                                child: Text("Jumlah (kg)"),
+                                flex: 2,
+                                fit: FlexFit.tight),
+                            Flexible(
+                                child:
                                     Text(transaksi.jumlah.toString() + " kg"),
                                 flex: 3),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Flexible(
-                          child: Text("Total pembayaran"),
-                          flex: 2,
-                          fit: FlexFit.tight),
-                      Flexible(
-                          child: Text("Rp " +
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Flexible(
+                                child: Text("Total pembayaran"),
+                                flex: 2,
+                                fit: FlexFit.tight),
+                            Flexible(
+                                child: Text("Rp " +
                                     nominal.format(transaksi.ongkir +
                                         transaksi.jumlah *
                                             int.parse(transaksi.produk.harga))),
                                 flex: 3),
-                    ],
-                  ),
-                  SizedBox(height: 16),
-                  Text("Info Pembayaran",
-                      style: TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.w500)),
-                  SizedBox(height: 4),
-                  Row(
-                    children: [
-                      Flexible(
-                          child: Text("Nama rekening"),
-                          flex: 2,
-                          fit: FlexFit.tight),
-                      Flexible(child: Text(transaksi.namaRek), flex: 3),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Flexible(
-                          child: Text("Nomor rekening"),
-                          flex: 2,
-                          fit: FlexFit.tight),
-                      Flexible(child: Text(transaksi.noRek), flex: 3),
-                    ],
-                  ),
-                  SizedBox(height: 12),
-                  GestureDetector(
-                      onTap: () async {
+                          ],
+                        ),
+                        SizedBox(height: 16),
+                        Text("Info Pembayaran",
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w500)),
+                        SizedBox(height: 4),
+                        Row(
+                          children: [
+                            Flexible(
+                                child: Text("Nama rekening"),
+                                flex: 2,
+                                fit: FlexFit.tight),
+                            Flexible(child: Text(transaksi.namaRek), flex: 3),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Flexible(
+                                child: Text("Nomor rekening"),
+                                flex: 2,
+                                fit: FlexFit.tight),
+                            Flexible(child: Text(transaksi.noRek), flex: 3),
+                          ],
+                        ),
+                        SizedBox(height: 12),
+                        GestureDetector(
+                            onTap: () async {
                               if (userData.role == "admin") {
-                                //TODO : Navigate ke foto bukti transfer
+                                Navigator.pushNamed(context, BuktiTF.routeName, arguments: imgUrl);
                               } else {
                                 if (DateTime.now()
                                         .difference(transaksi.waktuPesan)
@@ -324,16 +332,16 @@ class _DetailTransaksiState extends State<DetailTransaksi> {
                                     });
                                   }
                                 } else {
-                                  //TODO : Navigate ke foto bukti transfer
+                                  Navigator.pushNamed(context, BuktiTF.routeName, arguments: imgUrl);
                                 }
                               }
                             },
-                      child: Stack(
-                        children: [
-                          Container(
-                            width: double.maxFinite,
+                            child: Stack(
+                              children: [
+                                Container(
+                                  width: double.maxFinite,
                                   height:
-                                      MediaQuery.of(context).size.width * 3 / 5,
+                                      MediaQuery.of(context).size.width * 2 / 5,
                                   decoration: BoxDecoration(
                                       color: (filePath == null ||
                                               filePath == "" ||
@@ -353,18 +361,18 @@ class _DetailTransaksiState extends State<DetailTransaksi> {
                                               fit: BoxFit.cover,
                                               image:
                                                   FileImage(File(filePath)))),
-                          ),
-                          Positioned(
-                            top: 0,
-                            bottom: 0,
-                            right: 0,
-                            left: 0,
-                            child: Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      (userData.role == "admin")
+                                ),
+                                Positioned(
+                                  top: 0,
+                                  bottom: 0,
+                                  right: 0,
+                                  left: 0,
+                                  child: Center(
+                                      child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        (userData.role == "admin")
                                             ? "View photo"
                                             : DateTime.now()
                                                         .difference(transaksi
@@ -381,9 +389,9 @@ class _DetailTransaksiState extends State<DetailTransaksi> {
                               ],
                             )),
                         SizedBox(height: 12),
-                        userData.role == "admin" &&
+                        (userData.role == "admin" &&
                                 !(transaksi.status == "Selesai" ||
-                                    transaksi.status == "Dibatalkan")
+                                    transaksi.status == "Dibatalkan"))
                             ? DropdownButton(
                                 underline: Text(""),
                                 isExpanded: true,
@@ -453,10 +461,10 @@ class _DetailTransaksiState extends State<DetailTransaksi> {
                                       child: Text("Simpan")),
                                 ],
                               )
-                            : DateTime.now()
+                            : (DateTime.now()
                                         .difference(transaksi.waktuPesan)
                                         .inHours <
-                                    2 //TODO ganti < ke > untuk debug detail trans pembeli
+                                    2) //TODO ganti < ke > untuk debug detail trans pembeli
                                 ? Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
@@ -514,9 +522,9 @@ class _DetailTransaksiState extends State<DetailTransaksi> {
                         //         ? null
                         //         : null
                       ]),
-          ),
-        ),
-      ),
+                ),
+              ),
+            ),
     );
   }
 }

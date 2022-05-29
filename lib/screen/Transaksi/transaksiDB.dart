@@ -16,11 +16,10 @@ class TransaksiDB {
     late DatabaseReference ref;
     if (page == "sampel") {
       ref = FirebaseDatabase.instance.ref('permintaan_sampel');
-    } else if (page == "pemesanan") {
+    } else {
       ref = FirebaseDatabase.instance.ref('pemesanan_produk');
     }
 
-    //TODO : nyambil url bukti transfer taruh di class Transaksi
     final root = await ref.get();
     for (final id in await root.children) {
       String transId = id.key.toString();
@@ -83,8 +82,9 @@ class TransaksiDB {
           resi = col.value.toString();
         }
       }
-      if (uid == user || role == 'admin' && page == 'sampel') {
-        if (status != "Selesai" || status != "Dibatalkan") {
+      if (uid == user || role == 'admin') {
+        if (status == 'Dalam Proses' || status == "Menunggu Konfirmasi") {
+          // print(status);
           trans.insert(
               trans.length,
               Transaksi(
@@ -106,6 +106,11 @@ class TransaksiDB {
         }
       }
     }
+    trans.sort((a, b) {
+      return DateTime.now()
+          .difference(a.waktuPesan)
+          .compareTo(DateTime.now().difference(b.waktuPesan));
+    });
     return trans;
   }
 

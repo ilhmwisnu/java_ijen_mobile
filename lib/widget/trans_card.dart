@@ -19,7 +19,7 @@ class TransCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DateFormat formatter = DateFormat('dd-MM-yyyy');
+    DateFormat formatter = DateFormat('dd-MM-yyyy  HH:mm');
     NumberFormat nominal = NumberFormat("#,##0", "en_US");
     return GestureDetector(
       child: Container(
@@ -34,85 +34,86 @@ class TransCard extends StatelessWidget {
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Icon(
-                    Icons.calendar_today_rounded,
-                    color: darkGrey,
-                    size: 20,
-                  ),
-                  SizedBox(width: 8),
-                  Text(formatter.format(transaksi.waktuPesan))
-                ],
-              ),
-              Text(
-                transaksi.status,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                    color: transaksi.status == "Menunggu Konfirmasi"
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      Icons.calendar_today_rounded,
+                      color: darkGrey,
+                      size: 20,
+                    ),
+                    SizedBox(width: 8),
+                    Text(formatter.format(transaksi.waktuPesan))
+                  ],
+                ),
+                Text(
+                  transaksi.status,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: (transaksi.status == "Menunggu Konfirmasi" ||
+                            transaksi.status == "Dalam Proses")
                         ? Colors.amber.shade600
-                        : transaksi.status == "Dalam Proses"
-                            ? Colors.green.shade600
-                            : transaksi.status == "Dibatalkan"
-                                ? Colors.red.shade600
-                                : Colors.black,
+                        : transaksi.status == "Dibatalkan"
+                            ? Colors.grey.shade500
+                            : green,
                   ),
-              )
-            ],
-          ),
-          SizedBox(height: 12),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                height: 50,
-                width: 50,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4),
-                    image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: NetworkImage(transaksi.imgUrl))),
-              ),
-              SizedBox(width: 8),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    transaksi.produk.nama,
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
-                  ),
-                  Text(
-                    transaksi.jumlah == 0
-                        ? "Gratis"
-                        : "Rp. " +
-                            nominal.format(int.parse(transaksi.produk.harga)) +
-                            "/kg",
-                    style: TextStyle(fontSize: 16),
-                  ),
-                ],
-              )
+                )
               ],
             ),
             SizedBox(height: 12),
-            Text(
-              "Total : Rp " +
-                  nominal.format(transaksi.ongkir +
-                      (int.parse(transaksi.produk.harga) * transaksi.jumlah)),
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  height: 50,
+                  width: 50,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                      image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: NetworkImage(transaksi.imgUrl))),
+                ),
+                SizedBox(width: 8),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      transaksi.produk.nama,
+                      style:
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
+                    ),
+                    Text(
+                      transaksi.jumlah == 0
+                          ? "Gratis"
+                          : "Rp. " +
+                              nominal
+                                  .format(int.parse(transaksi.produk.harga)) +
+                              "/kg",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ],
+                )
+              ],
             ),
-            SizedBox(height: 4),
-            role == "pembeli" && transaksi.status == "Dalam Proses"
-                ? Divider()
-                : SizedBox(
-                    height: 0,
-                  ),
-            role == "pembeli"
-                ? Pembeli()
-                : SizedBox(
-                    height: 0,
-                  ) //Admin()
+            SizedBox(height: 12),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Total : Rp " +
+                      nominal.format(transaksi.ongkir +
+                          (int.parse(transaksi.produk.harga) *
+                              transaksi.jumlah)),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                ),
+                role == "pembeli"
+                    ? Pembeli()
+                    : SizedBox(
+                        height: 0,
+                      )
+              ],
+            ),
           ],
         ),
       ),
@@ -122,26 +123,17 @@ class TransCard extends StatelessWidget {
 
   Widget Pembeli() {
     return transaksi.status == "Dalam Proses"
-        ? Row(
-            children: [
-              // Expanded(
-              //   child: Container(
-              //     child: Text(
-              //         "Anda hanya dapat mengubah pesanan kurang dari 2 jam setelah pemesanan "),
-              //   ),
-              // ),
-              ElevatedButton(
-                  style: ButtonStyle(
-                      elevation: MaterialStateProperty.all(0),
-                backgroundColor:
-                MaterialStateProperty.all(Colors.green.shade500)),
+        ? ElevatedButton(
+            style: ButtonStyle(
+                padding: MaterialStateProperty.all(
+                    EdgeInsets.symmetric(horizontal: 8, vertical: 0)),
+                elevation: MaterialStateProperty.all(0),
+                backgroundColor: MaterialStateProperty.all(green)),
             onPressed: onClickSelesai,
             child: Text(
               "Pesanan Diterima",
-              style: TextStyle(color: Colors.black),
+              style: TextStyle(color: Colors.white, fontSize: 12),
             ))
-      ],
-    )
         : SizedBox(height: 0);
   }
 

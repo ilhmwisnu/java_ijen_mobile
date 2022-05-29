@@ -9,6 +9,7 @@ import 'package:java_ijen_mobile/screen/Petani/editPetani_screen.dart';
 import 'package:java_ijen_mobile/screen/Petani/petani_screen.dart';
 import 'package:java_ijen_mobile/screen/Lahan/lahan_screen.dart';
 import 'package:java_ijen_mobile/screen/Lahan/addLahan_screen.dart';
+import 'package:java_ijen_mobile/screen/Transaksi/detailBuktiTF_screen.dart';
 import 'package:java_ijen_mobile/screen/Transaksi/detail_transaksi.dart';
 import 'package:java_ijen_mobile/screen/Transaksi/notifikasiPesanan.dart';
 import 'package:java_ijen_mobile/screen/Transaksi/pesanProduk_screen.dart';
@@ -49,7 +50,8 @@ class MyApp extends StatelessWidget {
         KonfirmasiPesanan.routeName: (context) => KonfirmasiPesanan(),
         PesanProduk.routeName: (context) => PesanProduk(),
         TransScreen.routeName: (context) => TransScreen(),
-        DetailTransaksi.routeName: (context) => DetailTransaksi()
+        DetailTransaksi.routeName: (context) => DetailTransaksi(),
+        BuktiTF.routeName: (context) => BuktiTF()
       },
       initialRoute: LoginScreen.routeName,
     );
