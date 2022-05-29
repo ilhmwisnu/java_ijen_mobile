@@ -37,6 +37,7 @@ class TransaksiDB {
       String status = "";
       String imgUrl = "";
       String jumlah = "0";
+      String resi = "";
       final firstChild = await ref.child(transId).get();
 
       for (final col in firstChild.children) {
@@ -78,9 +79,12 @@ class TransaksiDB {
         if (col.key == "user") {
           user = col.value.toString();
         }
+        if (col.key == "resi") {
+          resi = col.value.toString();
+        }
       }
-      if (uid == user || role == 'admin') {
-        if (status != "Selesai") {
+      if (uid == user || role == 'admin' && page == 'sampel') {
+        if (status != "Selesai" || status != "Dibatalkan") {
           trans.insert(
               trans.length,
               Transaksi(
@@ -97,7 +101,8 @@ class TransaksiDB {
                   waktuPesan,
                   status,
                   imgUrl,
-                  jumlah));
+                  jumlah,
+                  resi));
         }
       }
     }
@@ -125,6 +130,7 @@ class TransaksiDB {
     String status = "";
     String imgUrl = "";
     String jumlah = "0";
+    String resi = "";
 
     final child = await ref.get();
     for (final col in child.children) {
@@ -166,9 +172,26 @@ class TransaksiDB {
       if (col.key == "user") {
         user = col.value.toString();
       }
+      if (col.key == "resi") {
+        resi = col.value.toString();
+      }
     }
-    Transaksi transItem = Transaksi(transId, user, namaRek, noRek, produk, prov,
-        kota, alamat, ekspedisi, ongkir, waktuPesan, status, imgUrl, jumlah);
+    Transaksi transItem = Transaksi(
+        transId,
+        user,
+        namaRek,
+        noRek,
+        produk,
+        prov,
+        kota,
+        alamat,
+        ekspedisi,
+        ongkir,
+        waktuPesan,
+        status,
+        imgUrl,
+        jumlah,
+        resi);
     return transItem;
   }
 
@@ -250,17 +273,48 @@ class TransaksiDB {
   }
 
   Future<String> getBuktiImg(id, page) async {
-    FirebaseStorage _storage = FirebaseStorage.instance;
-    // ref;
-    final fileName = "$id.jpg";
-    //if (page=="sampel"){
-    final ref = _storage.ref("sampleTF/$fileName");
-    print(ref.runtimeType);
-    //} else if (page=="pemesanan"){
-
-    //}
+    final filename = "$id.jpg";
+    FirebaseStorage storage = FirebaseStorage.instance;
+    late Reference ref;
+    if (page == "sampel") {
+      ref = storage.ref("sampleTF/$filename");
+    } else if (page == "pemesanan") {
+      ref = storage.ref("buktiTF/$filename");
+    }
 
     final res = await ref.getDownloadURL();
     return res;
+  }
+
+  Future<void> updateTrans(String transId, String page, String role,
+      String pathBuktiTF, String status, String alamat, String resi) async {
+    late DatabaseReference ref;
+    if (page == "sampel") {
+      ref = FirebaseDatabase.instance.ref('permintaan_sampel/$transId');
+    } else if (page == "pemesanan") {
+      ref = FirebaseDatabase.instance.ref('pemesanan_produk/$transId');
+    }
+
+    if (pathBuktiTF != "-") {
+      final filename = "$transId.jpg";
+      FirebaseStorage storage = FirebaseStorage.instance;
+      late Reference refImg;
+      if (page == "sampel") {
+        refImg = storage.ref("sampleTF/$filename");
+      } else if (page == "pemesanan") {
+        refImg = storage.ref("buktiTF/$filename");
+      }
+
+      await refImg.putFile(File(pathBuktiTF)).then((p0) => print("Done"));
+    }
+    if (status != "-") {
+      ref.update({"status": status});
+    }
+    if (alamat != "-") {
+      ref.update({"alamat": alamat});
+    }
+    if (resi != "-") {
+      ref.update({"resi": resi});
+    }
   }
 }

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:java_ijen_mobile/screen/Lahan/lahan_screen.dart';
 import 'package:java_ijen_mobile/screen/Petani/petani_screen.dart';
-import 'package:java_ijen_mobile/screen/Transaksi/sample_screen.dart';
+import 'package:java_ijen_mobile/screen/Transaksi/trans_screen.dart';
 import '../../const.dart';
 import '../../utils/auth.dart';
 import '../../widget/menu_admin.dart';
@@ -139,7 +139,7 @@ class _HomeOwnerState extends State<HomeOwner> {
               title: "Permintaan Sampel Produk",
               imgPath: "assets/permintaan_sampel.png",
               onTap: () {
-                Navigator.pushNamed(context, SampleScreen.routeName,
+                Navigator.pushNamed(context, TransScreen.routeName,
                     arguments: [widget.userData, "sampel"]);
               },
             ),
@@ -147,7 +147,7 @@ class _HomeOwnerState extends State<HomeOwner> {
               title: "Transaksi Berlangsung",
               imgPath: "assets/transaksi_berlangsung.png",
               onTap: () {
-                Navigator.pushNamed(context, SampleScreen.routeName,
+                Navigator.pushNamed(context, TransScreen.routeName,
                     arguments: [widget.userData, "pemesanan"]);
               },
             ),
@@ -208,7 +208,7 @@ class _HomeOwnerState extends State<HomeOwner> {
               title: "Permintaan Sampel Produk",
               imgPath: "assets/permintaan_sampel.png",
               onTap: () {
-                Navigator.pushNamed(context, SampleScreen.routeName,
+                Navigator.pushNamed(context, TransScreen.routeName,
                     arguments: [widget.userData, "sampel"]);
               },
             ),
@@ -216,7 +216,7 @@ class _HomeOwnerState extends State<HomeOwner> {
               title: "Transaksi Berlangsung",
               imgPath: "assets/transaksi_berlangsung.png",
               onTap: () {
-                Navigator.pushNamed(context, SampleScreen.routeName,
+                Navigator.pushNamed(context, TransScreen.routeName,
                     arguments: [widget.userData, "pemesanan"]);
               },
             ),

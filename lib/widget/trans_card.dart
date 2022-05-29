@@ -5,14 +5,15 @@ import 'package:intl/intl.dart';
 
 class TransCard extends StatelessWidget {
   late Transaksi transaksi;
-  Function()? onClickUbah;
+  Function()? onClickDetail;
   Function()? onClickSelesai;
   String role;
 
   TransCard(
       {Key? key,
       required this.transaksi,
-      required this.onClickUbah,
+      required this.onClickDetail,
+      required this.onClickSelesai,
       required this.role})
       : super(key: key);
 
@@ -20,18 +21,19 @@ class TransCard extends StatelessWidget {
   Widget build(BuildContext context) {
     DateFormat formatter = DateFormat('dd-MM-yyyy');
     NumberFormat nominal = NumberFormat("#,##0", "en_US");
-    return Container(
-      margin: EdgeInsets.only(bottom: defaultPadding),
-      padding: EdgeInsets.all(defaultPadding),
-      decoration: BoxDecoration(
-          boxShadow: shadow,
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(15)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return GestureDetector(
+      child: Container(
+        margin: EdgeInsets.only(bottom: defaultPadding),
+        padding: EdgeInsets.all(defaultPadding),
+        decoration: BoxDecoration(
+            boxShadow: shadow,
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(15)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(
                 children: [
@@ -48,10 +50,14 @@ class TransCard extends StatelessWidget {
                 transaksi.status,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: transaksi.status == "Menunggu Konfirmasi"
-                      ? Colors.amber.shade600
-                      : Colors.green.shade600,
-                ),
+                    color: transaksi.status == "Menunggu Konfirmasi"
+                        ? Colors.amber.shade600
+                        : transaksi.status == "Dalam Proses"
+                            ? Colors.green.shade600
+                            : transaksi.status == "Dibatalkan"
+                                ? Colors.red.shade600
+                                : Colors.black,
+                  ),
               )
             ],
           ),
@@ -87,64 +93,56 @@ class TransCard extends StatelessWidget {
                   ),
                 ],
               )
-            ],
-          ),
-          SizedBox(height: 12),
-          Text(
-            "Total : Rp " +
-                nominal.format(transaksi.ongkir +
-                    (int.parse(transaksi.produk.harga) * transaksi.jumlah)),
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-          ),
-          SizedBox(height: 4),
-          Divider(),
-          role == "pembeli" ? Pembeli() : Admin()
-        ],
+              ],
+            ),
+            SizedBox(height: 12),
+            Text(
+              "Total : Rp " +
+                  nominal.format(transaksi.ongkir +
+                      (int.parse(transaksi.produk.harga) * transaksi.jumlah)),
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            ),
+            SizedBox(height: 4),
+            role == "pembeli" && transaksi.status == "Dalam Proses"
+                ? Divider()
+                : SizedBox(
+                    height: 0,
+                  ),
+            role == "pembeli"
+                ? Pembeli()
+                : SizedBox(
+                    height: 0,
+                  ) //Admin()
+          ],
+        ),
       ),
+      onTap: onClickDetail,
     );
   }
 
   Widget Pembeli() {
-    return DateTime.now().difference(transaksi.waktuPesan).inHours < 2
+    return transaksi.status == "Dalam Proses"
         ? Row(
             children: [
-              Expanded(
-                child: Container(
-                  child: Text(
-                      "Anda hanya dapat mengubah pesanan kurang dari 2 jam setelah pemesanan "),
-                ),
-              ),
+              // Expanded(
+              //   child: Container(
+              //     child: Text(
+              //         "Anda hanya dapat mengubah pesanan kurang dari 2 jam setelah pemesanan "),
+              //   ),
+              // ),
               ElevatedButton(
                   style: ButtonStyle(
                       elevation: MaterialStateProperty.all(0),
-                      backgroundColor:
-                          MaterialStateProperty.all(Colors.grey.shade500)),
-                  onPressed: onClickUbah,
-                  child: Text("Ubah"))
-            ],
-          )
-        : transaksi.status == "Dalam Proses"
-            ? Row(
-                children: [
-                  // Expanded(
-                  //   child: Container(
-                  //     child: Text(
-                  //         "Anda hanya dapat mengubah pesanan kurang dari 2 jam setelah pemesanan "),
-                  //   ),
-                  // ),
-                  ElevatedButton(
-                      style: ButtonStyle(
-                          elevation: MaterialStateProperty.all(0),
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.green.shade500)),
-                      onPressed: onClickSelesai,
-                      child: Text(
-                        "Pesanan Diterima",
-                        style: TextStyle(color: Colors.black),
-                      ))
-                ],
-              )
-            : Row();
+                backgroundColor:
+                MaterialStateProperty.all(Colors.green.shade500)),
+            onPressed: onClickSelesai,
+            child: Text(
+              "Pesanan Diterima",
+              style: TextStyle(color: Colors.black),
+            ))
+      ],
+    )
+        : SizedBox(height: 0);
   }
 
   Widget Admin() {
@@ -160,8 +158,8 @@ class TransCard extends StatelessWidget {
                 elevation: MaterialStateProperty.all(0),
                 backgroundColor:
                     MaterialStateProperty.all(Colors.grey.shade500)),
-            onPressed: onClickUbah,
-            child: Text("Ubah"))
+            onPressed: onClickDetail,
+            child: Text("Detail"))
       ],
     );
   }

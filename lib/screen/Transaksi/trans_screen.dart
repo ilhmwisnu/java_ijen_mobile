@@ -3,22 +3,23 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:java_ijen_mobile/const.dart';
 import 'package:java_ijen_mobile/screen/MainScreen/product/produkDB.dart';
+import 'package:java_ijen_mobile/screen/Transaksi/detail_transaksi.dart';
 import 'package:java_ijen_mobile/screen/Transaksi/transaksi.dart';
 import 'package:java_ijen_mobile/screen/Transaksi/transaksiDB.dart';
 import 'package:java_ijen_mobile/utils/auth.dart';
 import 'package:intl/intl.dart';
 import 'package:java_ijen_mobile/widget/trans_card.dart';
 
-class SampleScreen extends StatefulWidget {
-  static const routeName = "/sample_screen";
+class TransScreen extends StatefulWidget {
+  static const routeName = "/trans_screen";
 
-  const SampleScreen({Key? key}) : super(key: key);
+  const TransScreen({Key? key}) : super(key: key);
 
   @override
-  State<SampleScreen> createState() => _SampleScreenState();
+  State<TransScreen> createState() => _TransScreenState();
 }
 
-class _SampleScreenState extends State<SampleScreen> {
+class _TransScreenState extends State<TransScreen> {
   bool isInit = false;
   bool _isLoading = false;
   late UserData user;
@@ -33,8 +34,8 @@ class _SampleScreenState extends State<SampleScreen> {
       user = arg[0];
       page = arg[1];
       print("Showing " + page + ", User : " + user.name);
-      final userId = FirebaseAuth.instance.currentUser!.uid;
-      fetchData(userId, user.role, page);
+      uid = FirebaseAuth.instance.currentUser!.uid;
+      fetchData(uid, user.role, page);
     }
     super.didChangeDependencies();
   }
@@ -68,9 +69,12 @@ class _SampleScreenState extends State<SampleScreen> {
               itemBuilder: (BuildContext context, int index) {
                 return TransCard(
                     transaksi: _listTransaksi[index],
-                    onClickUbah: () {
-                      print("ye");
+                    onClickDetail: () {
+                      Navigator.pushNamed(context, DetailTransaksi.routeName,
+                              arguments: [_listTransaksi[index], user, page])
+                          .whenComplete(() => fetchData(uid, user.role, page));
                     },
+                    onClickSelesai: () {},
                     role: user.role);
               },
             ),

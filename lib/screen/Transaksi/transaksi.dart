@@ -10,7 +10,8 @@ class Transaksi {
       alamat,
       ekspedisi,
       status,
-      imgUrl;
+      imgUrl,
+      resi;
   late int ongkir, jumlah;
   late DateTime waktuPesan;
   Produk produk;
@@ -29,7 +30,8 @@ class Transaksi {
       String waktuPesan,
       this.status,
       this.imgUrl,
-      String jumlah) {
+      String jumlah,
+      this.resi) {
     this.ongkir = int.parse(ongkir);
     this.jumlah = int.parse(jumlah);
     this.waktuPesan = DateTime.parse(waktuPesan);
