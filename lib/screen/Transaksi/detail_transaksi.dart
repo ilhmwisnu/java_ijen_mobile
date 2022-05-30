@@ -45,7 +45,8 @@ class _DetailTransaksiState extends State<DetailTransaksi> {
     transaksi = arg[0];
     userData = arg[1];
     page = arg[2];
-    imgUrl = await TransaksiDB().getBuktiImg(transaksi.transId, page);
+    imgUrl = await TransaksiDB()
+        .getBuktiImg(transaksi.transId, page, transaksi.jumlah);
     print(imgUrl);
     status = transaksi.status;
     setState(() {

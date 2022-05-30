@@ -161,7 +161,8 @@ class _HomeOwnerState extends State<HomeOwner> {
               title: "Riwayat Pemesanan",
               imgPath: "assets/riwayat_pemesanan.png",
               onTap: () {
-                // Navigator.pushNamed(context, LahanScreen.routeName);
+                Navigator.pushNamed(context, TransScreen.routeName,
+                    arguments: [widget.userData, "riwayat"]);
               },
             ),
             MenuBtn(
@@ -224,7 +225,8 @@ class _HomeOwnerState extends State<HomeOwner> {
               title: "Riwayat Pemesanan",
               imgPath: "assets/riwayat_pemesanan.png",
               onTap: () {
-                // Navigator.pushNamed(context, LahanScreen.routeName);
+                Navigator.pushNamed(context, TransScreen.routeName,
+                    arguments: [widget.userData, "riwayat"]);
               },
             ),
           ],

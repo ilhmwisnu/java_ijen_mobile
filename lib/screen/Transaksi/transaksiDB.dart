@@ -10,7 +10,7 @@ import 'package:java_ijen_mobile/screen/Transaksi/transaksi.dart';
 import '../../utils/cost.dart';
 
 class TransaksiDB {
-  Future<List<Transaksi>> getOnProgressSample(
+  Future<List<Transaksi>> getOnProgressTrans(
       String uid, String role, String page) async {
     final List<Transaksi> trans = [];
     late DatabaseReference ref;
@@ -85,6 +85,193 @@ class TransaksiDB {
       if (uid == user || role == 'admin') {
         if (status == 'Dalam Proses' || status == "Menunggu Konfirmasi") {
           // print(status);
+          trans.insert(
+              trans.length,
+              Transaksi(
+                  transId,
+                  user,
+                  namaRek,
+                  noRek,
+                  produk,
+                  prov,
+                  kota,
+                  alamat,
+                  ekspedisi,
+                  ongkir,
+                  waktuPesan,
+                  status,
+                  imgUrl,
+                  jumlah,
+                  resi));
+        }
+      }
+    }
+    trans.sort((a, b) {
+      return DateTime.now()
+          .difference(a.waktuPesan)
+          .compareTo(DateTime.now().difference(b.waktuPesan));
+    });
+    return trans;
+  }
+
+  Future<List<Transaksi>> getOnFinishedTrans(
+      String uid, String role, String page) async {
+    final List<Transaksi> trans = [];
+    late DatabaseReference ref, ref2;
+    ref = FirebaseDatabase.instance.ref('permintaan_sampel');
+    ref2 = FirebaseDatabase.instance.ref('pemesanan_produk');
+
+    final root = await ref.get();
+    final root2 = await ref2.get();
+
+    for (final id in await root.children) {
+      String transId = id.key.toString();
+      String user = "";
+      String namaRek = "";
+      String noRek = "";
+      late Produk produk;
+      String prov = "";
+      String kota = "";
+      String alamat = "";
+      String ekspedisi = "";
+      String ongkir = "";
+      String waktuPesan = "";
+      String status = "";
+      String imgUrl = "";
+      String jumlah = "0";
+      String resi = "";
+      final firstChild = await ref.child(transId).get();
+
+      for (final col in firstChild.children) {
+        if (col.key == "namaRekening") {
+          namaRek = col.value.toString();
+        }
+        if (col.key == "nomorRekening") {
+          noRek = col.value.toString();
+        }
+        if (col.key == "idProduk") {
+          final _prod = ProdukDB();
+          produk = await _prod.getDataById(col.value.toString());
+          imgUrl = await _prod.getProductImg(col.value.toString());
+        }
+        if (col.key == "provinsi") {
+          prov = col.value.toString();
+        }
+        if (col.key == "kota") {
+          kota = col.value.toString();
+        }
+        if (col.key == "alamat") {
+          alamat = col.value.toString();
+        }
+        if (col.key == "biayaOngkir") {
+          ongkir = col.value.toString();
+        }
+        if (col.key == "layananEkspedisi") {
+          ekspedisi = col.value.toString();
+        }
+        if (col.key == "waktuPemesanan") {
+          waktuPesan = col.value.toString();
+        }
+        if (col.key == "status") {
+          status = col.value.toString();
+        }
+        if (col.key == "jumlah") {
+          jumlah = col.value.toString();
+        }
+        if (col.key == "user") {
+          user = col.value.toString();
+        }
+        if (col.key == "resi") {
+          resi = col.value.toString();
+        }
+      }
+      if (uid == user || role == 'admin') {
+        if (status == 'Dibatalkan' || status == "Selesai") {
+          trans.insert(
+              trans.length,
+              Transaksi(
+                  transId,
+                  user,
+                  namaRek,
+                  noRek,
+                  produk,
+                  prov,
+                  kota,
+                  alamat,
+                  ekspedisi,
+                  ongkir,
+                  waktuPesan,
+                  status,
+                  imgUrl,
+                  jumlah,
+                  resi));
+        }
+      }
+    }
+
+    for (final id in await root2.children) {
+      String transId = id.key.toString();
+      String user = "";
+      String namaRek = "";
+      String noRek = "";
+      late Produk produk;
+      String prov = "";
+      String kota = "";
+      String alamat = "";
+      String ekspedisi = "";
+      String ongkir = "";
+      String waktuPesan = "";
+      String status = "";
+      String imgUrl = "";
+      String jumlah = "0";
+      String resi = "";
+      final firstChild2 = await ref2.child(transId).get();
+
+      for (final col in firstChild2.children) {
+        if (col.key == "namaRekening") {
+          namaRek = col.value.toString();
+        }
+        if (col.key == "nomorRekening") {
+          noRek = col.value.toString();
+        }
+        if (col.key == "idProduk") {
+          final _prod = ProdukDB();
+          produk = await _prod.getDataById(col.value.toString());
+          imgUrl = await _prod.getProductImg(col.value.toString());
+        }
+        if (col.key == "provinsi") {
+          prov = col.value.toString();
+        }
+        if (col.key == "kota") {
+          kota = col.value.toString();
+        }
+        if (col.key == "alamat") {
+          alamat = col.value.toString();
+        }
+        if (col.key == "biayaOngkir") {
+          ongkir = col.value.toString();
+        }
+        if (col.key == "layananEkspedisi") {
+          ekspedisi = col.value.toString();
+        }
+        if (col.key == "waktuPemesanan") {
+          waktuPesan = col.value.toString();
+        }
+        if (col.key == "status") {
+          status = col.value.toString();
+        }
+        if (col.key == "jumlah") {
+          jumlah = col.value.toString();
+        }
+        if (col.key == "user") {
+          user = col.value.toString();
+        }
+        if (col.key == "resi") {
+          resi = col.value.toString();
+        }
+      }
+      if (uid == user || role == 'admin') {
+        if (status == 'Dibatalkan' || status == "Selesai") {
           trans.insert(
               trans.length,
               Transaksi(
@@ -260,7 +447,7 @@ class TransaksiDB {
       'biayaOngkir': ekspedisi.harga,
       'waktuPemesanan': DateTime.now().toString(),
       'jumlah': jumlah.toString(),
-      'status': 'Menunggu konfirmasi',
+      'status': 'Menunggu Konfirmasi',
       "user": userId
     });
 
@@ -277,14 +464,20 @@ class TransaksiDB {
     await storageRef.putFile(File(pathBuktiTf)).then((p0) => print("Done"));
   }
 
-  Future<String> getBuktiImg(id, page) async {
+  Future<String> getBuktiImg(id, page, jumlah) async {
     final filename = "$id.jpg";
     FirebaseStorage storage = FirebaseStorage.instance;
     late Reference ref;
     if (page == "sampel") {
       ref = storage.ref("sampleTF/$filename");
     } else if (page == "pemesanan") {
-      ref = storage.ref("buktiTF/$filename");
+      ref = storage.ref("pesanTF/$filename");
+    } else {
+      if (jumlah == 0) {
+        ref = storage.ref("sampleTF/$filename");
+      } else {
+        ref = storage.ref("pesanTF/$filename");
+      }
     }
 
     final res = await ref.getDownloadURL();
@@ -307,7 +500,7 @@ class TransaksiDB {
       if (page == "sampel") {
         refImg = storage.ref("sampleTF/$filename");
       } else if (page == "pemesanan") {
-        refImg = storage.ref("buktiTF/$filename");
+        refImg = storage.ref("pesanTF/$filename");
       }
 
       await refImg.putFile(File(pathBuktiTF)).then((p0) => print("Done"));

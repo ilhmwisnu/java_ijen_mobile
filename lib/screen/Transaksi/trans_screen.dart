@@ -45,11 +45,12 @@ class _TransScreenState extends State<TransScreen> {
       _isLoading = true;
     });
 
-    if (page == "sampel") {
+    if (page == "sampel" || page == "pemesanan") {
       _listTransaksi =
-          await TransaksiDB().getOnProgressSample(userId, role, page);
+          await TransaksiDB().getOnProgressTrans(userId, role, page);
     } else {
-      // _listTransaksi = await TransaksiDB()   //TODO : belom ada funct ambil
+      _listTransaksi =
+          await TransaksiDB().getOnFinishedTrans(userId, role, page);
     }
     setState(() {
       _isLoading = false;
@@ -63,9 +64,10 @@ class _TransScreenState extends State<TransScreen> {
       appBar: AppBar(
         backgroundColor: darkGrey,
         title: page == "sampel"
-            ? Text("Permintaan Sample")
-            : Text("Transaksi Berlangsung"),
-      ),
+              ? Text("Permintaan Sample")
+              : page == "pemesanan"
+                  ? Text("Transaksi Berlangsung")
+                  : Text("Riwayat Transaksi")),
       body: (_isLoading)
           ? Center(child: const CircularProgressIndicator())
           : ListView.builder(
@@ -81,7 +83,7 @@ class _TransScreenState extends State<TransScreen> {
                     },
                     onClickSelesai: () {
                       TransaksiDB().updateTrans(_listTransaksi[index].transId,
-                          page, "admin", "-", "Selesai", "-", "-");
+                          page, user.role, "-", "Selesai", "-", "-");
                       fetchData(uid, user.role, page);
                     },
                     role: user.role);

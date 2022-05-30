@@ -381,7 +381,7 @@ class _PesanProdukState extends State<PesanProduk> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("Total Ongkos Kirim :"),
+                                Text("Total Biaya :"),
                                 Text(
                                   "Rp ${_hargaOngkir + _hargaProduk * _jumlahProduk}",
                                   style: TextStyle(
