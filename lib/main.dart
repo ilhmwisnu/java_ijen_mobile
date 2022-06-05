@@ -4,6 +4,7 @@ import 'package:java_ijen_mobile/screen/Lahan/editLahan_screen.dart';
 import 'package:java_ijen_mobile/screen/MainScreen/product/addProduct_screen.dart';
 import 'package:java_ijen_mobile/screen/MainScreen/product/detailProduct.dart';
 import 'package:java_ijen_mobile/screen/MainScreen/product/editProduk_screen.dart';
+import 'package:java_ijen_mobile/screen/MainScreen/product/produkQR.dart';
 import 'package:java_ijen_mobile/screen/Petani/addPetani_screen.dart';
 import 'package:java_ijen_mobile/screen/Petani/editPetani_screen.dart';
 import 'package:java_ijen_mobile/screen/Petani/petani_screen.dart';
@@ -51,7 +52,8 @@ class MyApp extends StatelessWidget {
         PesanProduk.routeName: (context) => PesanProduk(),
         TransScreen.routeName: (context) => TransScreen(),
         DetailTransaksi.routeName: (context) => DetailTransaksi(),
-        BuktiTF.routeName: (context) => BuktiTF()
+        BuktiTF.routeName: (context) => BuktiTF(),
+        ProdukQR.routeName: (context) => ProdukQR()
       },
       initialRoute: LoginScreen.routeName,
     );
