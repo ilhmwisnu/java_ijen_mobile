@@ -1,10 +1,9 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:java_ijen_mobile/const.dart';
 import 'package:java_ijen_mobile/screen/Lahan/lahanDB.dart';
 import 'package:java_ijen_mobile/screen/Petani/petaniDB.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:searchfield/searchfield.dart';
 
 import '../Petani/petani.dart';
@@ -74,51 +73,52 @@ class _AddLahanScreenState extends State<AddLahanScreen> {
             suggestions:
                 _listPetani.map((e) => SearchFieldListItem(e.nama)).toList(),
             controller: pemilikController,
-          ),
-          SizedBox(height: 16),
-          TextField(
-            controller: latController,
-            decoration: InputDecoration(
-                hintText: "Latitude",
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15))),
-          ),
-          SizedBox(height: 16),
-          TextField(
-            controller: longController,
-            decoration: InputDecoration(
-                hintText: "Longitude",
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15))),
-          ),
-          SizedBox(height: 16),
-          ElevatedButton(
-              onPressed: () {
-                getCurrentLocation();
-              },
-              child: Text("Get Current Location")),
-          ElevatedButton(
-              onPressed: () {
-                // showDialog(
-                //     context: context,
-                //     builder: (context) {
-                //       return AlertDialog(
-                //         title: Text("Save Data"),
-                //         content: Text("Yakin ingin menyimpan data?"),
-                //         actions: [
-                //           ElevatedButton(
-                //               onPressed: () {
-                dbLahan
-                    .addLahan(
-                        alamatController.text,
-                        _listPetani
-                            .firstWhere((element) =>
-                                element.nama == pemilikController.text)
-                            .id,
-                        latController.text,
-                        longController.text)
-                    .then((value) => Navigator.pop(context));
-                //              Navigator.pop(context); // pop add screen
+                ),
+                SizedBox(height: 16),
+                TextField(
+                  controller: latController,
+                  decoration: InputDecoration(
+                      hintText: "Latitude",
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15))),
+                ),
+                SizedBox(height: 16),
+                TextField(
+                  controller: longController,
+                  decoration: InputDecoration(
+                      hintText: "Longitude",
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15))),
+                ),
+                SizedBox(height: 16),
+                ElevatedButton(
+                    onPressed: () {
+                      checkLocAccess();
+                      getCurrentLocation();
+                    },
+                    child: Text("Get Current Location")),
+                ElevatedButton(
+                    onPressed: () {
+                      // showDialog(
+                      //     context: context,
+                      //     builder: (context) {
+                      //       return AlertDialog(
+                      //         title: Text("Save Data"),
+                      //         content: Text("Yakin ingin menyimpan data?"),
+                      //         actions: [
+                      //           ElevatedButton(
+                      //               onPressed: () {
+                      dbLahan
+                          .addLahan(
+                              alamatController.text,
+                              _listPetani
+                                  .firstWhere((element) =>
+                                      element.nama == pemilikController.text)
+                                  .id,
+                              latController.text,
+                              longController.text)
+                          .then((value) => Navigator.pop(context));
+                      //              Navigator.pop(context); // pop add screen
                 //           },
                 //           child: Text("Iya")),
                 //       ElevatedButton(
@@ -138,6 +138,8 @@ class _AddLahanScreenState extends State<AddLahanScreen> {
   }
 
   getCurrentLocation() {
+    latController.text = "Loading...";
+    longController.text = "Loading...";
     Geolocator.getCurrentPosition(
             desiredAccuracy: LocationAccuracy.best,
             forceAndroidLocationManager: true)
@@ -147,5 +149,17 @@ class _AddLahanScreenState extends State<AddLahanScreen> {
     }).catchError((e) {
       print(e);
     });
+  }
+
+  late PermissionStatus locStatus;
+
+  void checkLocAccess() async {
+    locStatus = await Permission.location.status;
+    if (locStatus == PermissionStatus.denied) {
+      if (await Permission.location.request().isGranted) {
+        locStatus = await Permission.location.status;
+      }
+    }
+    setState(() {});
   }
 }

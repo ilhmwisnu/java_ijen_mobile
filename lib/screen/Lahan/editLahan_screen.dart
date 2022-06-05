@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:java_ijen_mobile/screen/Petani/petani.dart';
 import 'package:java_ijen_mobile/screen/Petani/petaniDB.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:searchfield/searchfield.dart';
 
 import '../../const.dart';
@@ -129,6 +130,8 @@ class _EditLahanState extends State<EditLahan> {
   }
 
   getCurrentLocation() {
+    latController.text = "Loading...";
+    longController.text = "Loading...";
     Geolocator.getCurrentPosition(
             desiredAccuracy: LocationAccuracy.best,
             forceAndroidLocationManager: true)
@@ -138,5 +141,17 @@ class _EditLahanState extends State<EditLahan> {
     }).catchError((e) {
       print(e);
     });
+  }
+
+  late PermissionStatus locStatus;
+
+  void checkLocAccess() async {
+    locStatus = await Permission.location.status;
+    if (locStatus == PermissionStatus.denied) {
+      if (await Permission.location.request().isGranted) {
+        locStatus = await Permission.location.status;
+      }
+    }
+    setState(() {});
   }
 }
