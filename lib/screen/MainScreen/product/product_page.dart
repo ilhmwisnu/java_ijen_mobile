@@ -94,7 +94,7 @@ class _ProductPageState extends State<ProductPage> {
                               .whenComplete(() => fetchData())
                           : Navigator.pushNamed(
                               context, DetailProduct.routeName,
-                              arguments: _listProduk[index].id);
+                              arguments: [_listProduk[index].id, null]);
                     },
                     child: Container(
                       decoration: BoxDecoration(

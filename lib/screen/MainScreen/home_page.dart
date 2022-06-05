@@ -2,8 +2,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:java_ijen_mobile/screen/Lahan/lahan_screen.dart';
+import 'package:java_ijen_mobile/screen/MainScreen/product/detailProduct.dart';
+import 'package:java_ijen_mobile/screen/MainScreen/product/produk.dart';
+import 'package:java_ijen_mobile/screen/MainScreen/product/produkDB.dart';
+import 'package:java_ijen_mobile/screen/MainScreen/scan_screen.dart';
 import 'package:java_ijen_mobile/screen/Petani/petani_screen.dart';
 import 'package:java_ijen_mobile/screen/Transaksi/trans_screen.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:barcode_scan2/barcode_scan2.dart';
 import '../../const.dart';
 import '../../utils/auth.dart';
 import '../../widget/menu_admin.dart';
@@ -115,7 +121,30 @@ class _HomeOwnerState extends State<HomeOwner> {
                       border: InputBorder.none),
                 )),
                 IconButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      late PermissionStatus camStatus;
+
+                      camStatus = await Permission.camera.status;
+                      if (camStatus == PermissionStatus.denied) {
+                        if (await Permission.camera.request().isGranted) {
+                          camStatus = await Permission.camera.status;
+                        }
+                      }
+
+                      var result = await BarcodeScanner.scan();
+
+                      Produk produk = await ProdukDB()
+                          .getDataById(result.rawContent.toString());
+                      if (produk.nama != null && produk.nama != "") {
+                        Navigator.pushNamed(context, DetailProduct.routeName,
+                            arguments: [produk.id, produk]);
+                      } else {
+                        final snackBar = SnackBar(
+                          content: Text('QR Invalid'),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      }
+                    },
                     icon: Icon(
                       Icons.qr_code_scanner,
                       size: 32,
