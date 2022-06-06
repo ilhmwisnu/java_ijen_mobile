@@ -9,6 +9,7 @@ import 'package:java_ijen_mobile/screen/Transaksi/pesanProduk_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../Lahan/lahan.dart';
 import '../../Transaksi/reqSample_screen.dart';
+import 'produkQR.dart';
 
 class DetailProduct extends StatefulWidget {
   static const routeName = "/detailProduct";
@@ -119,14 +120,31 @@ class _DetailProductState extends State<DetailProduct> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        _produkData.nama,
-                        style: TextStyle(
-                            fontSize: 24, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        "Rp " + _produkData.harga + "/kg",
-                        style: TextStyle(fontSize: 20, color: darkChoco),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            children: [
+                              Text(
+                                _produkData.nama,
+                                style: TextStyle(
+                                    fontSize: 24, fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                "Rp " + _produkData.harga + "/kg",
+                                style:
+                                    TextStyle(fontSize: 20, color: darkChoco),
+                              ),
+                            ],
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.qr_code),
+                            onPressed: () {
+                              Navigator.pushNamed(context, ProdukQR.routeName,
+                                  arguments: _produkData);
+                            },
+                          ),
+                        ],
                       ),
                       SizedBox(height: 8),
                       Text(
@@ -152,8 +170,9 @@ class _DetailProductState extends State<DetailProduct> {
 
   Widget alamatIcon() {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Column(children: [
+        Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           const Text(
             "Lokasi lahan",
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
@@ -170,7 +189,7 @@ class _DetailProductState extends State<DetailProduct> {
   }
 
   Widget alamatPlain() {
-    return Column(children: [
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       const Text(
         "Lokasi lahan",
         style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),

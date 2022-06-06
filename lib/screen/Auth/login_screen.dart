@@ -139,21 +139,27 @@ class _LoginScreenState extends State<LoginScreen> {
                                           .signInUsingEmailPassword(
                                         email: emailController.text,
                                         password: passwordController.text,
-                                      ).catchError((e){
+                                      ).catchError((e) {
                                         setState(() {
-                                          _isProcessing = false
+                                          _isProcessing = false;
                                         });
 
-                                        showDialog(context: context, builder: (context){
-                                          return AlertDialog(title: Text("Login Failed"),content: Text(e),actions: [
-                                            ElevatedButton(onPressed: () {
-                                              Navigator.pop(context);
-                                            }, child: Text("Okey"))
-                                          ],);
-                                        })
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                title: Text("Login Failed"),
+                                                content: Text(e),
+                                                actions: [
+                                                  ElevatedButton(
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: Text("Okey"))
+                                                ],
+                                              );
+                                            });
                                       });
-
-                                      
 
                                       if (user != null) {
                                         Navigator.of(context).pushReplacement(

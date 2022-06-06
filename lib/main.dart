@@ -55,7 +55,7 @@ class MyApp extends StatelessWidget {
         DetailTransaksi.routeName: (context) => DetailTransaksi(),
         BuktiTF.routeName: (context) => BuktiTF(),
         ProdukQR.routeName: (context) => ProdukQR(),
-        ScanScreen.routeName: (context) => ScanScreen()
+        // ScanScreen.routeName: (context) => ScanScreen()
       },
       initialRoute: LoginScreen.routeName,
     );

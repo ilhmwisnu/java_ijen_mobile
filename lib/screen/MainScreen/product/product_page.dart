@@ -1,11 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:java_ijen_mobile/screen/MainScreen/product/detailProduct.dart';
 import 'package:java_ijen_mobile/screen/MainScreen/product/produk.dart';
 import 'package:java_ijen_mobile/screen/MainScreen/product/produkDB.dart';
-import 'package:java_ijen_mobile/screen/MainScreen/product/produkQR.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 import '../../../utils/auth.dart';
 import '../../../const.dart';
 import 'addProduct_screen.dart';
@@ -80,7 +76,7 @@ class _ProductPageState extends State<ProductPage> {
               itemCount: _totalData,
               padding: EdgeInsets.all(defaultPadding),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                childAspectRatio: screnWidth / 620,
+                childAspectRatio: screnWidth / 505,
                 crossAxisSpacing: defaultPadding,
                 mainAxisSpacing: defaultPadding,
                 crossAxisCount: 2,
@@ -131,14 +127,6 @@ class _ProductPageState extends State<ProductPage> {
                                     "Stok : ${_listProduk[index].jumlah}",
                                     style:
                                         TextStyle(color: Colors.grey.shade600),
-                                  ),
-                                  IconButton(
-                                    icon: Icon(Icons.qr_code),
-                                    onPressed: () {
-                                      Navigator.pushNamed(
-                                          context, ProdukQR.routeName,
-                                          arguments: _listProduk[index]);
-                                    },
                                   ),
                                 ],
                               ))
