@@ -301,14 +301,20 @@ class TransaksiDB {
     return trans;
   }
 
-  Future<List<Transaksi>> getSuccesTrans() async {
+  Future<List<Transaksi>> getSuccesTrans(bulan, tahun) async {
     List<Transaksi> finishedTrans = [];
     final ref = FirebaseDatabase.instance.ref('pemesanan_produk');
     final res = await ref.get();
     var data = res.value as Map;
 
+    DateTime start = DateTime(tahun, bulan);
+    DateTime end = DateTime(tahun, bulan + 1);
+
     for (var e in data.entries) {
-      if (e.value["status"] == "Selesai") {
+      var transDate = DateTime.parse(e.value["waktuPemesanan"]);
+      if (e.value["status"] == "Selesai" &&
+          transDate.isAfter(start) &&
+          transDate.isBefore(end)) {
         Produk produk = await ProdukDB().getDataById(e.value["idProduk"]);
         String imgUrl = await ProdukDB().getProductImg(e.value["idProduk"]);
         finishedTrans.add(Transaksi(

@@ -27,7 +27,7 @@ class _RekapScreenState extends State<RekapScreen> {
   }
 
   void fetchData() async {
-    var trans = await TransaksiDB().getSuccesTrans();
+    var trans = await TransaksiDB().getSuccesTrans(bulan, tahun);
     for (var tran in trans) {
       if (!productSold.containsKey(tran.produk.nama)) {
         var img = await ProdukDB().getProductImg(tran.produk.id);
@@ -98,6 +98,10 @@ class _RekapScreenState extends State<RekapScreen> {
                               onChanged: (value) {
                                 setState(() {
                                   bulan = int.parse(value.toString());
+                                  isLoading = true;
+                                  totalPendapatan = 0;
+                                  productSold = Map();
+                                  fetchData();
                                 });
                               }),
                         ],
@@ -118,6 +122,10 @@ class _RekapScreenState extends State<RekapScreen> {
                               onChanged: (value) {
                                 setState(() {
                                   tahun = int.parse(value.toString());
+                                  isLoading = true;
+                                  totalPendapatan = 0;
+                                  productSold = Map();
+                                  fetchData();
                                 });
                               }),
                         ],
