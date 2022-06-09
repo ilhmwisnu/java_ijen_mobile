@@ -23,6 +23,7 @@ class _TransScreenState extends State<TransScreen> {
   bool isInit = false;
   bool _isLoading = false;
   late UserData user;
+  late UserData pembeliData;
   String page = "";
   String uid = "";
   List<Transaksi> _listTransaksi = [];
@@ -44,7 +45,6 @@ class _TransScreenState extends State<TransScreen> {
     setState(() {
       _isLoading = true;
     });
-
     if (page == "sampel" || page == "pemesanan") {
       _listTransaksi =
           await TransaksiDB().getOnProgressTrans(userId, role, page);
@@ -76,10 +76,16 @@ class _TransScreenState extends State<TransScreen> {
               itemBuilder: (BuildContext context, int index) {
                 return TransCard(
                     transaksi: _listTransaksi[index],
-                    onClickDetail: () {
-                      Navigator.pushNamed(context, DetailTransaksi.routeName,
-                              arguments: [_listTransaksi[index], user, page])
-                          .whenComplete(() => fetchData(uid, user.role, page));
+                    onClickDetail: () async {
+                      pembeliData = await FireAuth.getUserData(
+                          _listTransaksi[index].user);
+                      Navigator.pushNamed(
+                          context, DetailTransaksi.routeName, arguments: [
+                        _listTransaksi[index],
+                        user,
+                        page,
+                        pembeliData
+                      ]).whenComplete(() => fetchData(uid, user.role, page));
                     },
                     onClickSelesai: () {
                       TransaksiDB().updateTrans(_listTransaksi[index].transId,

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:java_ijen_mobile/const.dart';
+import 'package:java_ijen_mobile/screen/MainScreen/profile/pembeli_screen.dart';
 import 'package:java_ijen_mobile/screen/Transaksi/detailBuktiTF_screen.dart';
 import 'package:java_ijen_mobile/screen/Transaksi/transaksi.dart';
 import 'package:java_ijen_mobile/screen/Transaksi/transaksiDB.dart';
@@ -30,6 +31,7 @@ class _DetailTransaksiState extends State<DetailTransaksi> {
   late String status;
   late String page;
   late String imgUrl;
+  late UserData pembeliData;
 
   @override
   void didChangeDependencies() {
@@ -45,6 +47,7 @@ class _DetailTransaksiState extends State<DetailTransaksi> {
     transaksi = arg[0];
     userData = arg[1];
     page = arg[2];
+    pembeliData = arg[3];
     imgUrl = await TransaksiDB()
         .getBuktiImg(transaksi.transId, page, transaksi.jumlah);
     print(imgUrl);
@@ -122,6 +125,34 @@ class _DetailTransaksiState extends State<DetailTransaksi> {
                         SizedBox(height: 8),
                         Divider(),
                         SizedBox(height: 8),
+                        (userData.role == "admin")
+                            ? Text("Info Pembeli",
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.w500))
+                            : SizedBox(width: 0),
+                        (userData.role == "admin" && pembeliData != null)
+                            ? Row(
+                                children: [
+                                  SizedBox(height: 4),
+                                  Material(
+                                    color: Colors.green,
+                                    shape: CircleBorder(),
+                                    //clipBehavior: Clip.hardEdge,
+                                    child: IconButton(
+                                      icon: Icon(Icons.account_box_rounded),
+                                      color: Colors.white,
+                                      onPressed: () {
+                                        Navigator.pushNamed(
+                                            context, PembeliScreen.routeName,
+                                            arguments: pembeliData);
+                                      },
+                                    ),
+                                  ),
+                                  Text(pembeliData.name)
+                                ],
+                              )
+                            : SizedBox(width: 0),
+                        SizedBox(width: 8),
                         Text("Info Pengiriman",
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.w500)),
