@@ -50,6 +50,8 @@ class _DetailTransaksiState extends State<DetailTransaksi> {
     print(imgUrl);
     status = transaksi.status;
     setState(() {
+      _resiController.text = transaksi.resi;
+      _alamatController.text = transaksi.alamat;
       isInit = true;
       _isLoading = false;
     });
@@ -169,13 +171,9 @@ class _DetailTransaksiState extends State<DetailTransaksi> {
                                                   children: [
                                                     SizedBox(height: 8),
                                                     TextField(
-                                                        minLines: 1,
-                                                        maxLines: 1,
                                                         controller:
                                                             _alamatController,
                                                         decoration: InputDecoration(
-                                                            hintText: transaksi
-                                                                .alamat,
                                                             border: OutlineInputBorder(
                                                                 borderRadius:
                                                                     BorderRadius
@@ -221,8 +219,6 @@ class _DetailTransaksiState extends State<DetailTransaksi> {
                                 !(transaksi.status == "Selesai" ||
                                     transaksi.status == "Dibatalkan")
                             ? TextField(
-                                minLines: 1,
-                                maxLines: 3,
                                 controller: _resiController,
                                 decoration: InputDecoration(
                                     label: Text("Resi Pengiriman"),
@@ -313,7 +309,8 @@ class _DetailTransaksiState extends State<DetailTransaksi> {
                         GestureDetector(
                             onTap: () async {
                               if (userData.role == "admin") {
-                                Navigator.pushNamed(context, BuktiTF.routeName, arguments: imgUrl);
+                                Navigator.pushNamed(context, BuktiTF.routeName,
+                                    arguments: imgUrl);
                               } else {
                                 if (DateTime.now()
                                         .difference(transaksi.waktuPesan)
@@ -333,7 +330,9 @@ class _DetailTransaksiState extends State<DetailTransaksi> {
                                     });
                                   }
                                 } else {
-                                  Navigator.pushNamed(context, BuktiTF.routeName, arguments: imgUrl);
+                                  Navigator.pushNamed(
+                                      context, BuktiTF.routeName,
+                                      arguments: imgUrl);
                                 }
                               }
                             },
