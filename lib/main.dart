@@ -15,6 +15,7 @@ import 'package:java_ijen_mobile/screen/Transaksi/detailBuktiTF_screen.dart';
 import 'package:java_ijen_mobile/screen/Transaksi/detail_transaksi.dart';
 import 'package:java_ijen_mobile/screen/Transaksi/notifikasiPesanan.dart';
 import 'package:java_ijen_mobile/screen/Transaksi/pesanProduk_screen.dart';
+import 'package:java_ijen_mobile/screen/Transaksi/rekap_screen.dart';
 import 'package:java_ijen_mobile/screen/Transaksi/trans_screen.dart';
 import 'screen/Auth/login_screen.dart';
 import 'screen/Auth/register_screen.dart';
@@ -55,7 +56,7 @@ class MyApp extends StatelessWidget {
         DetailTransaksi.routeName: (context) => DetailTransaksi(),
         BuktiTF.routeName: (context) => BuktiTF(),
         ProdukQR.routeName: (context) => ProdukQR(),
-        // ScanScreen.routeName: (context) => ScanScreen()
+        RekapScreen.routeName: (context) => RekapScreen()
       },
       initialRoute: LoginScreen.routeName,
     );

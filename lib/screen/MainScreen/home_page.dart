@@ -7,6 +7,7 @@ import 'package:java_ijen_mobile/screen/MainScreen/product/produk.dart';
 import 'package:java_ijen_mobile/screen/MainScreen/product/produkDB.dart';
 import 'package:java_ijen_mobile/screen/MainScreen/scan_screen.dart';
 import 'package:java_ijen_mobile/screen/Petani/petani_screen.dart';
+import 'package:java_ijen_mobile/screen/Transaksi/rekap_screen.dart';
 import 'package:java_ijen_mobile/screen/Transaksi/trans_screen.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:barcode_scan2/barcode_scan2.dart';
@@ -198,7 +199,7 @@ class _HomeOwnerState extends State<HomeOwner> {
               title: "Rekap Penjualan",
               imgPath: "assets/rekap_penjualan.png",
               onTap: () {
-                // Navigator.pushNamed(context, LahanScreen.routeName);
+                Navigator.pushNamed(context, RekapScreen.routeName);
               },
             ),
           ],
