@@ -301,6 +301,39 @@ class TransaksiDB {
     return trans;
   }
 
+  Future<List<Transaksi>> getSuccesTrans() async {
+    List<Transaksi> finishedTrans = [];
+    final ref = FirebaseDatabase.instance.ref('pemesanan_produk');
+    final res = await ref.get();
+    var data = res.value as Map;
+
+    for (var e in data.entries) {
+      if (e.value["status"] == "Selesai") {
+        Produk produk = await ProdukDB().getDataById(e.value["idProduk"]);
+        String imgUrl = await ProdukDB().getProductImg(e.value["idProduk"]);
+        finishedTrans.add(Transaksi(
+            e.key,
+            e.value["user"],
+            e.value["namaRekening"],
+            e.value["nomorRekening"],
+            produk,
+            e.value["provinsi"],
+            e.value["kota"],
+            e.value["alamat"],
+            e.value["layananEkspedisi"],
+            e.value["biayaOngkir"].toString(),
+            e.value["waktuPemesanan"],
+            e.value["status"],
+            imgUrl,
+            e.value["jumlah"].toString(),
+            (e.value['resi'] == null) ? "" : e.value["resi"]));
+      }
+    }
+    // print(finishedTrans);
+
+    return finishedTrans;
+  }
+
   Future<Transaksi> getTransById(String transId, String page) async {
     late DatabaseReference ref;
     if (page == "sampel") {
