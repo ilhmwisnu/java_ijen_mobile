@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 import 'package:flutter/material.dart';
 
 import '../../../const.dart';
@@ -26,81 +27,61 @@ class _PembeliScreen extends State<PembeliScreen> {
   }
 
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: SafeArea(child: LayoutBuilder(
-        builder: (context, constraints) {
-          return Stack(
-            clipBehavior: Clip.none,
-            children: [
-              Column(
-                // crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                      height: 110,
-                      width: double.infinity,
-                      //color: darkGrey,
-                      alignment: Alignment.topCenter,
-                      child: Container(
-                          padding: EdgeInsets.all(defaultPadding),
-                          child: Text(
-                            "Data Pembeli",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 24, color: Colors.white),
-                          ))),
-                  Container(
-                    height: MediaQuery.of(context).size.height - 200,
-                  )
-                ],
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Data Pembeli"),
+        backgroundColor: darkGrey,
+      ),
+      body: SingleChildScrollView(
+        child: SafeArea(child: LayoutBuilder(
+          builder: (context, constraints) {
+            return Padding(
+              padding: const EdgeInsets.all(defaultPadding),
+              child: Container(
+                width: double.infinity,
+                padding: EdgeInsets.all(defaultPadding),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: shadow,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 24),
+                    Container(
+                      width: 150,
+                      height: 150,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(9999),
+                          image: (pembeliData.img == null ||
+                                  pembeliData.img == "")
+                              ? DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: NetworkImage(
+                                      "https://www.interskill.id/empty-photo.png"))
+                              : DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: NetworkImage(pembeliData.img))),
+                    ),
+                    SizedBox(height: 12),
+                    Text(
+                      pembeliData.name,
+                      style:
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 4),
+                    Text(pembeliData.email, style: TextStyle(fontSize: 16)),
+                    SizedBox(height: 8),
+                    Text(pembeliData.phoneNumber,
+                        style: TextStyle(fontSize: 16)),
+                  ],
+                ),
               ),
-              Positioned(
-                  right: defaultPadding,
-                  left: defaultPadding,
-                  top: 60,
-                  child: Container(
-                    padding: EdgeInsets.all(defaultPadding),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15),
-                      boxShadow: shadow,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SizedBox(height: 24),
-                        Column(
-                          children: [
-                            Stack(
-                              children: [
-                                Container(
-                                  width: 150,
-                                  height: 150,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(9999),
-                                      image: (pembeliData.img == null ||
-                                              pembeliData.img == "")
-                                          ? DecorationImage(
-                                              fit: BoxFit.cover,
-                                              image: NetworkImage(
-                                                  "https://www.interskill.id/empty-photo.png"))
-                                          : DecorationImage(
-                                              fit: BoxFit.cover,
-                                              image: NetworkImage(
-                                                  pembeliData.img))),
-                                ),
-                              ],
-                            ),
-                            Text(pembeliData.name),
-                            Text(pembeliData.email),
-                            Text(pembeliData.phoneNumber),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ))
-            ],
-          );
-        },
-      )),
+            );
+          },
+        )),
+      ),
     );
   }
 }

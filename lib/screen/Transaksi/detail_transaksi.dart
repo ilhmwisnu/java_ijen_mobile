@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:java_ijen_mobile/const.dart';
@@ -125,37 +126,42 @@ class _DetailTransaksiState extends State<DetailTransaksi> {
                         SizedBox(height: 8),
                         Divider(),
                         SizedBox(height: 8),
-                        (userData.role == "admin")
-                            ? Text("Info Pembeli",
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.w500))
-                            : SizedBox(width: 0),
-                        (userData.role == "admin" && pembeliData != null)
-                            ? Row(
-                                children: [
-                                  SizedBox(height: 4),
-                                  Material(
-                                    color: Colors.green,
-                                    shape: CircleBorder(),
-                                    //clipBehavior: Clip.hardEdge,
-                                    child: IconButton(
-                                      icon: Icon(Icons.account_box_rounded),
-                                      color: Colors.white,
-                                      onPressed: () {
-                                        Navigator.pushNamed(
-                                            context, PembeliScreen.routeName,
-                                            arguments: pembeliData);
-                                      },
-                                    ),
-                                  ),
-                                  Text(pembeliData.name)
-                                ],
-                              )
-                            : SizedBox(width: 0),
                         SizedBox(width: 8),
                         Text("Info Pengiriman",
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.w500)),
+                        SizedBox(height: 4),
+                        (userData.role == "admin")
+                            ? Row(
+                                children: [
+                                  Flexible(
+                                      child: Text("Penerima"),
+                                      flex: 2,
+                                      fit: FlexFit.tight),
+                                  Flexible(
+                                      child: Row(
+                                        children: [
+                                          Text(pembeliData.name),
+                                          SizedBox(width: 12),
+                                          GestureDetector(
+                                            onTap: () {
+                                              Navigator.pushNamed(context,
+                                                  PembeliScreen.routeName,
+                                                  arguments: pembeliData);
+                                            },
+                                            child: Text(
+                                              "Lihat Detail",
+                                              style:
+                                                  TextStyle(color: Colors.blue),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      flex: 3),
+                                ],
+                              )
+                            : Text(FirebaseAuth
+                                .instance.currentUser!.displayName!),
                         SizedBox(height: 4),
                         Row(
                           children: [

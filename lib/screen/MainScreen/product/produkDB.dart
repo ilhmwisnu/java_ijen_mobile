@@ -37,39 +37,39 @@ class ProdukDB {
       String pid = id.key.toString();
       String img = "";
 
-      final firstChild = await ref.child(pid).get();
-      for (final col in firstChild.children) {
-        if (col.key == "harga") {
-          harga = col.value.toString();
-        }
-        if (col.key == "jumlah") {
-          jumlah = col.value.toString();
-        }
-        if (col.key == "lahan") {
-          lahan = col.value.toString();
-        }
-        if (col.key == "nama") {
-          nama = col.value.toString();
-        }
-        if (col.key == "petani") {
-          petani = col.value.toString();
-        }
-        if (col.key == "proses") {
-          proses = col.value.toString();
-        }
-        if (col.key == "img") {
-          img = col.value.toString();
-        }
-        // if (col.key == "pemilik") {
-        //   idpemilik = col.value.toString();
-        //   DatabaseReference refPT = db.ref('petani');
-        //   final petaniChild =
-        //   await refPT.child(col.value.toString()).child("nama").get();
-        //   namapemilik = petaniChild.value.toString();
-        // }
-      }
-      produk.insert(produk.length,
-          Produk(pid, nama, jumlah, petani, lahan, proses, harga, img));
+      // final firstChild = await ref.child(pid).get();
+      final res = await ref.child(pid).get();
+      final data = res.value as Map;
+      // for (final col in firstChild.children) {
+      //   if (col.key == "harga") {
+      //     harga = col.value.toString();
+      //   }
+      //   if (col.key == "jumlah") {
+      //     jumlah = col.value.toString();
+      //   }
+      //   if (col.key == "lahan") {
+      //     lahan = col.value.toString();
+      //   }
+      //   if (col.key == "nama") {
+      //     nama = col.value.toString();
+      //   }
+      //   if (col.key == "petani") {
+      //     petani = col.value.toString();
+      //   }
+      //   if (col.key == "proses") {
+      //     proses = col.value.toString();
+      //   }
+      //   if (col.key == "img") {
+      //     img = col.value.toString();
+      //   }
+      // }
+      // print(firstChild.value);
+      // produk.insert(produk.length,
+      //     Produk(pid, nama, jumlah, petani, lahan, proses, harga, img));
+      produk.insert(
+          produk.length,
+          Produk(pid, data["nama"], data["jumlah"].toString(), data["petani"],
+              data["lahan"], data["proses"], data["harga"].toString(), ""));
     }
     return produk;
   }
