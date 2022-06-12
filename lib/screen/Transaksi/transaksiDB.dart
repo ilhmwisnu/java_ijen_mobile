@@ -21,88 +21,38 @@ class TransaksiDB {
     }
 
     final root = await ref.get();
-    for (final id in await root.children) {
+    for (final id in root.children) {
+      final data = id.value as Map;
       String transId = id.key.toString();
-      String user = "";
-      String namaRek = "";
-      String noRek = "";
       late Produk produk;
-      String prov = "";
-      String kota = "";
-      String alamat = "";
-      String ekspedisi = "";
-      String ongkir = "";
-      String waktuPesan = "";
-      String status = "";
       String imgUrl = "";
-      String jumlah = "0";
-      String resi = "";
-      final firstChild = await ref.child(transId).get();
 
-      for (final col in firstChild.children) {
-        if (col.key == "namaRekening") {
-          namaRek = col.value.toString();
-        }
-        if (col.key == "nomorRekening") {
-          noRek = col.value.toString();
-        }
-        if (col.key == "idProduk") {
-          final _prod = ProdukDB();
-          produk = await _prod.getDataById(col.value.toString());
-          imgUrl = await _prod.getProductImg(col.value.toString());
-        }
-        if (col.key == "provinsi") {
-          prov = col.value.toString();
-        }
-        if (col.key == "kota") {
-          kota = col.value.toString();
-        }
-        if (col.key == "alamat") {
-          alamat = col.value.toString();
-        }
-        if (col.key == "biayaOngkir") {
-          ongkir = col.value.toString();
-        }
-        if (col.key == "layananEkspedisi") {
-          ekspedisi = col.value.toString();
-        }
-        if (col.key == "waktuPemesanan") {
-          waktuPesan = col.value.toString();
-        }
-        if (col.key == "status") {
-          status = col.value.toString();
-        }
-        if (col.key == "jumlah") {
-          jumlah = col.value.toString();
-        }
-        if (col.key == "user") {
-          user = col.value.toString();
-        }
-        if (col.key == "resi") {
-          resi = col.value.toString();
-        }
-      }
-      if (uid == user || role == 'admin') {
-        if (status == 'Dalam Proses' || status == "Menunggu Konfirmasi") {
-          // print(status);
+      final _prod = ProdukDB();
+      produk = await _prod.getDataById(data["idProduk"].toString());
+      imgUrl = await _prod.getProductImg(data["idProduk"].toString());
+
+      if (uid == data["user"] || role == 'admin') {
+        if (data["status"] == 'Dalam Proses' ||
+            data["status"] == "Menunggu Konfirmasi") {
+          // print("Masuk");
           trans.insert(
               trans.length,
               Transaksi(
                   transId,
-                  user,
-                  namaRek,
-                  noRek,
+                  data["user"],
+                  data["namaRekening"],
+                  data["nomorRekening"],
                   produk,
-                  prov,
-                  kota,
-                  alamat,
-                  ekspedisi,
-                  ongkir,
-                  waktuPesan,
-                  status,
+                  data["provinsi"],
+                  data["kota"],
+                  data["alamat"],
+                  data["layananEkspedisi"],
+                  data["biayaOngkir"].toString(),
+                  data["waktuPemesanan"],
+                  data["status"],
                   imgUrl,
-                  jumlah,
-                  resi));
+                  "0",
+                  (data["resi"] == null) ? "" : data["resi"]));
         }
       }
     }

@@ -28,44 +28,10 @@ class ProdukDB {
 
     final root = await ref.get();
     for (final id in await root.children) {
-      String nama = "";
-      String harga = "";
-      String jumlah = "";
-      String petani = "";
-      String lahan = "";
-      String proses = "";
       String pid = id.key.toString();
-      String img = "";
-
-      // final firstChild = await ref.child(pid).get();
       final res = await ref.child(pid).get();
       final data = res.value as Map;
-      // for (final col in firstChild.children) {
-      //   if (col.key == "harga") {
-      //     harga = col.value.toString();
-      //   }
-      //   if (col.key == "jumlah") {
-      //     jumlah = col.value.toString();
-      //   }
-      //   if (col.key == "lahan") {
-      //     lahan = col.value.toString();
-      //   }
-      //   if (col.key == "nama") {
-      //     nama = col.value.toString();
-      //   }
-      //   if (col.key == "petani") {
-      //     petani = col.value.toString();
-      //   }
-      //   if (col.key == "proses") {
-      //     proses = col.value.toString();
-      //   }
-      //   if (col.key == "img") {
-      //     img = col.value.toString();
-      //   }
-      // }
-      // print(firstChild.value);
-      // produk.insert(produk.length,
-      //     Produk(pid, nama, jumlah, petani, lahan, proses, harga, img));
+
       produk.insert(
           produk.length,
           Produk(pid, data["nama"], data["jumlah"].toString(), data["petani"],
@@ -84,32 +50,43 @@ class ProdukDB {
     String proses = "";
     String img = "";
 
-    final firstChild = await ref.get();
-    for (final col in firstChild.children) {
-      if (col.key == "harga") {
-        harga = col.value.toString();
-      }
-      if (col.key == "jumlah") {
-        jumlah = col.value.toString();
-      }
-      if (col.key == "lahan") {
-        lahan = col.value.toString();
-      }
-      if (col.key == "nama") {
-        nama = col.value.toString();
-      }
-      if (col.key == "petani") {
-        petani = col.value.toString();
-      }
-      if (col.key == "proses") {
-        proses = col.value.toString();
-      }
-      if (col.key == "img") {
-        img = col.value.toString();
-      }
-    }
-    Produk produkItem =
-        Produk(id, nama, jumlah, petani, lahan, proses, harga, img);
+    // final firstChild = await ref.get();
+    final res = await ref.get();
+    final data = res.value as Map;
+    // for (final col in firstChild.children) {
+    //   if (col.key == "harga") {
+    //     harga = col.value.toString();
+    //   }
+    //   if (col.key == "jumlah") {
+    //     jumlah = col.value.toString();
+    //   }
+    //   if (col.key == "lahan") {
+    //     lahan = col.value.toString();
+    //   }
+    //   if (col.key == "nama") {
+    //     nama = col.value.toString();
+    //   }
+    //   if (col.key == "petani") {
+    //     petani = col.value.toString();
+    //   }
+    //   if (col.key == "proses") {
+    //     proses = col.value.toString();
+    //   }
+    //   if (col.key == "img") {
+    //     img = col.value.toString();
+    //   }
+    // }
+    // Produk produkItem =
+    //     Produk(id, nama, jumlah, petani, lahan, proses, harga, img);
+    Produk produkItem = Produk(
+        id,
+        data["nama"],
+        data["jumlah"].toString(),
+        data["petani"],
+        data["lahan"],
+        data["proses"],
+        data["harga"].toString(),
+        "");
     return produkItem;
   }
 

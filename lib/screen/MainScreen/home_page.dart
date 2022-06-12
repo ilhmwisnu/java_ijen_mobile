@@ -115,11 +115,10 @@ class _HomeOwnerState extends State<HomeOwner> {
               child:
                   Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
                 Expanded(
-                    child: TextField(
-                  decoration: InputDecoration(
-                      hintText: "Cari",
-                      prefixIcon: Icon(Icons.search),
-                      border: InputBorder.none),
+                    child: Text(
+                  "Scan produk disini untuk melihat detail",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 16),
                 )),
                 IconButton(
                     onPressed: () async {
@@ -133,12 +132,18 @@ class _HomeOwnerState extends State<HomeOwner> {
                       }
 
                       var result = await BarcodeScanner.scan();
-
-                      Produk produk = await ProdukDB()
-                          .getDataById(result.rawContent.toString());
-                      if (produk.nama != null && produk.nama != "") {
-                        Navigator.pushNamed(context, DetailProduct.routeName,
-                            arguments: [produk.id, produk]);
+                      if (result.rawContent != "") {
+                        Produk produk = await ProdukDB()
+                            .getDataById(result.rawContent.toString());
+                        if (produk.nama != null && produk.nama != "") {
+                          Navigator.pushNamed(context, DetailProduct.routeName,
+                              arguments: [produk.id, produk]);
+                        } else {
+                          final snackBar = SnackBar(
+                            content: Text('QR Invalid'),
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        }
                       } else {
                         final snackBar = SnackBar(
                           content: Text('QR Invalid'),
