@@ -6,6 +6,7 @@ import '../../../utils/auth.dart';
 import '../../../const.dart';
 import 'addProduct_screen.dart';
 import 'editProduk_screen.dart';
+import 'produkQR.dart';
 
 class ProductPage extends StatefulWidget {
   UserData userData;
@@ -92,46 +93,74 @@ class _ProductPageState extends State<ProductPage> {
                               context, DetailProduct.routeName,
                               arguments: [_listProduk[index].id, null]);
                     },
-                    child: Container(
-                      decoration: BoxDecoration(
-                          boxShadow: shadow,
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8)),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            height: 150,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(8),
-                                    topRight: Radius.circular(8)),
-                                image: DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image: NetworkImage(_prodImg[index]))),
+                    child: Stack(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                              boxShadow: shadow,
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8)),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                height: 150,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(8),
+                                        topRight: Radius.circular(8)),
+                                    image: DecorationImage(
+                                        fit: BoxFit.cover,
+                                        image: NetworkImage(_prodImg[index]))),
+                              ),
+                              Padding(
+                                  padding: EdgeInsets.all(8),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        _listProduk[index].nama,
+                                        style: TextStyle(fontSize: 16),
+                                      ),
+                                      Text("Rp ${_listProduk[index].harga} /kg",
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600)),
+                                      Text(
+                                        "Stok : ${_listProduk[index].jumlah}",
+                                        style: TextStyle(
+                                            color: Colors.grey.shade600),
+                                      ),
+                                    ],
+                                  ))
+                            ],
                           ),
-                          Padding(
-                              padding: EdgeInsets.all(8),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    _listProduk[index].nama,
-                                    style: TextStyle(fontSize: 16),
+                        ),
+                        (widget.userData.role == "admin")
+                            ? Positioned(
+                                top: 8,
+                                right: 8,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(99),
+                                      color: Colors.black.withOpacity(0.2)),
+                                  child: IconButton(
+                                    icon: Icon(
+                                      Icons.qr_code,
+                                      color: Colors.white,
+                                    ),
+                                    onPressed: () {
+                                      Navigator.pushNamed(
+                                          context, ProdukQR.routeName,
+                                          arguments: _listProduk[index]);
+                                    },
                                   ),
-                                  Text("Rp ${_listProduk[index].harga} /kg",
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600)),
-                                  Text(
-                                    "Stok : ${_listProduk[index].jumlah}",
-                                    style:
-                                        TextStyle(color: Colors.grey.shade600),
-                                  ),
-                                ],
-                              ))
-                        ],
-                      ),
+                                ))
+                            : SizedBox(
+                                width: 0,
+                              )
+                      ],
                     ));
               }),
     );

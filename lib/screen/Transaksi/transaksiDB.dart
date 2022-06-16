@@ -51,7 +51,7 @@ class TransaksiDB {
                   data["waktuPemesanan"],
                   data["status"],
                   imgUrl,
-                  "0",
+                  data["jumlah"],
                   (data["resi"] == null) ? "" : data["resi"]));
         }
       }

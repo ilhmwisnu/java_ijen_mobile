@@ -120,31 +120,14 @@ class _DetailProductState extends State<DetailProduct> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            children: [
-                              Text(
-                                _produkData.nama,
-                                style: TextStyle(
-                                    fontSize: 24, fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                "Rp " + _produkData.harga + "/kg",
-                                style:
-                                    TextStyle(fontSize: 20, color: darkChoco),
-                              ),
-                            ],
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.qr_code),
-                            onPressed: () {
-                              Navigator.pushNamed(context, ProdukQR.routeName,
-                                  arguments: _produkData);
-                            },
-                          ),
-                        ],
+                      Text(
+                        _produkData.nama,
+                        style: TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        "Rp " + _produkData.harga + "/kg",
+                        style: TextStyle(fontSize: 20, color: darkChoco),
                       ),
                       SizedBox(height: 8),
                       Text(
