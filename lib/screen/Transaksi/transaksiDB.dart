@@ -30,7 +30,7 @@ class TransaksiDB {
       final _prod = ProdukDB();
       produk = await _prod.getDataById(data["idProduk"].toString());
       imgUrl = await _prod.getProductImg(data["idProduk"].toString());
-
+      // print(data);
       if (uid == data["user"] || role == 'admin') {
         if (data["status"] == 'Dalam Proses' ||
             data["status"] == "Menunggu Konfirmasi") {
@@ -38,21 +38,22 @@ class TransaksiDB {
           trans.insert(
               trans.length,
               Transaksi(
-                  transId,
-                  data["user"],
-                  data["namaRekening"],
-                  data["nomorRekening"],
-                  produk,
-                  data["provinsi"],
-                  data["kota"],
-                  data["alamat"],
-                  data["layananEkspedisi"],
-                  data["biayaOngkir"].toString(),
-                  data["waktuPemesanan"],
-                  data["status"],
-                  imgUrl,
-                  data["jumlah"],
-                  (data["resi"] == null) ? "" : data["resi"]));
+                transId,
+                data["user"],
+                data["namaRekening"],
+                data["nomorRekening"],
+                produk,
+                data["provinsi"],
+                data["kota"],
+                data["alamat"],
+                data["layananEkspedisi"],
+                data["biayaOngkir"].toString(),
+                data["waktuPemesanan"],
+                data["status"],
+                imgUrl,
+                (data["jumlah"] == null) ? "0" : data["jumlah"],
+                (data["resi"] == null) ? "" : data["resi"],
+              ));
         }
       }
     }

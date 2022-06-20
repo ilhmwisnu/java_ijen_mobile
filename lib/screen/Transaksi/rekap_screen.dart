@@ -150,6 +150,7 @@ class _RekapScreenState extends State<RekapScreen> {
                     children: [
                       for (var entry in productSold.entries)
                         Container(
+                          margin: EdgeInsets.only(bottom: 12),
                           decoration: BoxDecoration(
                             color: Colors.white,
                             // boxShadow: shadow,

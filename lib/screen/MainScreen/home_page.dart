@@ -319,106 +319,120 @@ class _HomeOwnerState extends State<HomeOwner> {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
             ),
           ),
-          Container(
-            // padding: EdgeInsets.all(defaultPadding),
-            width: MediaQuery.of(context).size.width,
-            height: 224 + defaultPadding * 4,
-            child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                shrinkWrap: true,
-                itemCount: recomProduct.length,
-                itemBuilder: (context, index) => GestureDetector(
-                    onTap: () {
-                      (widget.userData.role == "admin")
-                          ? Navigator.pushNamed(context, EditProduk.routeName,
-                                  arguments: recomProduct[index]["produk"].id)
-                              .whenComplete(() => fetchData())
-                          : Navigator.pushNamed(
-                              context, DetailProduct.routeName, arguments: [
-                              recomProduct[index]["produk"].id,
-                              null
-                            ]);
-                    },
-                    child: Stack(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.all(defaultPadding).copyWith(
-                              top: defaultPadding * 2,
-                              bottom: defaultPadding * 2 + 4,
-                              right: 0),
-                          width: (MediaQuery.of(context).size.width -
-                                  defaultPadding * 3) /
-                              2,
-                          decoration: BoxDecoration(
-                              boxShadow: shadow,
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(8)),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+          (isLoading)
+              ? Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(defaultPadding * 2),
+                    child: CircularProgressIndicator(),
+                  ),
+                )
+              : Container(
+                  // padding: EdgeInsets.all(defaultPadding),
+                  width: MediaQuery.of(context).size.width,
+                  height: 224 + defaultPadding * 4,
+                  child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      shrinkWrap: true,
+                      itemCount: recomProduct.length,
+                      itemBuilder: (context, index) => GestureDetector(
+                          onTap: () {
+                            (widget.userData.role == "admin")
+                                ? Navigator.pushNamed(
+                                        context, EditProduk.routeName,
+                                        arguments:
+                                            recomProduct[index]["produk"].id)
+                                    .whenComplete(() => fetchData())
+                                : Navigator.pushNamed(
+                                    context, DetailProduct.routeName,
+                                    arguments: [
+                                        recomProduct[index]["produk"].id,
+                                        null
+                                      ]);
+                          },
+                          child: Stack(
                             children: [
                               Container(
-                                height: 150,
+                                margin: EdgeInsets.all(defaultPadding).copyWith(
+                                    top: defaultPadding * 2,
+                                    bottom: defaultPadding * 2 + 4,
+                                    right: 0),
+                                width: (MediaQuery.of(context).size.width -
+                                        defaultPadding * 3) /
+                                    2,
                                 decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(8),
-                                        topRight: Radius.circular(8)),
-                                    image: DecorationImage(
-                                        fit: BoxFit.cover,
-                                        image: NetworkImage(
-                                            recomProduct[index]["img"]))),
-                              ),
-                              Padding(
-                                  padding: EdgeInsets.all(8),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        recomProduct[index]["produk"].nama,
-                                        style: TextStyle(fontSize: 16),
-                                      ),
-                                      Text(
-                                          "Rp ${recomProduct[index]["produk"].harga} /kg",
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600)),
-                                      Text(
-                                        "Stok : ${recomProduct[index]["produk"].jumlah}",
-                                        style: TextStyle(
-                                            color: Colors.grey.shade600),
-                                      ),
-                                    ],
-                                  ))
-                            ],
-                          ),
-                        ),
-                        (widget.userData.role == "admin")
-                            ? Positioned(
-                                top: 8,
-                                right: 8,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(99),
-                                      color: Colors.black.withOpacity(0.2)),
-                                  child: IconButton(
-                                    icon: Icon(
-                                      Icons.qr_code,
-                                      color: Colors.white,
+                                    boxShadow: shadow,
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(8)),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      height: 150,
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(8),
+                                              topRight: Radius.circular(8)),
+                                          image: DecorationImage(
+                                              fit: BoxFit.cover,
+                                              image: NetworkImage(
+                                                  recomProduct[index]["img"]))),
                                     ),
-                                    onPressed: () {
-                                      Navigator.pushNamed(
-                                          context, ProdukQR.routeName,
-                                          arguments: recomProduct[index]
-                                              ["produk"]);
-                                    },
-                                  ),
-                                ))
-                            : SizedBox(
-                                width: 0,
-                              )
-                      ],
-                    ))),
-          ),
+                                    Padding(
+                                        padding: EdgeInsets.all(8),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              recomProduct[index]["produk"]
+                                                  .nama,
+                                              style: TextStyle(fontSize: 16),
+                                            ),
+                                            Text(
+                                                "Rp ${recomProduct[index]["produk"].harga} /kg",
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.w600)),
+                                            Text(
+                                              "Stok : ${recomProduct[index]["produk"].jumlah}",
+                                              style: TextStyle(
+                                                  color: Colors.grey.shade600),
+                                            ),
+                                          ],
+                                        ))
+                                  ],
+                                ),
+                              ),
+                              (widget.userData.role == "admin")
+                                  ? Positioned(
+                                      top: 8,
+                                      right: 8,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(99),
+                                            color:
+                                                Colors.black.withOpacity(0.2)),
+                                        child: IconButton(
+                                          icon: Icon(
+                                            Icons.qr_code,
+                                            color: Colors.white,
+                                          ),
+                                          onPressed: () {
+                                            Navigator.pushNamed(
+                                                context, ProdukQR.routeName,
+                                                arguments: recomProduct[index]
+                                                    ["produk"]);
+                                          },
+                                        ),
+                                      ))
+                                  : SizedBox(
+                                      width: 0,
+                                    )
+                            ],
+                          ))),
+                ),
         ],
       ),
     );

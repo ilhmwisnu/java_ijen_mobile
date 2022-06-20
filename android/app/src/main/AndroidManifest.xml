@@ -2,7 +2,7 @@
     package="com.example.java_ijen_mobile">
    <application
        android:requestLegacyExternalStorage="true"
-       android:label="java_ijen_mobile"
+       android:label="Java Ijen"
        android:name="${applicationName}"
        android:icon="@mipmap/ic_launcher">
        <activity
